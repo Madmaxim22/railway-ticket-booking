@@ -1,0 +1,144 @@
+.footer {
+  width: 100%;
+  height: 100%;
+  background-color: #2D2B2F;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+
+
+  color: white;
+}
+
+.footer__container {
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid #E5E5E5;
+
+  display: flex;
+  justify-content: space-between;
+
+  padding-top: 52px;
+  padding-bottom: 52px;
+  padding-left: 330px;
+  padding-right: 330px;
+}
+
+.footer__contact-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.footer__contact-title {
+  font-family: Roboto, sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.footer__contact-description-container {
+  display: flex;
+  gap: 36px;
+}
+
+.footer__contact-description {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.footer__subscription-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__subscription-title {
+  font-family: Roboto, sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.footer__subscription-description {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+
+  margin-top: 30px;
+}
+
+.footer__subscription-form {
+  display: flex;
+  gap: 30px;
+
+  margin-top: 22px;
+  margin-bottom: 44px;
+}
+
+.footer__subscription-input {
+  width: 447px;
+  height: 60px;
+  border-radius: 3px;
+}
+
+.footer__subscription-input::placeholder {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #E5E5E5;
+
+  padding-left: 21px;
+}
+
+.footer__subscription-button {
+  width: 170px;
+  height: 60px;
+  border-radius: 3px;
+  border: 1px solid white;
+  color: #E5E5E5;
+  
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.footer__subscription-social-content {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+  justify-content: flex-start;
+
+  margin-top: 28px;
+}
+
+.footer__copyright-content {
+  width: 100%;
+  height: 96px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding-top: 44px;
+  padding-bottom: 44px;
+  padding-left: 256px;
+  padding-right: 257px;
+}
+
+.footer__copyright-logo {
+  font-family: Roboto, sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: #E5E5E5;
+}
+
+.footer__copyright-year {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #E5E5E5;
+}
