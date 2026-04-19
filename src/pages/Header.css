@@ -113,6 +113,7 @@
 
 .header__search-form-field {
   position: relative;
+  overflow: visible;
 }
 
 .header__search-form-input {
@@ -122,7 +123,12 @@
   background-color: white;
   border: none;
   border-radius: 5px;
-  padding: 10px 40px 10px 10px;
+  padding: 10px 40px 10px 21px;
+
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #292929;
 }
 
 .header__search-form-input::placeholder,
@@ -139,6 +145,8 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+  /* Выше .date-picker--open (z-index: 100), иначе иконка оказывается под слоем календаря */
+  z-index: 110;
 }
 
 .header__search-form-icon path {
@@ -173,6 +181,16 @@
   text-align: center;
   margin-top: 61px;
   margin-left: auto;
+}
+
+.header__search-form-button:hover {
+  box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.4);
+}
+
+.header__search-form-button:active {
+  border: 1px solid #FFA800;
+  background-color: transparent;
+  color: #FFA800;
 }
 
 .header__line {
