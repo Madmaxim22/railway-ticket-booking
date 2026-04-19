@@ -106,6 +106,18 @@
   text-transform: uppercase;
 }
 
+.footer__subscription-button:hover {
+  background-color: #FFA800;
+  color: black;
+  border: none;
+}
+
+.footer__subscription-button:active {
+  background-color: white;
+  color: black;
+  border: none;
+}
+
 .footer__subscription-social-content {
   display: flex;
   gap: 48px;
@@ -113,6 +125,23 @@
   justify-content: flex-start;
 
   margin-top: 28px;
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.footer__subscription-social-icon {
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-user-drag: none;
+}
+
+.footer__subscription-social-icon path {
+  transition: fill 0.2s ease;
+}
+
+.footer__subscription-social-icon:hover path {
+  fill: #ffa800;
 }
 
 .footer__copyright-content {
