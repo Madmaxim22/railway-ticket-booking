@@ -72,6 +72,18 @@
   color: white;
 }
 
+.home-page__how-it-works-button:hover {
+  background-color: #FFA800;
+  color: black;
+  border: none;
+}
+
+.home-page__how-it-works-button:active {
+  background-color: white;
+  color: black;
+  border: none;
+}
+
 .home-page__how-it-works-container {
   display: flex;
   gap: 143px;
