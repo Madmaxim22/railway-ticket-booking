@@ -1,0 +1,121 @@
+:root {
+  --range-slider-width: 295px;
+  --range-slider-thumb-size: 24px;
+  --range-slider-track-height: 19px;
+}
+
+.range-slider__labels,
+.range-slider__values {
+  width: var(--range-slider-width);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.range-slider__labels {
+  margin-bottom: 10px;
+  color: #FFFFFF;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.range-slider__values {
+  margin-top: 5px;
+  color: #E5E5E5;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.range-slider__track-wrap {
+  position: relative;
+  width: var(--range-slider-width);
+  height: var(--range-slider-thumb-size);
+}
+
+.range-slider__track,
+.range-slider__range {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--range-slider-track-height);
+  border-radius: 8px;
+  border: 1px solid #FFA800;
+  box-sizing: border-box;
+}
+
+.search-filters__time-section {
+  --range-slider-track-height: 10px;
+  --range-slider-thumb-size: 18px;
+}
+
+.range-slider__track {
+  width: 100%;
+  border: 1px solid #C4C4C4;
+  background-color: transparent;
+}
+
+.range-slider__range {
+  background-color: #FFA800;
+}
+
+.range-slider__input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--range-slider-thumb-size);
+  margin: 0;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.range-slider__input--min {
+  z-index: 2;
+}
+
+.range-slider__input--max {
+  z-index: 2;
+}
+
+.range-slider__input--active {
+  z-index: 4;
+}
+
+.range-slider__input::-webkit-slider-thumb {
+  width: var(--range-slider-thumb-size);
+  height: var(--range-slider-thumb-size);
+  border-radius: 50%;
+  border: none;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-appearance: none;
+}
+
+.range-slider__input::-moz-range-thumb {
+  width: var(--range-slider-thumb-size);
+  height: var(--range-slider-thumb-size);
+  border-radius: 50%;
+  border: none;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.range-slider__input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid #FFA800;
+  outline-offset: 2px;
+}
+
+.range-slider__input:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 2px #FFA800;
+}
+
+.range-slider__input::-moz-range-track {
+  background: transparent;
+}
