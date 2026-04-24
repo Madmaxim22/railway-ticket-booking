@@ -1,0 +1,27 @@
+.booking-layout {
+  width: 100%;
+}
+
+.booking-layout__body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 85px;
+
+  padding-top: 95px;
+  padding-left: 255px;
+  padding-right: 255px;
+  padding-bottom: 195px;
+}
+
+aside {
+  width: 364px;
+  height: 100%;
+  background-color: #3E3C41;
+}
+
+.booking-layout__main {
+  width: 960px;
+  height: 100%;
+}
