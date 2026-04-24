@@ -145,12 +145,9 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+  color: #E5E5E5;
   /* Выше .date-picker--open (z-index: 100), иначе иконка оказывается под слоем календаря */
   z-index: 110;
-}
-
-.header__search-form-icon path {
-  fill: #E5E5E5;
 }
 
 .header__search-form-swap-icon {
@@ -159,10 +156,6 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-}
-
-.header__search-form-swap-icon path {
-  fill: #E5E5E5;
 }
 
 .header__search-form-button {
