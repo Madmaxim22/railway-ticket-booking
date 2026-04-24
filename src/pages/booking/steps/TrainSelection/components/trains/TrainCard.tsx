@@ -6,6 +6,7 @@ import FarePriceIcon from './icons/FarePriceIcon'
 import AmenitiesIconOne from './icons/AmenitiesIconOne'
 import AmenitiesIconTwo from './icons/AmenitiesIconTwo'
 import AmenitiesIconThree from './icons/AmenitiesIconThree'
+import FareCountTooltip from './FareCountTooltip'
 
 export default function TrainCard() {
 
@@ -79,21 +80,39 @@ export default function TrainCard() {
       <section className="train-card__prices">
         <div className="train-card__fare-row">
           <span className="train-card__fare-type">Плацкарт</span>
-          <span className="train-card__fare-count">52</span>
+          <FareCountTooltip
+            count={52}
+            upperCount={19}
+            upperPrice="2 920"
+            lowerCount={5}
+            lowerPrice="3 530"
+          />
           <span className="train-card__fare-from">от</span>
           <span className="train-card__fare-price">2 530</span>
           <FarePriceIcon className="train-card__fare-price-icon" />
         </div>
         <div className="train-card__fare-row">
           <span className="train-card__fare-type">Купе</span>
-          <span className="train-card__fare-count">24</span>
+          <FareCountTooltip
+            count={24}
+            upperCount={19}
+            upperPrice="2 920"
+            lowerCount={5}
+            lowerPrice="3 530"
+          />
           <span className="train-card__fare-from">от</span>
           <span className="train-card__fare-price">3 820</span>
           <FarePriceIcon className="train-card__fare-price-icon" />
         </div>
         <div className="train-card__fare-row">
           <span className="train-card__fare-type">Люкс</span>
-          <span className="train-card__fare-count">15</span>
+          <FareCountTooltip
+            count={15}
+            upperCount={19}
+            upperPrice="2 920"
+            lowerCount={5}
+            lowerPrice="3 530"
+          />
           <span className="train-card__fare-from">от</span>
           <span className="train-card__fare-price">4 950</span>
           <FarePriceIcon className="train-card__fare-price-icon" />
