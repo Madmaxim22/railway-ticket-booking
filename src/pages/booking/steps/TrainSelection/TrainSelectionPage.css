@@ -1,0 +1,108 @@
+.train-selection-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.train-selection-page__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  width: 100%;
+  margin-bottom: 47px;
+}
+
+.train-selection-page__header-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.train-selection-page__header-item-text {
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #3E3C41;
+}
+
+.train-selection-page__header-item--sort {
+  margin-left: 363px;
+  width: 280px;
+}
+
+.train-selection-page__dropdown {
+  position: relative;
+}
+
+.train-selection-page__dropdown-trigger {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  min-width: 120px;
+  text-align: left;
+
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #292929;
+}
+
+.train-selection-page__dropdown-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 139px;
+  list-style: none;
+  background-color: #F7F5F9;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.train-selection-page__dropdown-item {
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 8px 10px;
+  border-bottom: 1px solid #E5E5E5;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #3E3C41;
+}
+
+.train-selection-page__dropdown-item:hover {
+  background-color: #FFCA62;
+}
+
+.train-selection-page__header-item-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #928F94;
+}
+
+.train-selection-page__header-item-button--active {
+  color: #292929;
+}
+
+
+.train-selection-page__content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
