@@ -1,0 +1,62 @@
+.search-filters__time-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-filters__time-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.search-filters__time-title {
+  margin: 0 auto 0 12px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: #fff;
+}
+
+.search-filters__time-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #C4C4C4;
+  cursor: pointer;
+}
+
+.search-filters__time-icon {
+  color: inherit;
+}
+
+.search-filters__time-content > .search-filters__time-icon {
+  color: #FFA800;
+}
+
+.search-filters__time-button:hover {
+  color: #FCDC9D;
+}
+
+.search-filters__time-slider-container {
+  margin-top: 25px;
+}
+
+.search-filters__time-slider-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #E5E5E5;
+
+  margin-bottom: 15px;
+}
+
+.search-filters__time-slider-container:last-of-type .search-filters__time-slider-title {
+  text-align: right;
+}
+
+.search-filters__time-slider-container:last-of-type{
+  margin-top: 45px;
+}
