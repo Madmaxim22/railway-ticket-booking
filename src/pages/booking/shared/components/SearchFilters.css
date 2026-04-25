@@ -177,3 +177,120 @@
   padding: 30px 35px 35px 30px;
   border-bottom: 1px solid #E5E5E5;
 }
+
+/* Latest tickets */
+.search-filters__latest-tickets {
+  width: 100%;
+  background-color: #FFFFFF;
+  padding-top: 94px;
+  box-sizing: border-box;
+}
+
+.search-filters__latest-tickets-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: #000000;
+  text-transform: uppercase;
+}
+
+.search-filters__latest-tickets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  margin-top: 37px;
+}
+
+.search-filters__latest-ticket-card {
+  border: 1px solid #C4C4C4;
+  border-radius: 3px;
+  padding: 18px 16px;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 2px 0px rgba(62, 60, 65, 0.25);
+}
+
+.search-filters__latest-ticket-route {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.search-filters__latest-ticket-route-from {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-filters__latest-ticket-route-to {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  gap: 8px;
+}
+
+.search-filters__latest-ticket-city {
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #292929;
+}
+
+.search-filters__latest-ticket-city--to {
+  text-align: right;
+}
+
+.search-filters__latest-ticket-station {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #928F94;
+}
+
+.search-filters__latest-ticket-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.search-filters__latest-ticket-amenities {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-filters__latest-ticket-amenity-icon {
+  width: 20px;
+  height: 20px;
+  color: #C4C4C4;
+  flex-shrink: 0;
+}
+
+.search-filters__latest-ticket-price {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.search-filters__latest-ticket-price-from {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #928F94;
+}
+
+.search-filters__latest-ticket-price-value {
+  font-family: 'Roboto', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #FFA800;
+}
+
+.search-filters__latest-ticket-price-icon {
+  width: 20px;
+  height: 25px;
+  color: #928F94;
+  flex-shrink: 0;
+}
