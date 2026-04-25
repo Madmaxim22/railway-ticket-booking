@@ -131,6 +131,24 @@
   color: #928F94;
 }
 
+.train-selection-page__pagination-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.train-selection-page__pagination-page--dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+.train-selection-page__pagination-page--dots:disabled {
+  opacity: 1;
+  color: #928F94;
+}
+
 .train-selection-page__pagination-page--active {
   background-color: #FFA800;
   color: #FFFFFF;

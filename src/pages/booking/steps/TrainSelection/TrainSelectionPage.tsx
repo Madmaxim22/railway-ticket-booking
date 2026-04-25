@@ -1,46 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment } from 'react'
 import TrainCard from './components/trains/TrainCard'
 import './TrainSelectionPage.css'
 
 export default function TrainSelectionPage() {
-  const totalTrains = 20
+  const totalTrains = 30
   const perPageOptions = [5, 10, 20]
-  const sortOptions = [
-    { value: 'time', label: 'времени' },
-    { value: 'price', label: 'стоимости' },
-    { value: 'duration', label: 'длительности' },
-  ]
-  const [selectedSort, setSelectedSort] = useState(sortOptions[0])
-  const [selectedPerPage, setSelectedPerPage] = useState(perPageOptions[0])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isSortOpen, setIsSortOpen] = useState(false)
-  const sortDropdownRef = useRef<HTMLDivElement>(null)
+  const selectedSortLabel = 'времени'
+  const selectedPerPage = perPageOptions[0]
+  const currentPage = 1
   const totalPages = Math.ceil(totalTrains / selectedPerPage)
-  const currentItemsCount = Math.min(selectedPerPage, totalTrains - (currentPage - 1) * selectedPerPage)
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!sortDropdownRef.current?.contains(event.target as Node)) {
-        setIsSortOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
-
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [selectedPerPage, selectedSort])
-
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages || 1)
-    }
-  }, [currentPage, totalPages])
+  const currentItemsCount = Math.min(selectedPerPage, totalTrains)
+  const visiblePages = totalPages > 4 ? [1, 2, 3, totalPages] : Array.from({ length: totalPages }, (_, index) => index + 1)
 
   return (
     <div className="train-selection-page">
@@ -50,33 +20,13 @@ export default function TrainSelectionPage() {
         </div>
         <div className="train-selection-page__header-item train-selection-page__header-item--sort">
           <p className="train-selection-page__header-item-text">сортировать по:</p>
-          <div className="train-selection-page__dropdown" ref={sortDropdownRef}>
+          <div className="train-selection-page__dropdown">
             <button
               type="button"
               className="train-selection-page__dropdown-trigger"
-              onClick={() => setIsSortOpen((prev) => !prev)}
             >
-              {selectedSort.label}
+              {selectedSortLabel}
             </button>
-
-            {isSortOpen && (
-              <ul className="train-selection-page__dropdown-menu">
-                {sortOptions.map((option) => (
-                  <li key={option.value}>
-                    <button
-                      type="button"
-                      className="train-selection-page__dropdown-item"
-                      onClick={() => {
-                        setSelectedSort(option)
-                        setIsSortOpen(false)
-                      }}
-                    >
-                      {option.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
           </div>
         </div>
         <div className="train-selection-page__header-item">
@@ -86,7 +36,6 @@ export default function TrainSelectionPage() {
               key={option}
               type="button"
               className={`train-selection-page__header-item-button${selectedPerPage === option ? ' train-selection-page__header-item-button--active' : ''}`}
-              onClick={() => setSelectedPerPage(option)}
               aria-pressed={selectedPerPage === option}
             >
               {option}
@@ -105,33 +54,50 @@ export default function TrainSelectionPage() {
         <button
           type="button"
           className="train-selection-page__pagination-arrow"
-          onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
           disabled={currentPage === 1}
           aria-label="Предыдущая страница"
         >
-          &#8249;
+          <svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="train-selection-page__pagination-arrow-icon">
+            <path d="M5.91132 13.6362C9.39583 10.2308 12.6952 7.03047 15.9482 3.85955C16.842 2.9883 16.7737 1.48294 15.8845 0.607056C15.0166 -0.247731 13.6946 -0.177635 12.8267 0.677152C8.63824 4.8026 4.43672 8.9409 0.298344 13.017C-0.0993557 13.4087 -0.0994549 14.05 0.298367 14.4416C4.2848 18.3656 8.43732 22.4346 12.57 26.5206C13.4706 27.411 14.8436 27.4847 15.7195 26.5701C16.5737 25.6781 16.6267 24.1841 15.7495 23.3148C12.6509 20.244 9.38459 17.0307 5.91132 13.6362Z" fill="#928F94"/>
+          </svg>
         </button>
 
-        {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+        {visiblePages.map((page, index) => (
+          <Fragment key={page}>
           <button
             key={page}
             type="button"
             className={`train-selection-page__pagination-page${currentPage === page ? ' train-selection-page__pagination-page--active' : ''}`}
-            onClick={() => setCurrentPage(page)}
             aria-current={currentPage === page ? 'page' : undefined}
           >
             {page}
           </button>
+          {totalPages > 4 && index === 2 && (
+            <button
+              type="button"
+              className="train-selection-page__pagination-page train-selection-page__pagination-page--dots"
+              aria-label="Пропущенные страницы"
+              disabled
+            >
+              <svg width="42" height="9" viewBox="0 0 42 9" fill="none" xmlns="http://www.w3.org/2000/svg" className="train-selection-page__pagination-dots-icon">
+                <ellipse cx="4.45455" cy="4.5" rx="4.45455" ry="4.5" fill="#918F94"/>
+                <ellipse cx="20.5" cy="4.5" rx="4.45455" ry="4.5" fill="#918F94"/>
+                <ellipse cx="37.5455" cy="4.5" rx="4.45455" ry="4.5" fill="#918F94"/>
+              </svg>
+            </button>
+          )}
+          </Fragment>
         ))}
 
         <button
           type="button"
           className="train-selection-page__pagination-arrow"
-          onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
           disabled={currentPage === totalPages}
           aria-label="Следующая страница"
         >
-          &#8250;
+          <svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="train-selection-page__pagination-arrow-icon">
+            <path d="M10.6746 13.6362C7.19004 10.2308 3.8907 7.03047 0.637687 3.85955C-0.256115 2.9883 -0.18787 1.48294 0.701393 0.607056C1.56924 -0.247731 2.89131 -0.177635 3.75916 0.677152C7.94764 4.8026 12.1492 8.9409 16.2875 13.017C16.6852 13.4087 16.6853 14.05 16.2875 14.4416C12.3011 18.3656 8.14855 22.4346 4.01587 26.5206C3.11528 27.411 1.7423 27.4847 0.866345 26.5701C0.0121312 25.6781 -0.0408515 24.1841 0.836369 23.3148C3.93498 20.244 7.20128 17.0307 10.6746 13.6362Z" fill="#928F94"/>
+          </svg>
         </button>
       </div>
     </div>
