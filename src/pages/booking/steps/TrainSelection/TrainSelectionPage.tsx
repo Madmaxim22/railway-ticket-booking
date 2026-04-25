@@ -3,6 +3,7 @@ import TrainCard from './components/trains/TrainCard'
 import './TrainSelectionPage.css'
 
 export default function TrainSelectionPage() {
+  const totalTrains = 20
   const perPageOptions = [5, 10, 20]
   const sortOptions = [
     { value: 'time', label: 'времени' },
@@ -11,8 +12,11 @@ export default function TrainSelectionPage() {
   ]
   const [selectedSort, setSelectedSort] = useState(sortOptions[0])
   const [selectedPerPage, setSelectedPerPage] = useState(perPageOptions[0])
+  const [currentPage, setCurrentPage] = useState(1)
   const [isSortOpen, setIsSortOpen] = useState(false)
   const sortDropdownRef = useRef<HTMLDivElement>(null)
+  const totalPages = Math.ceil(totalTrains / selectedPerPage)
+  const currentItemsCount = Math.min(selectedPerPage, totalTrains - (currentPage - 1) * selectedPerPage)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -28,11 +32,21 @@ export default function TrainSelectionPage() {
     }
   }, [])
 
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [selectedPerPage, selectedSort])
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages || 1)
+    }
+  }, [currentPage, totalPages])
+
   return (
     <div className="train-selection-page">
       <div className="train-selection-page__header">   
         <div className="train-selection-page__header-item">
-          <p className="train-selection-page__header-item-text">найдено 20</p>
+          <p className="train-selection-page__header-item-text">найдено {totalTrains}</p>
         </div>
         <div className="train-selection-page__header-item train-selection-page__header-item--sort">
           <p className="train-selection-page__header-item-text">сортировать по:</p>
@@ -82,8 +96,43 @@ export default function TrainSelectionPage() {
       </div>
 
       <div className="train-selection-page__content">
-        <TrainCard />
-        <TrainCard />
+        {Array.from({ length: currentItemsCount }, (_, index) => (
+          <TrainCard key={`${currentPage}-${index}`} />
+        ))}
+      </div>
+
+      <div className="train-selection-page__pagination">
+        <button
+          type="button"
+          className="train-selection-page__pagination-arrow"
+          onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+          disabled={currentPage === 1}
+          aria-label="Предыдущая страница"
+        >
+          &#8249;
+        </button>
+
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+          <button
+            key={page}
+            type="button"
+            className={`train-selection-page__pagination-page${currentPage === page ? ' train-selection-page__pagination-page--active' : ''}`}
+            onClick={() => setCurrentPage(page)}
+            aria-current={currentPage === page ? 'page' : undefined}
+          >
+            {page}
+          </button>
+        ))}
+
+        <button
+          type="button"
+          className="train-selection-page__pagination-arrow"
+          onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+          disabled={currentPage === totalPages}
+          aria-label="Следующая страница"
+        >
+          &#8250;
+        </button>
       </div>
     </div>
   )
