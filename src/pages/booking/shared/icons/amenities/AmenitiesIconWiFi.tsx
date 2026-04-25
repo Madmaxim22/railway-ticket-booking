@@ -1,8 +1,8 @@
-type AmenitiesIconOneProps = {
+type AmenitiesIconWiFiProps = {
   className?: string
 }
 
-export default function AmenitiesIconOne({ className }: AmenitiesIconOneProps) {
+export default function AmenitiesIconWiFi({ className }: AmenitiesIconWiFiProps) {
   return (
     <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       <path d="M20 4.21434C19.7667 4.4347 19.5335 4.65506 19.3069 4.8821C19.0803 5.10914 18.867 5.34953 18.6271 5.60995C16.1946 3.25277 13.3356 2.01074 9.99 2.01074C6.65778 2.01074 3.81206 3.25277 1.44618 5.54318C0.973009 5.07575 0.519827 4.62167 0 4.10082C0.71976 3.53991 1.41953 2.90553 2.19927 2.38468C7.75075 -1.30134 14.9084 -0.660294 19.7467 3.93388C19.8267 4.00734 19.9134 4.07411 20 4.14089C20 4.1676 20 4.18763 20 4.21434Z" fill="#C4C4C4" />

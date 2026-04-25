@@ -3,9 +3,9 @@ import TrainRouteIcon from './icons/TrainRouteIcon'
 import RouteArrowIcon from './icons/RouteArrowIcon'
 import TripArrowIcon from './icons/TripArrowIcon'
 import FarePriceIcon from './icons/FarePriceIcon'
-import AmenitiesIconOne from './icons/AmenitiesIconOne'
-import AmenitiesIconTwo from './icons/AmenitiesIconTwo'
-import AmenitiesIconThree from './icons/AmenitiesIconThree'
+import AmenitiesIconWiFi from '../../../../shared/icons/amenities/AmenitiesIconWiFi'
+import AmenitiesIconExpress from '../../../../shared/icons/amenities/AmenitiesIconExpress'
+import AmenitiesIconFoot from '../../../../shared/icons/amenities/AmenitiesIconFoot'
 import FareCountTooltip from './FareCountTooltip'
 
 export default function TrainCard() {
@@ -119,9 +119,9 @@ export default function TrainCard() {
         </div>
         <div className="train-card__prices-bottom">
           <div className="train-card__amenities">
-            <AmenitiesIconOne className="train-card__amenities-icon" />
-            <AmenitiesIconTwo />
-            <AmenitiesIconThree />
+            <AmenitiesIconWiFi className="train-card__amenities-icon" />
+            <AmenitiesIconExpress className="train-card__amenities-icon" />
+            <AmenitiesIconFoot className="train-card__amenities-icon" />
           </div>
 
           <div className="train-card__booking-button">
