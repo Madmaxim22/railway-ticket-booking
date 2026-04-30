@@ -1,0 +1,82 @@
+.seat-selection-page__card {
+  border: 1px solid #c4c4c4;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.seat-selection-page__card:first-of-type {
+  margin-bottom: 29px;
+}
+
+.seat-selection-page__card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 18px 32px;
+}
+
+.seat-selection-page__card-header--return {
+  justify-content: flex-end;
+}
+
+.seat-selection-page__card-header-icon {
+  color: #ffa800;
+}
+
+.seat-selection-page__card-header-icon--return {
+  transform: scaleX(-1);
+}
+
+.seat-selection-page__card-header-button {
+  width: 325px;
+  height: 60px;
+  border: 1px solid #292929;
+  border-radius: 5px;
+  background-color: transparent;
+  cursor: pointer;
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #292929;
+}
+
+.seat-selection-page__section-title {
+  padding-left: 20px;
+  font-family: Roboto, sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #292929;
+}
+
+.seat-selection-page__wagon-scheme {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.seat-selection-page__selected-seats-summary {
+  padding: 24px 38px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.seat-selection-page__selected-seats-summary-price {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFA800;
+}
+
+.seat-selection-page__fare-price-icon {
+  width: 14px;
+  height: 17px;
+}
