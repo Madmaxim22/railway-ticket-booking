@@ -1,0 +1,142 @@
+.seat-layout-coupe__svg {
+  shape-rendering: geometricPrecision;
+}
+
+.seat-layout-coupe__frame {
+  stroke: rgb(0, 0, 0);
+  fill: none;
+  fill-rule: nonzero;
+  stroke-miterlimit: 5.6;
+  stroke-dashoffset: 32px;
+  paint-order: fill;
+}
+
+.seat-layout-coupe__detail-rect {
+  fill: rgb(216, 216, 216);
+  stroke-width: 1;
+  stroke: rgb(154, 154, 154);
+}
+
+.seat-layout-coupe__wagon-label-bg {
+  stroke: rgb(0, 0, 0);
+  fill: rgb(0, 0, 0);
+}
+
+.seat-layout-coupe__wagon-number {
+  fill: rgb(255, 255, 255);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  white-space: pre;
+}
+
+.seat-layout-coupe__stroke {
+  fill: none;
+  stroke: rgb(154, 154, 154);
+}
+
+.seat-layout-coupe__stroke-2 {
+  fill: none;
+  stroke: rgb(154, 154, 154);
+  stroke-width: 2px;
+}
+
+.seat-layout-coupe__stroke-4 {
+  fill: none;
+  stroke: rgb(154, 154, 154);
+  stroke-width: 4;
+}
+
+.seat-layout-coupe__accessory {
+  stroke: none;
+  stroke-width: 1;
+  paint-order: fill;
+  fill-rule: nonzero;
+  fill: rgb(172, 172, 172);
+}
+
+.seat-layout-coupe__no-smoking {
+  fill: rgb(145, 145, 145);
+}
+
+.seat-layout-coupe__silhouette {
+  opacity: 1;
+  paint-order: stroke markers;
+  fill-rule: evenodd;
+  fill-opacity: 0.36;
+}
+
+.seat-layout-coupe__silhouette-light {
+  fill: #eaeaea;
+}
+
+.seat-layout-coupe__silhouette-dark {
+  fill: #050505;
+}
+
+.seat-layout-coupe__silhouette-dark-2 {
+  fill: #0e0e0e;
+}
+
+.seat-layout-coupe__silhouette-dark-3 {
+  fill: #040404;
+}
+
+.seat-layout-coupe__silhouette-dark-4 {
+  fill: #151515;
+}
+
+.seat-layout-coupe__silhouette-light-2 {
+  fill: #e5e5e5;
+}
+
+.seat-layout-coupe__chassis {
+  stroke-width: 1;
+  fill: rgb(149, 149, 149);
+}
+
+.seat-layout-coupe__seat-group {
+  cursor: pointer;
+}
+
+.seat-layout-coupe__seat-rect {
+  fill: #f2f2f2;
+  stroke: #f2f2f2;
+  stroke-width: 1;
+}
+
+.seat-layout-coupe__seat-text {
+  fill: #000;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  white-space: pre;
+  stroke-width: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.seat-layout-coupe__seat-group--occupied {
+  cursor: default;
+}
+
+.seat-layout-coupe__seat-group--occupied .seat-layout-coupe__seat-rect {
+  fill: #ccc;
+  stroke: #ccc;
+}
+
+.seat-layout-coupe__seat-group--occupied .seat-layout-coupe__seat-text {
+  fill: #fff;
+}
+
+.seat-layout-coupe__seat-group--selected {
+  cursor: pointer;
+}
+
+.seat-layout-coupe__seat-group--selected .seat-layout-coupe__seat-rect {
+  fill: #f2f2f2;
+  stroke: #ffa800;
+  stroke-width: 2px;
+}
+
+.seat-layout-coupe__seat-group--selected .seat-layout-coupe__seat-text {
+  fill: #000;
+}

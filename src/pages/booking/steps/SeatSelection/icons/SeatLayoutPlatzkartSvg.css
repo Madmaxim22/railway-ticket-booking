@@ -1,0 +1,177 @@
+.seat-layout-platzkart-svg {
+  shape-rendering: geometricPrecision;
+}
+
+.seat-layout-platzkart-svg__frame {
+  stroke: rgb(0, 0, 0);
+  fill: none;
+  fill-rule: nonzero;
+  stroke-miterlimit: 5.6;
+  stroke-dashoffset: 32px;
+  paint-order: fill;
+}
+
+.seat-layout-platzkart-svg__detail-rect {
+  fill: rgb(216, 216, 216);
+  stroke-width: 1;
+  stroke: rgb(154, 154, 154);
+}
+
+.seat-layout-platzkart-svg__wagon-label-bg {
+  stroke: rgb(0, 0, 0);
+  fill: rgb(0, 0, 0);
+}
+
+.seat-layout-platzkart-svg__wagon-number {
+  fill: rgb(255, 255, 255);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+}
+
+.seat-layout-platzkart-svg__stroke {
+  fill: none;
+  stroke: rgb(154, 154, 154);
+}
+
+.seat-layout-platzkart-svg__stroke-2 {
+  fill: none;
+  stroke: rgb(154, 154, 154);
+  stroke-width: 2px;
+}
+
+.seat-layout-platzkart-svg__stroke-4 {
+  fill: none;
+  stroke: rgb(154, 154, 154);
+  stroke-width: 4;
+}
+
+.seat-layout-platzkart-svg__accessory {
+  stroke: none;
+  stroke-width: 1;
+  paint-order: fill;
+  fill-rule: nonzero;
+  fill: rgb(172, 172, 172);
+}
+
+.seat-layout-platzkart-svg__no-smoking {
+  fill: rgb(145, 145, 145);
+}
+
+.seat-layout-platzkart-svg__silhouette {
+  opacity: 1;
+  paint-order: stroke markers;
+  fill-rule: evenodd;
+  fill-opacity: 0.36;
+}
+
+.seat-layout-platzkart-svg__silhouette-light {
+  fill: #eaeaea;
+}
+
+.seat-layout-platzkart-svg__silhouette-dark {
+  fill: #050505;
+}
+
+.seat-layout-platzkart-svg__silhouette-dark-2 {
+  fill: #0e0e0e;
+}
+
+.seat-layout-platzkart-svg__silhouette-dark-3 {
+  fill: #040404;
+}
+
+.seat-layout-platzkart-svg__silhouette-dark-4 {
+  fill: #151515;
+}
+
+.seat-layout-platzkart-svg__silhouette-light-2 {
+  fill: #e5e5e5;
+}
+
+.seat-layout-platzkart-svg__chassis {
+  stroke-width: 1;
+  fill: rgb(149, 149, 149);
+}
+
+.seat-layout-platzkart-svg__seat-group {
+  cursor: pointer;
+}
+
+.seat-layout-platzkart-svg__seat-rect {
+  fill: #f2f2f2;
+  stroke: #f2f2f2;
+  stroke-width: 1;
+}
+
+.seat-layout-platzkart-svg__seat-label {
+  fill: #000;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  stroke-width: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+.seat-layout-platzkart-svg__seat-group--occupied {
+  cursor: default;
+}
+
+.seat-layout-platzkart-svg__seat-group--occupied .seat-layout-platzkart-svg__seat-rect {
+  fill: #ccc;
+  stroke: #ccc;
+}
+
+.seat-layout-platzkart-svg__seat-group--occupied .seat-layout-platzkart-svg__seat-label {
+  fill: #fff;
+}
+
+.seat-layout-platzkart-svg__seat-group--selected {
+  cursor: pointer;
+}
+
+.seat-layout-platzkart-svg__seat-group--selected .seat-layout-platzkart-svg__seat-rect {
+  fill: #f2f2f2;
+  stroke: #ffa800;
+  stroke-width: 2px;
+}
+
+.seat-layout-platzkart-svg__seat-group--selected .seat-layout-platzkart-svg__seat-label {
+  fill: #000;
+}
+
+.seat-layout-platzkart-svg__seat-rect--rotated-box {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.seat-layout-platzkart-svg__seat-rect--rotated-35 {
+  transform-origin: 362.476px 407.722px;
+}
+
+.seat-layout-platzkart-svg__seat-rect--rotated-36 {
+  transform-origin: 362.494px 363.325px;
+}
+
+.seat-layout-platzkart-svg__seat-rect--rotated-37 {
+  transform-origin: 362.476px 410.244px;
+}
+
+.seat-layout-platzkart-svg__seat-rect--rotated-38 {
+  transform-origin: 362.494px 365.573px;
+}
+
+.seat-layout-platzkart-svg__seat-rect--rotated-45 {
+  transform-origin: 362.476px 408.983px;
+}
+
+.seat-layout-platzkart-svg__seat-rect--rotated-46 {
+  transform-origin: 362.494px 364.449px;
+}
+
+.seat-layout-platzkart-svg__seat-label--nudge-37 {
+  transform: matrix(1.006187, 0, 0, 1, -3.838726, 0);
+}
+
+.seat-layout-platzkart-svg__seat-label--nudge-45 {
+  transform: matrix(1.003093, 0, 0, 1, -2.76304, 0);
+}
