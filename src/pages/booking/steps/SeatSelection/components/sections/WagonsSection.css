@@ -1,0 +1,249 @@
+.seat-selection-page__wagons-list {
+  margin-top: 26px;
+}
+
+.seat-selection-page__wagons-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 34px;
+  padding-right: 15px;
+  background-color: rgba(255, 168, 0, 0.44);
+}
+
+.seat-selection-page__wagons-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.seat-selection-page__wagons-title {
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #2d2b2f;
+}
+
+.seat-selection-page__wagon-button {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.seat-selection-page__wagon-button--active {
+  color: #ffffff;
+}
+
+.seat-selection-page__wagons-note {
+  margin-left: auto;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #292929;
+}
+
+.seat-selection-page__wagon-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.seat-selection-page__wagon-number-block {
+  width: 190px;
+  height: 160px;
+  background-color: #ffd98f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat-selection-page__wagon-number {
+  font-family: Roboto, sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: #292929;
+  line-height: 1;
+}
+
+.seat-selection-page__wagon-number-caption {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #292929;
+  text-transform: lowercase;
+  line-height: 1;
+}
+
+.seat-selection-page__wagon-seats {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+.seat-selection-page__wagon-seats-total,
+.seat-selection-page__wagon-prices-title {
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #928f94;
+}
+
+.seat-selection-page__wagon-seats-total-number {
+  color: #000000;
+}
+
+.seat-selection-page__wagon-seats-top,
+.seat-selection-page__wagon-seats-bottom {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.seat-selection-page__wagon-seats-top-number,
+.seat-selection-page__wagon-seats-bottom-number {
+  font-weight: 700;
+}
+
+.seat-selection-page__wagon-prices {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+.seat-selection-page__wagon-price-line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.seat-selection-page__fare-price-icon {
+  color: #928f94;
+}
+
+.seat-selection-page__wagon-service {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  padding-right: 40px;
+}
+
+.seat-selection-page__wagon-service-title {
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #928f94;
+}
+
+.seat-selection-page__wagon-service-title-firm-name {
+  color: #c4c4c4;
+}
+
+.seat-selection-page__wagon-service-icons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.seat-selection-page__wagon-service-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.seat-selection-page__wagon-service-icon {
+  color: #292929;
+}
+
+.seat-selection-page__wagon-service-tooltip {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  transform: translateX(-50%);
+  padding: 8px 10px;
+  border-radius: 5px;
+  background-color: #f5f4f6;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  color: #292929;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 2;
+}
+
+.seat-selection-page__wagon-service-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #f5f4f6;
+}
+
+.seat-selection-page__wagon-service-item:hover .seat-selection-page__wagon-service-tooltip,
+.seat-selection-page__wagon-service-item:focus-visible .seat-selection-page__wagon-service-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.seat-selection-page__wagon-service-icon--active {
+  color: #ffffff;
+  background-color: #fdb935;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.seat-selection-page__wagon-service-icon--active rect {
+  stroke: none;
+}
+
+.seat-selection-page__wagon-service-icon--disabled {
+  color: #928f94;
+  background-color: fcdc9d;
+}
+
+.seat-selection-page__wagons-footer {
+  width: 200px;
+  height: 75px;
+  padding: 16px 13px 11px 16px;
+  margin-left: auto;
+  margin-right: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f3f3;
+}
+
+.seat-selection-page__wagons-activity {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #292929;
+}
