@@ -1,0 +1,110 @@
+.seat-selection-page__route {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  align-items: center;
+  background: #f7f6f6;
+}
+
+.seat-selection-page__route-col {
+  display: flex;
+  flex-direction: row;
+  gap: 27px;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat-selection-page__route-col--left {
+  padding-left: 35px;
+  padding-right: 20px;
+  border-right: 1px solid #ffffff;
+}
+
+.seat-selection-page__route-col--center {
+  border-right: 1px solid #ffffff;
+}
+
+.seat-selection-page__route-col--right {
+  justify-content: flex-start;
+  padding-left: 35px;
+  padding-right: 35px;
+}
+
+.seat-selection-page__route-icon {
+  width: 30px;
+  height: 30px;
+  color: #ffa800;
+}
+
+.seat-selection-page__route-icon path,
+.seat-selection-page__route-icon circle {
+  fill: none;
+  stroke: currentColor;
+}
+
+.seat-selection-page__train-number {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #3e3c41;
+  text-transform: uppercase;
+}
+
+.seat-selection-page__route-col--left .seat-selection-page__station-city {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #928f94;
+}
+
+.seat-selection-page__route-col--left .seat-selection-page__station-city--active {
+  color: #292929;
+}
+
+.seat-selection-page__time {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.seat-selection-page__route-col--center .seat-selection-page__station-city {
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #292929;
+}
+
+.seat-selection-page__station-name {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #928f94;
+}
+
+.seat-selection-page__duration {
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.seat-selection-page__duration-icon {
+  color: #ffa800;
+}
+
+.seat-selection-page__arrow-icon {
+  color: rgba(255, 168, 0, 0.79);
+}
+
+.seat-selection-page__route-arrow {
+  color: #928f94;
+}
+
+.seat-selection-page__route-arrow-active {
+  color: #292929;
+}
