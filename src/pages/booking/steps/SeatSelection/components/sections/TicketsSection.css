@@ -1,0 +1,53 @@
+.seat-selection-page__tickets {
+  padding-top: 40px;
+  padding-bottom: 50px;
+  border-bottom: 1px dashed #c4c4c4;
+}
+
+.seat-selection-page__counters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 28px;
+}
+
+.seat-selection-page__counter {
+  min-height: 190px;
+  padding: 20px 40px;
+  border: 1px solid transparent;
+}
+
+.seat-selection-page__counter:hover {
+  border-color: rgba(255, 168, 0, 0.79);
+}
+
+.seat-selection-page__counter--active {
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  background-color: #f7f6f6;
+}
+
+.seat-selection-page__counter-label {
+  width: 240px;
+  height: 50px;
+  border: 1px solid #928f94;
+  border-radius: 5px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #292929;
+}
+
+.seat-selection-page__counter-hint {
+  margin-top: 23px;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #928f94;
+}
+
+.seat-selection-page__counter--active .seat-selection-page__counter-hint {
+  color: #000000;
+}
