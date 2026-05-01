@@ -32,9 +32,9 @@ export default function TrainCard() {
         <div className="train-card__route-path">
           <p className="train-card__train-route-city">{departureCityTrain}</p>
           <RouteArrowIcon className="train-card__arrow" />
-          <p className="train-card__train-route-city">{departureCityPassenger}</p>
+          <p className="train-card__train-route-city train-card__train-route-city-active">{departureCityPassenger}</p>
           <RouteArrowIcon className="train-card__arrow-active" />
-          <p className="train-card__train-route-city">{arrivalCityPassenger}</p>
+          <p className="train-card__train-route-city train-card__train-route-city-active">{arrivalCityPassenger}</p>
           <RouteArrowIcon className="train-card__arrow" />
           <p className="train-card__train-route-city">{arrivalCityTrain}</p>
         </div>

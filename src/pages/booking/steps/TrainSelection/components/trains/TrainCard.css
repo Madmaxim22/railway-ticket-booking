@@ -32,12 +32,30 @@
   padding-bottom: 22px;
 }
 
+.train-card__route-icon {
+  width: 86px;
+  height: 86px;
+
+  color: #fff;
+}
+
 .train-card__train-number {
   font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
   color: #3E3C41;
   text-transform: uppercase;
+}
+
+.train-card__train-route-city {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #928F94;
+}
+
+.train-card__train-route-city-active {
+  color: #292929;
 }
 
 .train-card__schedule {
