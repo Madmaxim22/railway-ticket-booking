@@ -1,0 +1,303 @@
+.trip-summary__title {
+  font-family: Roboto, sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: #E5E5E5;
+  text-transform: uppercase;
+  text-align: center;
+
+  padding: 35px 44px 35px 44px;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.trip-summary__direction-section {
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px 27px 53px 28px;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.trip-summary__content {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.trip-summary__icon {
+  color: #FFA800;
+}
+
+.trip-summary__button:hover {
+  color: #FCDC9D;
+}
+
+.trip-summary__direction-title-container {
+  display: inline-block;
+}
+
+.trip-summary__direction-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+
+  vertical-align: center;
+  display: inline-block;
+
+  margin-left: 12px;
+}
+
+.trip-summary__direction-date {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+
+  vertical-align: center;
+  display: inline-block;
+
+  margin-left: 15px;
+}
+
+.trip-summary__button {
+  margin-left: auto;
+}
+
+.trip-summary__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.trip-summary__icon-close {
+  color: #FFFFFF;
+}
+
+.trip-summary__icon-open {
+  color: #c4c4c4;
+}
+
+.trip-summary__icon-close:hover,
+.trip-summary__icon-open:hover {
+  color: #FCDC9D;
+}
+
+.trip-summary__direction-section-content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+}
+
+.trip-summary__trip-number,
+.trip-summary__train-name {
+
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  
+  font-size: 18px;
+  font-weight: 400;
+
+  color: #E5E5E5;
+}
+
+.trip-summary__train-name {
+  margin-top: 22px;
+}
+
+.trip-summary__trip-number-value {
+  font-size: 24px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.trip-summary__train-name-value {
+  display: block;
+  max-width: 50%;
+  
+  font-size: 16px;
+  font-weight: 700;
+
+  text-align: right;
+}
+
+.trip-summary__train-info {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 47px;
+}
+
+.trip-summary__train-info-time-duration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trip-summary__time-direction {
+  display: flex;
+  align-items: start;
+  flex-direction: row;
+  justify-content: space-between;
+
+  margin-top: 8px;
+}
+
+.trip-summary__train-info-item-departure,
+.trip-summary__train-info-item-arrival {
+  display: flex;
+  flex-direction: column;
+
+  font-family: 'Roboto', sans-serif;
+}
+
+.trip-summary__train-info-item-arrival {
+  text-align: right;
+}
+
+.trip-summary__train-info-item-departure {
+  text-align: left;
+}
+
+.trip-summary__train-info-icon {
+
+  color: #FFA800;
+}
+
+.trip-summary__train-info-item-title {
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #fff;
+}
+
+.trip-summary__train-info-item-value {
+  font-size: 18px;
+  font-weight: 400;
+  
+  color: #928F94;
+
+  margin-top: 11px;
+}
+
+.trip-summary__station-direction {
+  display: flex;
+  align-items: start;
+  flex-direction: row;
+  justify-content: space-between;
+
+  margin-top: 20px;
+}
+
+.trip-summary__train-info-item-city {
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+
+  color: #FFFFFF;
+}
+
+.trip-summary__train-info-item-station {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+
+  color: #928F94;
+}
+
+trip-summary__direction-section-content {
+  margin-top: 37px;
+}
+
+.trip-summary__passengers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.trip-summary__passengers-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.trip-summary__passengers-item-count {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.trip-summary__passengers-item-count {
+  font-size: 18px;
+  font-weight: 400;
+
+  color: #E5E5E5;
+}
+
+.trip-summary__passengers-item-price {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+
+  margin-left: auto;
+}
+
+.trip-summary__passengers-item-price-value {
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #fff;
+}
+
+.trip-summary__passengers-item-icon {
+  color: #928F94;
+}
+
+.trip-summary__total-price {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 7px;
+  
+  margin-top: 35px;
+  padding: 35px 30px 35px 25px;
+}
+
+.trip-summary__total-price-title {
+  font-family: Roboto, sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  
+  color: #fff;
+
+  text-transform: uppercase;
+}
+
+.trip-summary__total-price-value {
+  font-family: Roboto, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+
+  color: #FFA800;
+
+  margin-left: auto;
+}
+
+.trip-summary__total-price-icon {
+  width: 26px;
+  height: 32px;
+
+  color: #E5E5E5;
+}
