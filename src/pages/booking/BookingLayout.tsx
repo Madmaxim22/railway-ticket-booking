@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useMatch } from 'react-router-dom'
 
 import SearchFilters from './shared/components/SearchFilters'
 import TripSummary from './shared/components/TripSummary'
@@ -6,11 +6,10 @@ import Breadcrumbs from './shared/breadcrumbs/Breadcrumbs'
 
 import './BookingLayout.css'
 
-const SEARCH_FILTERS_PATHS = ['/booking/trains', '/booking/seats']
-
 export default function BookingLayout() {
-  const { pathname } = useLocation()
-  const asideIsSearchFilters = SEARCH_FILTERS_PATHS.includes(pathname)
+  const isTrainsStep = useMatch('/booking/trains')
+  const isSeatsStep = useMatch('/booking/seats')
+  const asideIsSearchFilters = Boolean(isTrainsStep || isSeatsStep)
 
   return (
     <div className="booking-layout">
