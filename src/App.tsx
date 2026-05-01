@@ -2,7 +2,7 @@ import Header from './pages/Header'
 import HomePage from './pages/HomePage'
 import Footer from './pages/Footer'
 import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import BookingLayout from './pages/booking/BookingLayout'
 import TrainSelectionPage from './pages/booking/steps/TrainSelection/TrainSelectionPage'
 import SeatSelectionPage from './pages/booking/steps/SeatSelection/SeatSelectionPage'
@@ -19,12 +19,13 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/booking" element={<BookingLayout />}>
-          <Route path="/booking/trains" element={<TrainSelectionPage />} />
-          <Route path="/booking/seats" element={<SeatSelectionPage />} />
-          <Route path="/booking/passengers" element={<PassengersPage />} />
-          <Route path="/booking/payment" element={<PaymentPage />} />
-          <Route path="/booking/confirmation" element={<OrderReviewPage />} />
-          <Route path="/booking/success" element={<BookingSuccessPage />} />
+          <Route index element={<Navigate to="trains" replace />} />
+          <Route path="trains" element={<TrainSelectionPage />} />
+          <Route path="seats" element={<SeatSelectionPage />} />
+          <Route path="passengers" element={<PassengersPage />} />
+          <Route path="payment" element={<PaymentPage />} />
+          <Route path="confirmation" element={<OrderReviewPage />} />
+          <Route path="success" element={<BookingSuccessPage />} />
         </Route>
       </Routes>
       <Footer />
