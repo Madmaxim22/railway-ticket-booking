@@ -18,8 +18,12 @@ export default function TimeRangeMenu({ title, isOpen, onToggle }) {
         {title === 'Туда' ? <BackIcon className="search-filters__time-icon" /> : <ForthIcon className="search-filters__time-icon" />}
         <p className="search-filters__time-title">{title}</p>
 
-        <button type="button" className="search-filters__time-button" onClick={onToggle}>
-          {isOpen ? <OpenToggleIcon className="search-filters__time-icon" /> : <CloseToggleIcon className="search-filters__time-icon" />}
+        <button
+          type="button"
+          className={`search-filters__time-button ${isOpen ? 'search-filters__time-button--open' : ''}`}
+          onClick={onToggle}
+        >
+          {isOpen ? <OpenToggleIcon className="search-filters__time-icon-open" /> : <CloseToggleIcon className="search-filters__time-icon-close" />}
         </button>
       </div>
       

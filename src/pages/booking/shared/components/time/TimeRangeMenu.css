@@ -18,16 +18,6 @@
   color: #fff;
 }
 
-.search-filters__time-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  color: #C4C4C4;
-  cursor: pointer;
-}
-
 .search-filters__time-icon {
   color: inherit;
 }
@@ -36,8 +26,31 @@
   color: #FFA800;
 }
 
+.search-filters__time-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
 .search-filters__time-button:hover {
   color: #FCDC9D;
+}
+
+.search-filters__time-button--open {
+  color: #C4C4C4;
+}
+
+.search-filters__time-button--open:hover {
+  color: #C4C4C4;
+}
+
+.search-filters__time-icon-close,
+.search-filters__time-icon-open {
+  color: inherit;
 }
 
 .search-filters__time-slider-container {
