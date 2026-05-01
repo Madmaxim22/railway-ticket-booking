@@ -1,9 +1,9 @@
 import type { MouseEvent } from 'react'
-import SeatLayoutCoupeSvg from '../../icons/SeatLayoutCoupeSvg'
-import SeatLayoutLuxSvg from '../../icons/SeatLayoutLuxSvg'
-import SeatLayoutPlatzkartSvg from '../../icons/SeatLayoutPlatzkartSvg'
-import SeatLayoutSittingSvg from '../../icons/SeatLayoutSittingSvg'
-import type { Carriage } from '../../types'
+import SeatLayoutCoupeSvg from '@/pages/booking/steps/SeatSelection/icons/SeatLayoutCoupeSvg'
+import SeatLayoutLuxSvg from '@/pages/booking/steps/SeatSelection/icons/SeatLayoutLuxSvg'
+import SeatLayoutPlatzkartSvg from '@/pages/booking/steps/SeatSelection/icons/SeatLayoutPlatzkartSvg'
+import SeatLayoutSittingSvg from '@/pages/booking/steps/SeatSelection/icons/SeatLayoutSittingSvg'
+import type { Carriage } from '@/pages/booking/steps/SeatSelection/types'
 
 type SeatSchemeSectionProps = {
   selectedCarriage: Carriage | null

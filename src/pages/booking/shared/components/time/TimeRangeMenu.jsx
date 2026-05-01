@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import './TimeRangeMenu.css'
-import BackIcon from '../icons/BackIcon'
-import ForthIcon from '../icons/ForthIcon'
-import CloseToggleIcon from '../icons/CloseToggleIcon'
-import OpenToggleIcon from '../icons/OpenToggleIcon'
+import BackIcon from '@/shared/ui/icons/BackIcon'
+import ForthIcon from '@/shared/ui/icons/ForthIcon'
+import CloseToggleIcon from '@/shared/ui/icons/CloseToggleIcon'
+import OpenToggleIcon from '@/shared/ui/icons/OpenToggleIcon'
 import TimeRangeSlider from '../slider/TimeRangeSlider'
 
 export default function TimeRangeMenu({ title, isOpen, onToggle }) {

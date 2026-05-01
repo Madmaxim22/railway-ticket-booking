@@ -1,5 +1,5 @@
 import './FareCountTooltip.css'
-import FarePriceIcon from '../../../../shared/icons/FarePriceIcon'
+import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 
 type FareCountTooltipProps = {
   count: number

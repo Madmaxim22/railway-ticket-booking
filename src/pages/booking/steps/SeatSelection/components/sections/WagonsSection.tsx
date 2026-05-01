@@ -1,9 +1,9 @@
-import FarePriceIcon from '../../../../shared/icons/FarePriceIcon'
-import ServiceCupIcon from '../../icons/ServiceCupIcon'
-import ServiceSnowflakeIcon from '../../icons/ServiceSnowflakeIcon'
-import ServiceTrainIcon from '../../icons/ServiceTrainIcon'
-import ServiceWifiIcon from '../../icons/ServiceWifiIcon'
-import type { Carriage } from '../../types'
+import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
+import ServiceCupIcon from '@/pages/booking/steps/SeatSelection/icons/ServiceCupIcon'
+import ServiceSnowflakeIcon from '@/pages/booking/steps/SeatSelection/icons/ServiceSnowflakeIcon'
+import ServiceTrainIcon from '@/pages/booking/steps/SeatSelection/icons/ServiceTrainIcon'
+import ServiceWifiIcon from '@/pages/booking/steps/SeatSelection/icons/ServiceWifiIcon'
+import type { Carriage } from '@/pages/booking/steps/SeatSelection/types'
 import './WagonsSection.css'
 
 type WagonsSectionProps = {

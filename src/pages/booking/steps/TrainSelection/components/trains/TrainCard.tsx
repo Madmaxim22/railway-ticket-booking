@@ -1,11 +1,11 @@
 import './TrainCard.css'
-import TrainRouteIcon from '../../../../shared/icons/TrainRouteIcon'
-import RouteArrowIcon from '../../../../shared/icons/RouteArrowIcon'
-import TripArrowIcon from '../../../../shared/icons/TripArrowIcon'
-import FarePriceIcon from '../../../../shared/icons/FarePriceIcon'
-import AmenitiesIconWiFi from '../../../../shared/icons/amenities/AmenitiesIconWiFi'
-import AmenitiesIconExpress from '../../../../shared/icons/amenities/AmenitiesIconExpress'
-import AmenitiesIconFoot from '../../../../shared/icons/amenities/AmenitiesIconFoot'
+import TrainRouteIcon from '@/shared/ui/icons/TrainRouteIcon'
+import RouteArrowIcon from '@/shared/ui/icons/RouteArrowIcon'
+import TripArrowIcon from '@/shared/ui/icons/TripArrowIcon'
+import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
+import AmenitiesIconWiFi from '@/shared/ui/icons/amenities/AmenitiesIconWiFi'
+import AmenitiesIconExpress from '@/shared/ui/icons/amenities/AmenitiesIconExpress'
+import AmenitiesIconFoot from '@/shared/ui/icons/amenities/AmenitiesIconFoot'
 import FareCountTooltip from './FareCountTooltip'
 
 export default function TrainCard() {

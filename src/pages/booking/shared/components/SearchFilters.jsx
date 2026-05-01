@@ -1,14 +1,14 @@
-import DatePickerPopover from '../../../../components/DatePickerPopover'
+import DatePickerPopover from '@/components/DatePickerPopover'
 import { useCallback, useState } from 'react'
+import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
+import AmenitiesIconWiFi from '@/shared/ui/icons/amenities/AmenitiesIconWiFi'
+import AmenitiesIconExpress from '@/shared/ui/icons/amenities/AmenitiesIconExpress'
+import AmenitiesIconFoot from '@/shared/ui/icons/amenities/AmenitiesIconFoot'
+import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import CarriageFilterItem from './carriage/CarriageFilterItem'
 import PriceRangeSlider from './slider/PriceRangeSlider'
 import TimeRangeMenu from './time/TimeRangeMenu'
 import { carriageFilterConfigs } from './carriage/carriageFilterConfigs'
-import CalendarIcon from './icons/CalendarIcon'
-import AmenitiesIconWiFi from '../icons/amenities/AmenitiesIconWiFi'
-import AmenitiesIconExpress from '../icons/amenities/AmenitiesIconExpress'
-import AmenitiesIconFoot from '../icons/amenities/AmenitiesIconFoot'
-import FarePriceIcon from '../icons/FarePriceIcon'
 import './SearchFilters.css'
 
 export default function SearchFilters() {
@@ -49,7 +49,7 @@ export default function SearchFilters() {
               placeholder="30.08.2018"
               inputClassName="search-filters__input"
             />
-            <CalendarIcon className="search-filters__icon" />
+            <CalendarIcon className="search-filters__icon" width={20} height={22.35} />
           </div>
         </div>
         <div className="search-filters__group">
@@ -61,7 +61,7 @@ export default function SearchFilters() {
               placeholder="30.08.2018"
               inputClassName="search-filters__input"
             />
-            <CalendarIcon className="search-filters__icon" />
+            <CalendarIcon className="search-filters__icon" width={20} height={22.35} />
           </div>
         </div>
       </div>

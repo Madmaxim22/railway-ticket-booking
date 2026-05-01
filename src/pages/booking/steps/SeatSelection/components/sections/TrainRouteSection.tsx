@@ -1,8 +1,8 @@
-import RouteArrowIcon from '../../../../shared/icons/RouteArrowIcon'
-import TrainRouteIcon from '../../../../shared/icons/TrainRouteIcon'
-import TripArrowIcon from '../../../../shared/icons/TripArrowIcon'
-import DurationIcon from '../../icons/DurationIcon'
-import type { TrainOption } from '../../types'
+import RouteArrowIcon from '@/shared/ui/icons/RouteArrowIcon'
+import TrainRouteIcon from '@/shared/ui/icons/TrainRouteIcon'
+import TripArrowIcon from '@/shared/ui/icons/TripArrowIcon'
+import DurationIcon from '@/pages/booking/steps/SeatSelection/icons/DurationIcon'
+import type { TrainOption } from '@/pages/booking/steps/SeatSelection/types'
 import './TrainRouteSection.css'
 
 type TrainRouteSectionProps = {

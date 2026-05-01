@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import './TripSummary.css';
-import BackIcon from './icons/BackIcon'
-import ForthIcon from './icons/ForthIcon'
-import CloseToggleIcon from './icons/CloseToggleIcon'
-import OpenToggleIcon from './icons/OpenToggleIcon'
-import TripArrowIcon from '../icons/TripArrowIcon'
-import FarePriceIcon from '../icons/FarePriceIcon'
-import PassengersIcon from '../icons/PassengersIcon'
+import BackIcon from '@/shared/ui/icons/BackIcon'
+import ForthIcon from '@/shared/ui/icons/ForthIcon'
+import CloseToggleIcon from '@/shared/ui/icons/CloseToggleIcon'
+import OpenToggleIcon from '@/shared/ui/icons/OpenToggleIcon'
+import TripArrowIcon from '@/shared/ui/icons/TripArrowIcon'
+import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
+import PassengersIcon from '@/shared/ui/icons/PassengersIcon'
 
 export default function TripSummary() {
 

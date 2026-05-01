@@ -7,7 +7,7 @@ import { SeatSchemeSection } from './sections/SeatSchemeSection.tsx'
 import { TicketsSection } from './sections/TicketsSection.tsx'
 import { TrainRouteSection } from './sections/TrainRouteSection.tsx'
 import { WagonsSection } from './sections/WagonsSection.tsx'
-import FarePriceIcon from '../../../shared/icons/FarePriceIcon'
+import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 
 type SeatSelectionTrainCardProps = {
   train: TrainOption

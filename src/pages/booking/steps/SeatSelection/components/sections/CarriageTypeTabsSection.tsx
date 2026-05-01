@@ -1,9 +1,9 @@
-import { carriageTabs } from '../../constants'
-import SeatTypeCoupeIcon from '../../icons/SeatTypeCoupeIcon'
-import SeatTypeLuxIcon from '../../icons/SeatTypeLuxIcon'
-import SeatTypePlatzkartIcon from '../../icons/SeatTypePlatzkartIcon'
-import SeatTypeSittingIcon from '../../icons/SeatTypeSittingIcon'
-import type { CarriageType } from '../../types'
+import { carriageTabs } from '@/pages/booking/steps/SeatSelection/constants'
+import SeatTypeCoupeIcon from '@/pages/booking/steps/SeatSelection/icons/SeatTypeCoupeIcon'
+import SeatTypeLuxIcon from '@/pages/booking/steps/SeatSelection/icons/SeatTypeLuxIcon'
+import SeatTypePlatzkartIcon from '@/pages/booking/steps/SeatSelection/icons/SeatTypePlatzkartIcon'
+import SeatTypeSittingIcon from '@/pages/booking/steps/SeatSelection/icons/SeatTypeSittingIcon'
+import type { CarriageType } from '@/pages/booking/steps/SeatSelection/types'
 import './CarriageTypeTabsSection.css'
 
 type CarriageTypeTabsSectionProps = {

@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import DatePickerPopover from '../components/DatePickerPopover'
-import CalendarIcon from '../components/icons/CalendarIcon'
-import LocationPinIcon from '../components/icons/LocationPinIcon'
-import SearchSwapIcon from '../components/icons/SearchSwapIcon'
+import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
+import LocationPinIcon from '@/shared/ui/icons/LocationPinIcon'
+import SearchSwapIcon from '@/shared/ui/icons/SearchSwapIcon'
 import './Header.css'
 
 export default function Header() {
