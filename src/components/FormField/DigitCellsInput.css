@@ -1,0 +1,133 @@
+.digit-cells {
+  --digit-line-width: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.digit-cells--birth_certificate {
+  --digit-line-width: 10px;
+}
+
+.digit-cells__label {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #928f94;
+}
+
+.digit-cells__control {
+  position: relative;
+  width: 205px;
+  height: 50px;
+  border: 1px solid #928f94;
+  border-radius: 5px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.digit-cells--birth_certificate .digit-cells__control {
+  width: 207px;
+}
+
+.digit-cells__control:focus-within {
+  border-color: #ffa800;
+  box-shadow: 0 0 0 1px #ffa800;
+}
+
+.digit-cells__control--error,
+.digit-cells__control--error:focus-within {
+  border-color: #ff3d00;
+  box-shadow: 0 0 0 1px #ff3d00;
+}
+
+.digit-cells__native-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: none;
+  opacity: 0; /* скрытый реальный input */
+  z-index: 2;
+  cursor: text;
+}
+
+.digit-cells__cells {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 0 15px;
+  pointer-events: none;
+
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #292929;
+}
+
+.digit-cells--error .digit-cells__cells {
+  color: #ff3d00;
+}
+
+.digit-cells--birth_certificate .digit-cells__cells {
+  gap: 6px;
+  padding: 0 10px;
+}
+
+.digit-cells__cell {
+  width: var(--digit-line-width);
+  display: inline-flex;
+  justify-content: center;
+  position: relative;
+}
+
+.digit-cells__cell--empty {
+  color: transparent;
+}
+
+/* подсветка "следующей" позиции только когда поле в фокусе */
+.digit-cells__control:focus-within .digit-cells__cell--next::after {
+  background: #ffa800;
+  height: 3px;
+}
+
+.digit-cells__placeholder {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #c4c4c4;
+}
+
+.digit-cells--error .digit-cells__placeholder {
+  color: #ff3d00;
+}
+
+.digit-cells__error-text {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ff3d00;
+}
+
+
+.digit-cells__cell--empty::after {
+  content: '';
+  width: var(--digit-line-width);
+  height: 2px;
+  background: #c4c4c4;
+  border-radius: 1px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 2px;
+}

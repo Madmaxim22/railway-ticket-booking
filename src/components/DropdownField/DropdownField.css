@@ -1,0 +1,113 @@
+.dropdown-field {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.dropdown-field--open {
+  z-index: 30;
+}
+
+.dropdown-field__trigger {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-sizing: border-box;
+  height: 50px;
+  width: 280px;
+  max-width: 100%;
+  padding: 0 15px;
+  padding-right: 36px;
+  border: 1px solid #928f94;
+  border-radius: 5px;
+  background: #fff;
+  color: #292929;
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown-field__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-field__chevron {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.dropdown-field__panel {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: auto;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #f4f3f6;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-field__option {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 50px;
+  margin: 0;
+  padding: 0 15px;
+  border: none;
+  background: transparent;
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #292929;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-field__option:not(:last-child) {
+  border-bottom: 1px solid #d4d2d8;
+}
+
+.dropdown-field__option:hover,
+.dropdown-field__option:focus-visible {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.dropdown-field__option:focus-visible {
+  outline: 2px solid #ffa800;
+  outline-offset: -2px;
+}
+
+.document-label__dropdown .dropdown-field__trigger,
+.document-label__dropdown .dropdown-field__option {
+  font-size: 18px;
+}
+
+.document-label__dropdown .dropdown-field__trigger {
+  width: 205px;
+}
+
+.document-label__dropdown--birth-certificate .dropdown-field__trigger {
+  width: 444px;
+}

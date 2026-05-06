@@ -1,0 +1,119 @@
+.field-label {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-label__label {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #928f94;
+}
+
+/* TextField */
+.field-label__field {
+  height: 50px;
+  border: 1px solid #928f94;
+  border-radius: 5px;
+  background: #fff;
+  padding: 0 15px;
+
+  font-family: Roboto, sans-serif;
+  color: #292929;
+}
+
+.field-label__field--error {
+  border-color: #ff3d00;
+  color: #ff3d00;
+}
+
+.field-label__field--fio, 
+.field-label__field--birth-date {
+  width: 280px;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.field-label__field--birth-date::placeholder {
+  font-size: 18px;
+  color: #C4C4C4;
+  text-transform: uppercase;
+}
+
+.field-label__field--error::placeholder {
+  font-size: 18px;
+  color: #ff3d00;
+  text-transform: uppercase;
+}
+
+.field-label__error-text {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ff3d00;
+}
+
+/* GenderField */
+.gender-toggle {
+  display: inline-flex;
+  border: 1px solid #928f94;
+  border-radius: 5px;
+  overflow: hidden;
+
+  width: 204px;
+  height: 50px;
+}
+
+.gender-toggle button {
+  width: 50%;
+  border: none;
+  background: #fff;
+
+  font-family: Roboto, sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.gender-toggle button.active {
+  background: #ffa800;
+}
+
+
+/* CheckboxField */
+.field-label--checkbox {
+  display: flex;
+  flex-direction: row;  
+  align-items: center;
+  gap: 20px;
+}
+
+.checkbox-label__input {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #928f94;
+  border-radius: 5px;
+  background: #fff;
+
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.checkbox-label__input:hover {
+  border: 1px solid #ffa800;
+}
+
+.checkbox-label__input:checked {
+  background: #ffa800;
+  border: 1px solid #928f94;
+}
+
+.field-label__label--checkbox {
+  font-size: 18px;
+  color: #292929;
+
+  -webkit-user-select: none;
+  user-select: none;
+}
