@@ -196,6 +196,49 @@
   cursor: pointer;
 }
 
+.add-passenger-btn__icon-path {
+  fill: #ffa800;
+}
+
+.passenger-card__toggle-icon-circle--open,
+.passenger-card__toggle-icon-line--open {
+  stroke: #928f94;
+}
+
+.passenger-card__remove-icon-path {
+  fill: #928f94;
+}
+
+.passenger-card__toggle-icon-line--open {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.passenger-card__toggle-icon-path--close,
+.passenger-card__toggle-icon-circle--close {
+  stroke: #ffa800;
+}
+
+.passenger-card__toggle-icon-path--close {
+  fill: #ffa800;
+}
+
+.passenger-card__toggle-icon-circle--close {
+  fill: none;
+}
+
+.passenger-card__footer-icon-path--error {
+  fill: rgb(255 255 255 / 81%);
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+}
+
+.passenger-card__footer-icon-path--success {
+  fill: #f9fef7;
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+}
+
 .passengers-page__footer {
   display: flex;
   justify-content: flex-end;

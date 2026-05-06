@@ -51,6 +51,10 @@
   pointer-events: none;
 }
 
+.dropdown-field__chevron-path {
+  fill: #928f94;
+}
+
 .dropdown-field__panel {
   position: absolute;
   z-index: 2;

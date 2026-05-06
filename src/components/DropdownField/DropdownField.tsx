@@ -1,5 +1,6 @@
 import './DropdownField.css'
 
+import { DropdownChevronIcon } from '@/shared/ui/icons/form/DropdownChevronIcon'
 import { useDropdownField, type DropdownFieldProps } from './useDropdownField'
 
 export type { DropdownFieldOption, DropdownFieldProps } from './useDropdownField'
@@ -19,17 +20,7 @@ export function DropdownField<T extends string>(props: DropdownFieldProps<T>) {
         onClick={toggleMenu}
       >
         <span className="dropdown-field__value">{selectedLabel}</span>
-        <svg
-          width="12"
-          height="5"
-          viewBox="0 0 12 5"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="dropdown-field__chevron"
-          aria-hidden
-        >
-          <path d="M6 4.58333L0 0H11.5L6 4.58333Z" fill="#928F94" />
-        </svg>
+        <DropdownChevronIcon className="dropdown-field__chevron" />
       </button>
       {menuOpen && (
         <div className="dropdown-field__panel" role="listbox">
