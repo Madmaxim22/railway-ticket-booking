@@ -1,0 +1,214 @@
+.booking-success-page {
+  width: 100%;
+  background-color: #f7f5f9;
+  font-family: Roboto, sans-serif;
+}
+
+.booking-success-page__hero {
+  display: flow-root;
+  padding-bottom: 175px;
+}
+
+.booking-success-page__container {
+  width: 1404px;
+  margin: 0 auto;
+  margin-top: -370px;
+  position: relative;
+}
+
+.booking-success-page__title {
+  margin: 0 0 51px;
+  color: #ffffff;
+  font-size: 72px;
+  font-weight: 700;
+}
+
+.booking-success-card {
+  background-color: #ffffff;
+  border: 1px solid #c4c4c4;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.booking-success-card__header {
+  height: 148px;
+  padding: 60px 80px 55px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #928f94;
+}
+
+.booking-success-card__order-number {
+  color: #3e3c41;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.booking-success-card__sum {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.booking-success-card__sum-label {
+  color: #928f94;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.booking-success-card__sum-value {
+  color: #3e3c41;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.booking-success-card__sum-currency {
+  color: #928f94;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.booking-success-card__sum-currency-icon {
+  display: block;
+  width: 21px;
+  height: 27px;
+}
+
+.booking-success-card__features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 91px;
+  padding: 40px 323px 40px;
+  background-color: #f4f3f6;
+}
+
+.booking-success-card__feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+}
+
+.booking-success-card__feature-icon {
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
+  border: 10px solid #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.booking-success-card__feature-icon svg {
+  flex-shrink: 0;
+}
+
+.booking-success-card__feature-icon--email svg path,
+.booking-success-card__feature-icon--conductor svg path {
+  fill: #ffb628;
+  fill-opacity: 0.79;
+}
+
+.booking-success-card__feature-icon--print svg path {
+  fill: #fdc354;
+}
+
+.booking-success-card__feature-text {
+  color: #292929;
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.booking-success-card__feature-text-medium {
+  font-weight: 500;
+}
+
+.booking-success-card__message {
+  min-height: 491px;
+  padding: 95px 203px 130px;
+}
+
+.booking-success-card__name {
+  color: #292929;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.booking-success-card__paragraph {
+  margin: 51px 0 100px;
+  color: #292929;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.booking-success-card__paragraph--strong {
+  font-weight: 700;
+}
+
+.booking-success-card__footer {
+  min-height: 161px;
+  padding: 0 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  background-color: #ffa800;
+}
+
+.booking-success-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.booking-success-card__rating-label {
+  color: #292929;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.booking-success-card__stars {
+  display: flex;
+  gap: 19px;
+  align-items: center;
+}
+
+.booking-success-card__star {
+  display: flex;
+  line-height: 0;
+}
+
+.booking-success-card__star svg {
+  width: 48px;
+  height: 48px;
+}
+
+.booking-success-card__star svg path {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.booking-success-card__home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 323px;
+  min-height: 60px;
+  border: 1px solid #3e3c41;
+  border-radius: 5px;
+  color: #292929;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.booking-success-card__home-link:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.booking-success-card__home-link:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
