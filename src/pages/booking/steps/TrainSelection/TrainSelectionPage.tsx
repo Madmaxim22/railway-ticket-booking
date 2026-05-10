@@ -18,29 +18,31 @@ export default function TrainSelectionPage() {
         <div className="train-selection-page__header-item">
           <p className="train-selection-page__header-item-text">найдено {totalTrains}</p>
         </div>
-        <div className="train-selection-page__header-item train-selection-page__header-item--sort">
-          <p className="train-selection-page__header-item-text">сортировать по:</p>
-          <div className="train-selection-page__dropdown">
-            <button
-              type="button"
-              className="train-selection-page__dropdown-trigger"
-            >
-              {selectedSortLabel}
-            </button>
+        <div className="train-selection-page__header-controls">
+          <div className="train-selection-page__header-item">
+            <p className="train-selection-page__header-item-text">сортировать по:</p>
+            <div className="train-selection-page__dropdown">
+              <button
+                type="button"
+                className="train-selection-page__dropdown-trigger"
+              >
+                {selectedSortLabel}
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="train-selection-page__header-item">
-          <p className="train-selection-page__header-item-text">показывать по:</p> 
-          {perPageOptions.map((option) => (
-            <button
-              key={option}
-              type="button"
-              className={`train-selection-page__header-item-button${selectedPerPage === option ? ' train-selection-page__header-item-button--active' : ''}`}
-              aria-pressed={selectedPerPage === option}
-            >
-              {option}
-            </button>
-          ))}
+          <div className="train-selection-page__header-item">
+            <p className="train-selection-page__header-item-text">показывать по:</p>
+            {perPageOptions.map((option) => (
+              <button
+                key={option}
+                type="button"
+                className={`train-selection-page__header-item-button${selectedPerPage === option ? ' train-selection-page__header-item-button--active' : ''}`}
+                aria-pressed={selectedPerPage === option}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

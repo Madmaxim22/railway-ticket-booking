@@ -11,27 +11,31 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   white-space: nowrap;
   width: 100%;
   margin-bottom: 47px;
+}
+
+.train-selection-page__header-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
 }
 
 .train-selection-page__header-item {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .train-selection-page__header-item-text {
   font-size: 18px;
   font-weight: 400;
   color: var(--color-text-heading);
-}
-
-.train-selection-page__header-item--sort {
-  margin-left: 363px;
-  width: 280px;
 }
 
 .train-selection-page__dropdown {
