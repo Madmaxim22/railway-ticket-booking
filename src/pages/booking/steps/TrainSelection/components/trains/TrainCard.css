@@ -132,10 +132,6 @@
   color: #928F94;
 }
 
-.train-card__prices {
-  width: 290px;
-}
-
 .train-card__duration-value {
   font-family: Roboto, sans-serif;
   font-size: 18px;
@@ -148,6 +144,7 @@
 }
 
 .train-card__prices {
+  width: 290px;
   display: flex;
   flex-direction: column;
   gap: 23px;
@@ -173,6 +170,10 @@
 
 .train-card__fare-type {
   justify-self: start;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #3E3C41;
 }
 
 .train-card__fare-count,
@@ -186,13 +187,6 @@
   width: 16px;
   height: 19px;
   color: #2d2b2f;
-}
-
-.train-card__fare-type {
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: #3E3C41;
 }
 
 .train-card__fare-count {
