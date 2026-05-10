@@ -21,7 +21,7 @@
 .train-selection-page__header-controls {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 20px;
   flex-shrink: 0;
 }
 
@@ -46,8 +46,10 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  min-width: 120px;
+  min-width: 132px;
   text-align: left;
+  padding: 0;
+  line-height: 1;
 
   font-size: 18px;
   font-weight: 400;
@@ -56,28 +58,42 @@
 
 .train-selection-page__dropdown-menu {
   position: absolute;
-  top: 0;
+  top: -9px;
   left: 0;
-  z-index: 10;
-  width: 139px;
+  z-index: 20;
+  width: 145px;
+  margin: 0;
+  padding: 0;
   list-style: none;
   background-color: var(--color-bg-page);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .train-selection-page__dropdown-item {
   display: block;
   width: 100%;
-  height: 40px;
-  padding: 8px 10px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: none;
   border-bottom: 1px solid var(--color-border-light);
   background: transparent;
   cursor: pointer;
   text-align: left;
+  line-height: 1.2;
+  text-transform: lowercase;
 
   font-size: 18px;
   font-weight: 400;
   color: var(--color-text-heading);
+}
+
+.train-selection-page__dropdown-menu > li:last-child > .train-selection-page__dropdown-item {
+  border-bottom: none;
+}
+
+.train-selection-page__dropdown-item:hover {
+  background-color: #f3f3f3;
 }
 
 .train-selection-page__header-item-button {
