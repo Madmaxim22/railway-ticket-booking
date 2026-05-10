@@ -1,11 +1,12 @@
-import { useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import DatePickerPopover from '../components/DatePickerPopover'
 import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import LocationPinIcon from '@/shared/ui/icons/LocationPinIcon'
 import SearchSwapIcon from '@/shared/ui/icons/SearchSwapIcon'
+import { useAutocompleteField } from '@/shared/hooks/useAutocompleteField'
+import type { CitySuggestion } from '@/store/api/citiesApi'
 import './Header.css'
-import { useLocation } from 'react-router-dom'
 
 const BOOKING_STEP_PATHS = [
   '/booking/trains',
@@ -19,14 +20,43 @@ const BOOKING_STEP_PATHS = [
 export default function Header() {
   const [departureDate, setDepartureDate] = useState<Date | null>(null)
   const [arrivalDate, setArrivalDate] = useState<Date | null>(null)
+  const fromField = useAutocompleteField()
+  const toField = useAutocompleteField()
+  const [fromCity, setFromCity] = useState<CitySuggestion | null>(null)
+  const [toCity, setToCity] = useState<CitySuggestion | null>(null)
 
   const { pathname } = useLocation()
   const isBookingSuccess = pathname === '/booking/success'
   const isBookingSteps = BOOKING_STEP_PATHS.includes(pathname as (typeof BOOKING_STEP_PATHS)[number])
 
+  const handleFromChange = (event: ChangeEvent<HTMLInputElement>) => {
+    fromField.onChange(event)
+    setFromCity(null)
+  }
+
+  const handleToChange = (event: ChangeEvent<HTMLInputElement>) => {
+    toField.onChange(event)
+    setToCity(null)
+  }
+
+  const handleFromSelect = (city: CitySuggestion) => {
+    fromField.selectSuggestion(city)
+    setFromCity(city)
+  }
+
+  const handleToSelect = (city: CitySuggestion) => {
+    toField.selectSuggestion(city)
+    setToCity(city)
+  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    console.log('Selected route:', {
+      fromCityId: fromCity?._id ?? null,
+      fromCityName: fromCity?.name ?? fromField.value,
+      toCityId: toCity?._id ?? null,
+      toCityName: toCity?.name ?? toField.value,
+    })
   }
 
   return (
@@ -68,12 +98,80 @@ export default function Header() {
                   <p className="header__search-form-title">Направление:</p>
                   <div className="header__search-form-fields">
                     <div className="header__search-form-field">
-                      <input type="text" placeholder="Откуда" className="header__search-form-input" />
+                      <input
+                        type="text"
+                        placeholder="Откуда"
+                        className="header__search-form-input"
+                        value={fromField.value}
+                        onFocus={fromField.onFocus}
+                        onBlur={fromField.onBlur}
+                        onChange={handleFromChange}
+                      />
+                      {fromField.shouldShowSuggestions && (
+                        <ul className="header__search-form-suggestions" role="listbox" aria-label="Подсказки городов отправления">
+                          {fromField.isFetching && (
+                            <li className="header__search-form-suggestion-item header__search-form-suggestion-item--muted">
+                              Загрузка...
+                            </li>
+                          )}
+                          {!fromField.isFetching && fromField.suggestions.length === 0 && (
+                            <li className="header__search-form-suggestion-item header__search-form-suggestion-item--muted">
+                              Ничего не найдено
+                            </li>
+                          )}
+                          {!fromField.isFetching &&
+                            fromField.suggestions.map((city) => (
+                              <li key={city._id}>
+                                <button
+                                  type="button"
+                                  className="header__search-form-suggestion-button"
+                                  onMouseDown={() => handleFromSelect(city)}
+                                >
+                                  {city.name}
+                                </button>
+                              </li>
+                            ))}
+                        </ul>
+                      )}
                       <LocationPinIcon className="header__search-form-icon" />
                     </div>
                     <SearchSwapIcon className="header__search-form-swap-icon" />
                     <div className="header__search-form-field">
-                      <input type="text" placeholder="Куда" className="header__search-form-input" />
+                      <input
+                        type="text"
+                        placeholder="Куда"
+                        className="header__search-form-input"
+                        value={toField.value}
+                        onFocus={toField.onFocus}
+                        onBlur={toField.onBlur}
+                        onChange={handleToChange}
+                      />
+                      {toField.shouldShowSuggestions && (
+                        <ul className="header__search-form-suggestions" role="listbox" aria-label="Подсказки городов прибытия">
+                          {toField.isFetching && (
+                            <li className="header__search-form-suggestion-item header__search-form-suggestion-item--muted">
+                              Загрузка...
+                            </li>
+                          )}
+                          {!toField.isFetching && toField.suggestions.length === 0 && (
+                            <li className="header__search-form-suggestion-item header__search-form-suggestion-item--muted">
+                              Ничего не найдено
+                            </li>
+                          )}
+                          {!toField.isFetching &&
+                            toField.suggestions.map((city) => (
+                              <li key={city._id}>
+                                <button
+                                  type="button"
+                                  className="header__search-form-suggestion-button"
+                                  onMouseDown={() => handleToSelect(city)}
+                                >
+                                  {city.name}
+                                </button>
+                              </li>
+                            ))}
+                        </ul>
+                      )}
                       <LocationPinIcon className="header__search-form-icon" />
                     </div>
                   </div>
