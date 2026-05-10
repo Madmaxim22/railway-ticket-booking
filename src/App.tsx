@@ -25,8 +25,8 @@ function App() {
           <Route path="passengers" element={<PassengersPage />} />
           <Route path="payment" element={<PaymentPage />} />
           <Route path="confirmation" element={<OrderReviewPage />} />
-          <Route path="success" element={<BookingSuccessPage />} />
         </Route>
+        <Route path="/booking/success" element={<BookingSuccessPage />} />
       </Routes>
       <Footer />
     </div>
