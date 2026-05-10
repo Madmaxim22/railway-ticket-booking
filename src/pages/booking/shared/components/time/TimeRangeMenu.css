@@ -12,10 +12,9 @@
 .search-filters__time-title {
   margin: 0 auto 0 12px;
 
-  font-family: 'Roboto', sans-serif;
   font-size: 30px;
   font-weight: 400;
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .search-filters__time-icon {
@@ -23,7 +22,7 @@
 }
 
 .search-filters__time-content > .search-filters__time-icon {
-  color: #FFA800;
+  color: var(--color-accent);
 }
 
 .search-filters__time-button {
@@ -32,20 +31,20 @@
   justify-content: center;
   border: none;
   background: transparent;
-  color: #FFFFFF;
+  color: var(--color-surface);
   cursor: pointer;
 }
 
 .search-filters__time-button:hover {
-  color: #FCDC9D;
+  color: var(--color-accent-soft);
 }
 
 .search-filters__time-button--open {
-  color: #C4C4C4;
+  color: var(--color-border);
 }
 
 .search-filters__time-button--open:hover {
-  color: #C4C4C4;
+  color: var(--color-border);
 }
 
 .search-filters__time-icon-close,
@@ -58,10 +57,9 @@
 }
 
 .search-filters__time-slider-title {
-  font-family: 'Roboto', sans-serif;
   font-size: 24px;
   font-weight: 400;
-  color: #E5E5E5;
+  color: var(--color-border-light);
 
   margin-bottom: 15px;
 }

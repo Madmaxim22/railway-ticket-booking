@@ -10,19 +10,18 @@
 }
 
 .digit-cells__label {
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #928f94;
+  color: var(--color-text-muted);
 }
 
 .digit-cells__control {
   position: relative;
   width: 205px;
   height: 50px;
-  border: 1px solid #928f94;
+  border: 1px solid var(--color-text-muted);
   border-radius: 5px;
-  background: #fff;
+  background: var(--color-surface);
   overflow: hidden;
 }
 
@@ -31,14 +30,14 @@
 }
 
 .digit-cells__control:focus-within {
-  border-color: #ffa800;
-  box-shadow: 0 0 0 1px #ffa800;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
 }
 
 .digit-cells__control--error,
 .digit-cells__control--error:focus-within {
-  border-color: #ff3d00;
-  box-shadow: 0 0 0 1px #ff3d00;
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 1px var(--color-error);
 }
 
 .digit-cells__native-input {
@@ -63,14 +62,13 @@
   padding: 0 15px;
   pointer-events: none;
 
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .digit-cells--error .digit-cells__cells {
-  color: #ff3d00;
+  color: var(--color-error);
 }
 
 .digit-cells--birth_certificate .digit-cells__cells {
@@ -91,7 +89,7 @@
 
 /* подсветка "следующей" позиции только когда поле в фокусе */
 .digit-cells__control:focus-within .digit-cells__cell--next::after {
-  background: #ffa800;
+  background: var(--color-accent);
   height: 3px;
 }
 
@@ -102,21 +100,19 @@
   transform: translateY(-50%);
   z-index: 1;
   pointer-events: none;
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #c4c4c4;
+  color: var(--color-border);
 }
 
 .digit-cells--error .digit-cells__placeholder {
-  color: #ff3d00;
+  color: var(--color-error);
 }
 
 .digit-cells__error-text {
-  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #ff3d00;
+  color: var(--color-error);
 }
 
 
@@ -124,7 +120,7 @@
   content: '';
   width: var(--digit-line-width);
   height: 2px;
-  background: #c4c4c4;
+  background: var(--color-border);
   border-radius: 1px;
   position: absolute;
   left: 50%;

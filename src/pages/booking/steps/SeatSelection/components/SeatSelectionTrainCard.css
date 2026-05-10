@@ -1,6 +1,6 @@
 .seat-selection-page__card {
-  border: 1px solid #c4c4c4;
-  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
 
   user-select: none;
@@ -23,7 +23,7 @@
 }
 
 .seat-selection-page__card-header-icon {
-  color: #ffa800;
+  color: var(--color-accent);
 }
 
 .seat-selection-page__card-header-icon--return {
@@ -33,22 +33,20 @@
 .seat-selection-page__card-header-button {
   width: 325px;
   height: 60px;
-  border: 1px solid #292929;
+  border: 1px solid var(--color-text);
   border-radius: 5px;
   background-color: transparent;
   cursor: pointer;
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .seat-selection-page__section-title {
   padding-left: 20px;
-  font-family: Roboto, sans-serif;
   font-size: 30px;
   font-weight: 700;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .seat-selection-page__wagon-scheme {
@@ -70,14 +68,13 @@
   justify-content: flex-end;
   gap: 12px;
 
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #FFA800;
+  color: var(--color-accent);
 }
 
 .seat-selection-page__fare-price-icon {
   width: 14px;
   height: 17px;
-  color: #ffa800;
+  color: var(--color-accent);
 }

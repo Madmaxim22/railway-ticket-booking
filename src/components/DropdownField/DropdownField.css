@@ -23,11 +23,10 @@
   max-width: 100%;
   padding: 0 15px;
   padding-right: 36px;
-  border: 1px solid #928f94;
+  border: 1px solid var(--color-text-muted);
   border-radius: 5px;
-  background: #fff;
-  color: #292929;
-  font-family: Roboto, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-text);
   font-size: 24px;
   font-weight: 400;
   cursor: pointer;
@@ -52,7 +51,7 @@
 }
 
 .dropdown-field__chevron-path {
-  fill: #928f94;
+  fill: var(--color-text-muted);
 }
 
 .dropdown-field__panel {
@@ -67,7 +66,7 @@
   padding: 0;
   border-radius: 5px;
   overflow: hidden;
-  background-color: #f4f3f6;
+  background-color: var(--color-bg-panel);
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -81,16 +80,15 @@
   padding: 0 15px;
   border: none;
   background: transparent;
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
   text-align: left;
   cursor: pointer;
 }
 
 .dropdown-field__option:not(:last-child) {
-  border-bottom: 1px solid #d4d2d8;
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .dropdown-field__option:hover,
@@ -99,7 +97,7 @@
 }
 
 .dropdown-field__option:focus-visible {
-  outline: 2px solid #ffa800;
+  outline: 2px solid var(--color-accent);
   outline-offset: -2px;
 }
 

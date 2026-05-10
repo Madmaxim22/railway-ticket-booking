@@ -9,7 +9,7 @@
   flex-direction: column;
   gap: 26px;
   padding: 43px 36px 33px 29px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .search-filters__group {
@@ -18,12 +18,11 @@
 }
 
 .search-filters__title {
-  font-family: 'Roboto', sans-serif;
   font-size: 30px;
   font-weight: 400;
   line-height: 35px;
   margin: 0 0 20px;
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .search-filters__field {
@@ -37,7 +36,6 @@
 .search-filters__input {
   width: 295px;
   height: 43px;
-  font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 400;
   line-height: 21px;
@@ -49,15 +47,14 @@
   border: none;
   outline: none;
   border-radius: 4px;
-  color: #222;
+  color: var(--color-text);
 }
 
 .search-filters__input::placeholder {
-  font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 400;
   line-height: 21px;
-  color: #b0b0b0;
+  color: var(--color-text-dim);
 }
 
 .search-filters__icon {
@@ -65,7 +62,7 @@
   right: 20px;
   width: 20px;
   height: 22.35px;
-  color: #E5E5E5;
+  color: var(--color-border-light);
   pointer-events: none;
   top: 50%;
   transform: translateY(-50%);
@@ -75,7 +72,7 @@
 /* Type Carriage */
 .search-filters__type-carriage-section {
   padding: 25px 36px 21px 68px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .search-filters__list {
@@ -88,7 +85,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #E5E5E5;
+  color: var(--color-border-light);
 }
 
 .search-filters__carriage-icon {
@@ -98,8 +95,7 @@
 .search-filters__item-title {
   margin-left: 34px;
 
-  color: #ffffff;
-  font-family: 'Roboto', sans-serif;
+  color: var(--color-surface);
   font-size: 18px;
   font-weight: 400;
 }
@@ -130,7 +126,7 @@
   width: 72px;
   height: 19px;
   border-radius: 14px;
-  background-color: #FFFFFF;
+  background-color: var(--color-surface);
 
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
@@ -142,55 +138,54 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: #C4C4C4;
+  background-color: var(--color-border);
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .search-filters__toggle-input:checked + .search-filters__toggle-track {
-  background-color: #FCDC9D;
+  background-color: var(--color-accent-soft);
 }
 
 .search-filters__toggle-input:checked + .search-filters__toggle-track::after {
   transform: translateX(44px);
-  background-color: #ffa800;
+  background-color: var(--color-accent);
 }
 
 .search-filters__toggle-input:focus-visible + .search-filters__toggle-track {
-  outline: 2px solid #FCDC9D;
+  outline: 2px solid var(--color-accent-soft);
   outline-offset: 2px;
 }
 
 /* Price */
 .search-filters__price-section {
   padding: 37px 34px 40px 30px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 /* Back */
 .search-filters__back-section {
   padding: 30px 35px 35px 30px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 /* Forth */
 .search-filters__forth-section {
   padding: 30px 35px 35px 30px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 /* Latest tickets */
 .search-filters__latest-tickets {
   width: 100%;
-  background-color: #F7F5F9;
+  background-color: var(--color-bg-page);
   padding-top: 94px;
   box-sizing: border-box;
 }
 
 .search-filters__latest-tickets-title {
-  font-family: 'Roboto', sans-serif;
   font-size: 30px;
   font-weight: 500;
-  color: #000000;
+  color: var(--color-ink);
   text-transform: uppercase;
 }
 
@@ -202,13 +197,13 @@
 }
 
 .search-filters__latest-ticket-card {
-  border: 1px solid #C4C4C4;
+  border: 1px solid var(--color-border);
   border-radius: 3px;
   padding: 18px 16px;
   box-sizing: border-box;
   box-shadow: 0px 2px 2px 0px rgba(62, 60, 65, 0.25);
 
-  background-color: #FFFFFF;
+  background-color: var(--color-surface);
 }
 
 .search-filters__latest-ticket-route {
@@ -232,10 +227,9 @@
 }
 
 .search-filters__latest-ticket-city {
-  font-family: 'Roboto', sans-serif;
   font-size: 20px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .search-filters__latest-ticket-city--to {
@@ -243,10 +237,9 @@
 }
 
 .search-filters__latest-ticket-station {
-  font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .search-filters__latest-ticket-meta {
@@ -265,7 +258,7 @@
 .search-filters__latest-ticket-amenity-icon {
   width: 20px;
   height: 20px;
-  color: #C4C4C4;
+  color: var(--color-border);
   flex-shrink: 0;
 }
 
@@ -277,22 +270,20 @@
 }
 
 .search-filters__latest-ticket-price-from {
-  font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .search-filters__latest-ticket-price-value {
-  font-family: 'Roboto', sans-serif;
   font-size: 36px;
   font-weight: 700;
-  color: #FFA800;
+  color: var(--color-accent);
 }
 
 .search-filters__latest-ticket-price-icon {
   width: 20px;
   height: 25px;
-  color: #928F94;
+  color: var(--color-text-muted);
   flex-shrink: 0;
 }

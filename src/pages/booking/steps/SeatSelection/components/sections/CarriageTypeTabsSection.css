@@ -21,14 +21,13 @@
   background: transparent;
   cursor: pointer;
   padding: 0;
-  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 400;
-  color: #928f94;
+  color: var(--color-text-muted);
 }
 
 .seat-selection-page__tab--active {
-  color: #ffa800;
+  color: var(--color-accent);
 }
 
 .seat-selection-page__tab--disabled {

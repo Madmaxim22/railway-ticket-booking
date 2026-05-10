@@ -1,13 +1,12 @@
 .trip-summary__title {
-  font-family: Roboto, sans-serif;
   font-size: 30px;
   font-weight: 500;
-  color: #E5E5E5;
+  color: var(--color-border-light);
   text-transform: uppercase;
   text-align: center;
 
   padding: 35px 44px 35px 44px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .trip-summary__direction-section {
@@ -15,7 +14,7 @@
   flex-direction: column;
 
   padding: 20px 27px 53px 28px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .trip-summary__content {
@@ -25,11 +24,11 @@
 }
 
 .trip-summary__icon {
-  color: #FFA800;
+  color: var(--color-accent);
 }
 
 .trip-summary__button:hover {
-  color: #FCDC9D;
+  color: var(--color-accent-soft);
 }
 
 .trip-summary__direction-title-container {
@@ -37,10 +36,9 @@
 }
 
 .trip-summary__direction-title {
-  font-family: 'Roboto', sans-serif;
   font-size: 30px;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-surface);
 
   vertical-align: center;
   display: inline-block;
@@ -49,10 +47,9 @@
 }
 
 .trip-summary__direction-date {
-  font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #fff;
+  color: var(--color-surface);
 
   vertical-align: center;
   display: inline-block;
@@ -70,21 +67,21 @@
   justify-content: center;
   border: none;
   background: transparent;
-  color: #fff;
+  color: var(--color-surface);
   cursor: pointer;
 }
 
 .trip-summary__icon-close {
-  color: #FFFFFF;
+  color: var(--color-surface);
 }
 
 .trip-summary__icon-open {
-  color: #c4c4c4;
+  color: var(--color-border);
 }
 
 .trip-summary__icon-close:hover,
 .trip-summary__icon-open:hover {
-  color: #FCDC9D;
+  color: var(--color-accent-soft);
 }
 
 .trip-summary__direction-section-content {
@@ -92,8 +89,7 @@
   flex-direction: column;
   margin-top: 50px;
 
-  font-family: 'Roboto', sans-serif;
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .trip-summary__trip-number,
@@ -107,7 +103,7 @@
   font-size: 18px;
   font-weight: 400;
 
-  color: #E5E5E5;
+  color: var(--color-border-light);
 }
 
 .trip-summary__train-name {
@@ -158,7 +154,6 @@
   display: flex;
   flex-direction: column;
 
-  font-family: 'Roboto', sans-serif;
 }
 
 .trip-summary__train-info-item-arrival {
@@ -171,21 +166,21 @@
 
 .trip-summary__train-info-icon {
 
-  color: #FFA800;
+  color: var(--color-accent);
 }
 
 .trip-summary__train-info-item-title {
   font-size: 24px;
   font-weight: 700;
 
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .trip-summary__train-info-item-value {
   font-size: 18px;
   font-weight: 400;
   
-  color: #928F94;
+  color: var(--color-text-muted);
 
   margin-top: 11px;
 }
@@ -200,19 +195,17 @@
 }
 
 .trip-summary__train-info-item-city {
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
 
-  color: #FFFFFF;
+  color: var(--color-surface);
 }
 
 .trip-summary__train-info-item-station {
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
 
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 trip-summary__direction-section-content {
@@ -242,7 +235,7 @@ trip-summary__direction-section-content {
   font-size: 18px;
   font-weight: 400;
 
-  color: #E5E5E5;
+  color: var(--color-border-light);
 }
 
 .trip-summary__passengers-item-price {
@@ -258,11 +251,11 @@ trip-summary__direction-section-content {
   font-size: 24px;
   font-weight: 700;
 
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .trip-summary__passengers-item-icon {
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .trip-summary__total-price {
@@ -276,21 +269,19 @@ trip-summary__direction-section-content {
 }
 
 .trip-summary__total-price-title {
-  font-family: Roboto, sans-serif;
   font-size: 30px;
   font-weight: 700;
   
-  color: #fff;
+  color: var(--color-surface);
 
   text-transform: uppercase;
 }
 
 .trip-summary__total-price-value {
-  font-family: Roboto, sans-serif;
   font-size: 48px;
   font-weight: 700;
 
-  color: #FFA800;
+  color: var(--color-accent);
 
   margin-left: auto;
 }
@@ -299,5 +290,5 @@ trip-summary__direction-section-content {
   width: 26px;
   height: 32px;
 
-  color: #E5E5E5;
+  color: var(--color-border-light);
 }

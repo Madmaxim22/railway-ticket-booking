@@ -1,7 +1,6 @@
 .booking-success-page {
   width: 100%;
-  background-color: #f7f5f9;
-  font-family: Roboto, sans-serif;
+  background-color: var(--color-bg-page);
 }
 
 .booking-success-page__hero {
@@ -18,14 +17,14 @@
 
 .booking-success-page__title {
   margin: 0 0 51px;
-  color: #ffffff;
+  color: var(--color-surface);
   font-size: 72px;
   font-weight: 700;
 }
 
 .booking-success-card {
-  background-color: #ffffff;
-  border: 1px solid #c4c4c4;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
 }
 
@@ -35,11 +34,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #928f94;
+  border-bottom: 1px solid var(--color-text-muted);
 }
 
 .booking-success-card__order-number {
-  color: #3e3c41;
+  color: var(--color-text-heading);
   font-size: 36px;
   font-weight: 700;
 }
@@ -51,19 +50,19 @@
 }
 
 .booking-success-card__sum-label {
-  color: #928f94;
+  color: var(--color-text-muted);
   font-size: 36px;
   font-weight: 400;
 }
 
 .booking-success-card__sum-value {
-  color: #3e3c41;
+  color: var(--color-text-heading);
   font-size: 36px;
   font-weight: 700;
 }
 
 .booking-success-card__sum-currency {
-  color: #928f94;
+  color: var(--color-text-muted);
   font-size: 36px;
   font-weight: 700;
 }
@@ -79,7 +78,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 91px;
   padding: 40px 323px 40px;
-  background-color: #f4f3f6;
+  background-color: var(--color-bg-panel);
 }
 
 .booking-success-card__feature {
@@ -93,7 +92,7 @@
   width: 155px;
   height: 155px;
   border-radius: 50%;
-  border: 10px solid #ffffff;
+  border: 10px solid var(--color-surface);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -105,17 +104,16 @@
 
 .booking-success-card__feature-icon--email svg path,
 .booking-success-card__feature-icon--conductor svg path {
-  fill: #ffb628;
+  fill: var(--color-accent-icon);
   fill-opacity: 0.79;
 }
 
 .booking-success-card__feature-icon--print svg path {
-  fill: #fdc354;
+  fill: var(--color-accent-icon-secondary);
 }
 
 .booking-success-card__feature-text {
-  color: #292929;
-  font-family: Roboto, sans-serif;
+  color: var(--color-text);
   font-size: 18px;
   font-weight: 400;
 }
@@ -130,14 +128,14 @@
 }
 
 .booking-success-card__name {
-  color: #292929;
+  color: var(--color-text);
   font-size: 36px;
   font-weight: 700;
 }
 
 .booking-success-card__paragraph {
   margin: 51px 0 100px;
-  color: #292929;
+  color: var(--color-text);
   font-size: 24px;
   font-weight: 400;
 }
@@ -153,7 +151,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 32px;
-  background-color: #ffa800;
+  background-color: var(--color-accent);
 }
 
 .booking-success-card__rating {
@@ -163,7 +161,7 @@
 }
 
 .booking-success-card__rating-label {
-  color: #292929;
+  color: var(--color-text);
   font-size: 24px;
   font-weight: 400;
 }
@@ -186,7 +184,7 @@
 
 .booking-success-card__star svg path {
   fill: none;
-  stroke: #ffffff;
+  stroke: var(--color-surface);
   stroke-width: 2;
 }
 
@@ -196,17 +194,17 @@
   justify-content: center;
   width: 323px;
   min-height: 60px;
-  border: 1px solid #3e3c41;
+  border: 1px solid var(--color-text-heading);
   border-radius: 5px;
-  color: #292929;
+  color: var(--color-text);
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .booking-success-card__home-link:hover {
-  color: #ffffff;
-  border-color: #ffffff;
+  color: var(--color-surface);
+  border-color: var(--color-surface);
 }
 
 .booking-success-card__home-link:active {

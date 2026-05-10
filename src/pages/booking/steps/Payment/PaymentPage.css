@@ -1,27 +1,26 @@
 .payment-page {
   width: 100%;
-  font-family: Roboto, sans-serif;
 }
 
 .payment-page__sections {
   display: flex;
   flex-direction: column;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
-  border: 1px solid #c4c4c4;
+  border: 1px solid var(--color-border);
 }
 
 .payment-page__section {
-  background: #fff;
+  background: var(--color-surface);
 }
 
 .payment-page__title {
   padding: 34px 35px 32px;
-  border-bottom: 1px dashed #928f94;
+  border-bottom: 1px dashed var(--color-text-muted);
   font-size: 30px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
 
-  background-color: #F9F9F9;
+  background-color: var(--color-bg-subtle);
 }
 
 .payment-page__content {
@@ -58,32 +57,32 @@
 .payment-page__label {
   font-size: 16px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .payment-page__input {
   height: 50px;
   padding: 0 15px;
-  border: 1px solid #928f94;
+  border: 1px solid var(--color-text-muted);
   border-radius: 5px;
   outline: none;
   font-family: inherit;
   font-size: 24px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .payment-page__input::placeholder {
-  color: #c4c4c4;
+  color: var(--color-border);
 }
 
 .payment-page__section--payment-method {
-  border-top: 1px dashed #928f94;
+  border-top: 1px dashed var(--color-text-muted);
 }
 
 .payment-page__payment-options {
   padding: 50px 35px 78px;
-  border-bottom: 1px dashed #928f94;
+  border-bottom: 1px dashed var(--color-text-muted);
 }
 
 .payment-page__checkbox-row {
@@ -98,9 +97,9 @@
   -webkit-appearance: none;
   width: 28px;
   height: 28px;
-  border: 1px solid #928f94;
+  border: 1px solid var(--color-text-muted);
   border-radius: 5px;
-  background: #fff;
+  background: var(--color-surface);
   position: relative;
   cursor: pointer;
   margin: 0;
@@ -108,7 +107,7 @@
 
 .payment-page__checkbox:checked {
   background: transparent;
-  border-color: #ffa800;
+  border-color: var(--color-accent);
 }
 
 .payment-page__checkbox:checked::after {
@@ -118,7 +117,7 @@
   top: 1px;
   width: 10px;
   height: 20px;
-  border: solid #ffa800;
+  border: solid var(--color-accent);
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
@@ -126,11 +125,11 @@
 .payment-page__checkbox-label {
   font-size: 24px;
   font-weight: 400;
-  color: #928f94;
+  color: var(--color-text-muted);
 }
 
 .payment-page__checkbox:checked + .payment-page__checkbox-label {
-  color: #ffa800;
+  color: var(--color-accent);
 }
 
 .payment-page__online-methods {
@@ -144,7 +143,7 @@
   max-width: 190px;
   font-size: 24px;
   font-weight: 700;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .payment-page__cash-row {
@@ -162,8 +161,8 @@
   height: 60px;
   border: none;
   border-radius: 5px;
-  background: #ffa800;
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-surface);
   text-transform: uppercase;
   font-family: inherit;
   font-size: 24px;

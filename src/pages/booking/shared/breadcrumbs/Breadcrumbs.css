@@ -1,7 +1,7 @@
 .breadcrumbs {
   height: 98px;
   width: 100%;
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .breadcrumbs__list {
@@ -40,11 +40,10 @@
   gap: 16px;
   width: 100%;
   padding: 21px 46px 21px 65px;
-  font-family: Roboto, sans-serif;
   font-size: 30px;
   font-weight: 700;
-  color: #fff;
-  background-color: #3e3c41;
+  color: var(--color-surface);
+  background-color: var(--color-text-heading);
   clip-path: polygon(
     0% 0%,
     calc(100% - 30px) 0%,
@@ -94,7 +93,7 @@
 }
 
 .breadcrumbs__link--active {
-  background-color: #ffa800;
+  background-color: var(--color-accent);
 }
 
 .breadcrumbs__badge {
@@ -104,11 +103,10 @@
   flex-shrink: 0;
   width: 56px;
   height: 56px;
-  border: 3px solid #fff;
+  border: 3px solid var(--color-surface);
   border-radius: 50%;
   background: transparent;
-  color: #fff;
-  font-family: Roboto, sans-serif;
+  color: var(--color-surface);
   font-size: 36px;
   font-weight: 700;
 }

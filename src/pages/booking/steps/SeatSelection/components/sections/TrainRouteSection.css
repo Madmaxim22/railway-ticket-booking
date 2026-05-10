@@ -4,7 +4,7 @@
   padding-top: 16px;
   padding-bottom: 16px;
   align-items: center;
-  background: #f7f6f6;
+  background: var(--color-bg-route);
 }
 
 .seat-selection-page__route-col {
@@ -18,11 +18,11 @@
 .seat-selection-page__route-col--left {
   padding-left: 35px;
   padding-right: 20px;
-  border-right: 1px solid #ffffff;
+  border-right: 1px solid var(--color-surface);
 }
 
 .seat-selection-page__route-col--center {
-  border-right: 1px solid #ffffff;
+  border-right: 1px solid var(--color-surface);
 }
 
 .seat-selection-page__route-col--right {
@@ -34,7 +34,7 @@
 .seat-selection-page__route-icon {
   width: 30px;
   height: 30px;
-  color: #ffa800;
+  color: var(--color-accent);
 }
 
 .seat-selection-page__route-icon path,
@@ -44,10 +44,9 @@
 }
 
 .seat-selection-page__train-number {
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #3e3c41;
+  color: var(--color-text-heading);
   text-transform: uppercase;
 }
 
@@ -56,45 +55,40 @@
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #928f94;
+  color: var(--color-text-muted);
 }
 
 .seat-selection-page__route-col--left .seat-selection-page__station-city--active {
-  color: #292929;
+  color: var(--color-text);
 }
 
 .seat-selection-page__time {
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
 }
 
 .seat-selection-page__route-col--center .seat-selection-page__station-city {
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .seat-selection-page__station-name {
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #928f94;
+  color: var(--color-text-muted);
 }
 
 .seat-selection-page__duration {
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #000000;
+  color: var(--color-ink);
 }
 
 .seat-selection-page__duration-icon {
-  color: #ffa800;
+  color: var(--color-accent);
 }
 
 .seat-selection-page__arrow-icon {
@@ -102,9 +96,9 @@
 }
 
 .seat-selection-page__route-arrow {
-  color: #928f94;
+  color: var(--color-text-muted);
 }
 
 .seat-selection-page__route-arrow-active {
-  color: #292929;
+  color: var(--color-text);
 }

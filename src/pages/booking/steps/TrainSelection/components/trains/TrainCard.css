@@ -1,9 +1,9 @@
 .train-card__arrow {
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .train-card__arrow-active {
-  color: #292929;
+  color: var(--color-text);
 }
 
 .train-card {
@@ -11,12 +11,12 @@
   height: 100%;
   display: flex;
   flex-direction: row;
-  border: 1px solid #C4C4C4;
+  border: 1px solid var(--color-border);
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.30);
 }
 
 .train-card:hover {
-  border: 1px solid #FFA800;
+  border: 1px solid var(--color-accent);
 }
 
 .train-card--review {
@@ -33,7 +33,7 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background-color: #E4E0E9;
+  background-color: var(--color-bg-disabled);
 
   padding-left: 25px;
   padding-right: 25px;
@@ -45,26 +45,24 @@
   width: 86px;
   height: 86px;
 
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .train-card__train-number {
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #3E3C41;
+  color: var(--color-text-heading);
   text-transform: uppercase;
 }
 
 .train-card__train-route-city {
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .train-card__train-route-city-active {
-  color: #292929;
+  color: var(--color-text);
 }
 
 .train-card__schedule {
@@ -77,7 +75,7 @@
   padding-right: 30px;
   padding-top: 50px;
   padding-bottom: 50px;
-  border-right: 1px solid #E5E5E5;
+  border-right: 1px solid var(--color-border-light);
 }
 
 .train-card__trip {
@@ -112,35 +110,31 @@
 }
 
 .train-card__time {
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #000000;
+  color: var(--color-ink);
 }
 
 .train-card__city {
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .train-card__station {
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .train-card__duration-value {
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #C4C4C4;
+  color: var(--color-border);
 }
 
 .train-card__arrow-icon {
-  color: #FFA800;
+  color: var(--color-accent);
 }
 
 .train-card__prices {
@@ -170,10 +164,9 @@
 
 .train-card__fare-type {
   justify-self: start;
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #3E3C41;
+  color: var(--color-text-heading);
 }
 
 .train-card__fare-count,
@@ -186,28 +179,25 @@
 .train-card__fare-price-icon {
   width: 16px;
   height: 19px;
-  color: #2d2b2f;
+  color: var(--color-text-deep);
 }
 
 .train-card__fare-count {
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: #FFA800;
+  color: var(--color-accent);
 }
 
 .train-card__fare-from {
-  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .train-card__fare-price {
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #2D2B2F;
+  color: var(--color-text-deep);
 }
 
 .train-card__amenities {
@@ -221,7 +211,7 @@
 .train-card__amenities-icon {
   width: 20px;
   height: 20px;
-  color: #c4c4c4;
+  color: var(--color-border);
   flex-shrink: 0;
 }
 
@@ -231,7 +221,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  background-color: #FFA800;
+  background-color: var(--color-accent);
   border-radius: 5px;
   border: none;
   cursor: pointer;
@@ -246,7 +236,7 @@
   width: 233px;
   height: 39px;
   background-color: transparent;
-  border: 1px solid #292929;
+  border: 1px solid var(--color-text);
 }
 
 .train-card--review .train-card__booking-button:hover {
@@ -256,7 +246,7 @@
 .train-card__booking-button:active {
   box-shadow: none;
   background-color: transparent;
-  border: 1px solid #FFA800;
+  border: 1px solid var(--color-accent);
 }
 
 .train-card__booking-button-text {
@@ -266,30 +256,29 @@
   align-items: center;
   justify-content: center;
 
-  font-family: Roboto, sans-serif;
   font-size: 24px;
   font-weight: 700;
   text-align: center;
   
-  color: #FFFFFF;
+  color: var(--color-surface);
 }
 
 .train-card__booking-button-text--review {
-  color: #292929;
+  color: var(--color-text);
 }
 
 .train-card__booking-button-text--review:hover {
-  color: #FFA800;
+  color: var(--color-accent);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .train-card__booking-button-text:active {
-  color: #FFA800;
+  color: var(--color-accent);
 }
 
 .train-card__booking-button-text--review:active {
-  color: #292929;
-  border: 1px solid #FFA800;
+  color: var(--color-text);
+  border: 1px solid var(--color-accent);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  background-color: #FFA800;
+  background-color: var(--color-accent);
 }

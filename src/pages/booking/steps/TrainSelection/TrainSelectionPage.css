@@ -24,10 +24,9 @@
 }
 
 .train-selection-page__header-item-text {
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #3E3C41;
+  color: var(--color-text-heading);
 }
 
 .train-selection-page__header-item--sort {
@@ -46,10 +45,9 @@
   min-width: 120px;
   text-align: left;
 
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #292929;
+  color: var(--color-text);
 }
 
 .train-selection-page__dropdown-menu {
@@ -59,7 +57,7 @@
   z-index: 10;
   width: 139px;
   list-style: none;
-  background-color: #F7F5F9;
+  background-color: var(--color-bg-page);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
@@ -68,19 +66,14 @@
   width: 100%;
   height: 40px;
   padding: 8px 10px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--color-border-light);
   background: transparent;
   cursor: pointer;
   text-align: left;
 
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #3E3C41;
-}
-
-.train-selection-page__dropdown-item:hover {
-  background-color: #FFCA62;
+  color: var(--color-text-heading);
 }
 
 .train-selection-page__header-item-button {
@@ -88,14 +81,13 @@
   background: transparent;
   cursor: pointer;
 
-  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .train-selection-page__header-item-button--active {
-  color: #292929;
+  color: var(--color-text);
 }
 
 
@@ -120,15 +112,14 @@
 .train-selection-page__pagination-page {
   width: 84px;
   height: 75px;
-  border: 1px solid #C4C4C4;
+  border: 1px solid var(--color-border);
   background-color: transparent;
   cursor: pointer;
   transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 
-  font-family: Roboto, sans-serif;
   font-size: 30px;
   font-weight: 700;
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .train-selection-page__pagination-arrow {
@@ -146,19 +137,19 @@
 
 .train-selection-page__pagination-page--dots:disabled {
   opacity: 1;
-  color: #928F94;
+  color: var(--color-text-muted);
 }
 
 .train-selection-page__pagination-page--active {
-  background-color: #FFA800;
-  color: #FFFFFF;
-  border-color: #FFA800;
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border-color: var(--color-accent);
 }
 
 .train-selection-page__pagination-arrow:hover:not(:disabled),
 .train-selection-page__pagination-page:hover:not(.train-selection-page__pagination-page--active) {
-  border-color: #FFA800;
-  color: #FFA800;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .train-selection-page__pagination-arrow:disabled {

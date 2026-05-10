@@ -1,3 +1,65 @@
+:root {
+  /* Типографика */
+  --font-sans: 'Roboto', system-ui, sans-serif;
+
+  /* Палитра */
+  --color-accent: #ffa800;
+  --color-accent-hover: #fdb935;
+  --color-accent-pale: #ffd98f;
+  --color-accent-soft: #fcdc9d;
+  --color-accent-icon: #ffb628;
+  --color-accent-icon-secondary: #fdc354;
+
+  --color-text: #292929;
+  --color-text-muted: #928f94;
+  --color-text-heading: #3e3c41;
+  --color-text-deep: #2d2b2f;
+  --color-text-dim: #b0b0b0;
+
+  --color-border: #c4c4c4;
+  --color-border-light: #e5e5e5;
+  --color-border-subtle: #d4d2d8;
+  --color-border-datepicker: #e8e8e8;
+  --color-divider-light: #eeeeee;
+
+  --color-surface: #ffffff;
+  --color-bg-page: #f7f5f9;
+  --color-bg-subtle: #f9f9f9;
+  --color-bg-panel: #f4f3f6;
+  --color-bg-muted: #f5f4f6;
+  --color-bg-route: #f7f6f6;
+  --color-bg-disabled: #e4e0e9;
+  --color-bg-calendar-hover: #f5f5f5;
+  --color-bg-calendar-hover-strong: #f0f0f0;
+  --color-bg-wagon-tab: #f3f3f3;
+  --color-text-disabled-calendar: #d1d1d1;
+
+  --color-ink: #000000;
+
+  --color-error: #ff3d00;
+  --color-success: #b2f6a1;
+  --color-success-bg: #f9fef7;
+
+  --color-disabled-solid: #918f94;
+
+  /* Схема вагона (SVG) */
+  --color-seat-rail-light: #eaeaea;
+  --color-seat-dark-1: #050505;
+  --color-seat-dark-2: #0e0e0e;
+  --color-seat-dark-3: #040404;
+  --color-seat-dark-4: #151515;
+  --color-seat-fill: #f2f2f2;
+  --color-seat-grid: #ccc;
+
+  /* Отступы (шаг сетки) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-section: 48px;
+}
+
 *,
 *::before,
 *::after {
@@ -16,6 +78,7 @@ body,
 }
 
 body {
+  font-family: var(--font-sans);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
