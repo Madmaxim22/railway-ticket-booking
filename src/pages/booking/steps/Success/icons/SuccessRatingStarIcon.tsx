@@ -1,0 +1,17 @@
+type SuccessRatingStarIconProps = {
+  className?: string
+}
+
+export default function SuccessRatingStarIcon({ className }: SuccessRatingStarIconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 46 44"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path d="M27.2637 16.8926L27.4883 17.584H42.5732L30.957 26.0234L30.3691 26.4512L30.5938 27.1416L35.0312 40.7988L23.4141 32.3584L22.8262 31.9307L22.2383 32.3584L10.6201 40.7988L15.0586 27.1416L15.2832 26.4512L14.6953 26.0234L3.0791 17.584H18.1641L18.3887 16.8926L22.8262 3.23535L27.2637 16.8926Z" />
+    </svg>
+  )
+}
