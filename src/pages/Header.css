@@ -1,14 +1,28 @@
 .header__container {
+  display: flex;
+  flex-direction: column;
   max-width: 1920px;
   height: 985px;
 
-  background-image: url("../assets/header-bg.jpg");
+  background-image: url("@/assets/header-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  border-bottom: 8px solid #FFA800;
 }
 
+.header__container--booking-steps {
+  height: 596px;
+
+  background-image: url("@/assets/header-steps-bg.jpg");
+
+  border-bottom: none;
+}
+
+
 .header__content {
+  flex-shrink: 0;
   width: 100%;
   height: 64px;
 
@@ -26,6 +40,7 @@
 }
 
 .header__menu {
+  flex-shrink: 0;
   width: 100%;
   height: 94px;
 
@@ -47,12 +62,18 @@
 
 .header__search {
   display: flex;
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: 820px;
-  padding-top: 253px;
+  padding-top: 245px;
 
-  position: relative;
   background-color: rgba(0, 0, 0, 0.31);
+}
+
+.header__search--booking-steps {
+  padding-top: 115px;
+
+  background-color: rgba(0, 0, 0, 0.18);
 }
 
 .header__search-content {
@@ -75,13 +96,21 @@
   color: white;
 }
 
-.header__search-form {
+.header__search-form-panel {
   width: 729px;
   height: 100%;
   background-color: rgba(41, 41, 41, 0.8);
 }
 
-.header__search-form-content {
+.header__search-form-panel--booking-steps {
+  width: 100%;
+  height: 323px;
+  background-color: rgba(41, 41, 41, 0.8);
+
+  margin: 0 215px 0;
+}
+
+.header__search-form {
   display: flex;
   flex-direction: column;
 
@@ -91,6 +120,27 @@
   padding-bottom: 60px;
 }
 
+.header__search-form-panel--booking-steps .header__search-form {
+  padding: 28px 44px 76px;
+}
+
+.header__search-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 61px;
+}
+
+.header__search-form-panel--booking-steps .header__search-form-body {
+  flex-direction: row;
+  gap: 35px;
+}
+
+.header__search-form-content-item {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .header__search-form-title {
   font-family: Roboto, sans-serif;
   font-size: 30px;
@@ -98,16 +148,11 @@
   color: white;
 }
 
-.header__search-form-title--date {
-  margin-top: 61px;
-}
-
-.header__search-form-content-item {
+.header__search-form-fields {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 30px;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  gap: 37px;
+
   position: relative;
 }
 
@@ -184,10 +229,4 @@
   border: 1px solid #FFA800;
   background-color: transparent;
   color: #FFA800;
-}
-
-.header__line {
-  height: 8px;
-  background-color: #FFA800;
-  width: 100%;
 }
