@@ -8,7 +8,31 @@ import AmenitiesIconExpress from '@/shared/ui/icons/amenities/AmenitiesIconExpre
 import AmenitiesIconFoot from '@/shared/ui/icons/amenities/AmenitiesIconFoot'
 import FareCountTooltip from './FareCountTooltip'
 
-export default function TrainCard() {
+type Fare = {
+  type: string
+  count: number
+  price: string
+}
+
+type TrainCardProps = {
+  mode?: 'selection' | 'review'
+  actionLabel?: string
+  fares?: Fare[]
+  showRoutePath?: boolean
+}
+
+const defaultFares: Fare[] = [
+  { type: 'Плацкарт', count: 52, price: '2 530' },
+  { type: 'Купе', count: 24, price: '3 820' },
+  { type: 'Люкс', count: 15, price: '4 950' },
+]
+
+export default function TrainCard({
+  mode = 'selection',
+  actionLabel = 'Выбрать места',
+  fares = defaultFares,
+  showRoutePath = true,
+}: TrainCardProps) {
 
   const trainNumber = '116С'
   const departureCityTrain = 'Адлер'
@@ -23,21 +47,29 @@ export default function TrainCard() {
   const trainArrivalReturn = '09:13'
   const trainStationDeparture = 'Ленинградский вокзал'
   const trainStationArrival = 'Ладожский вокзал'
+  const isReviewMode = mode === 'review'
 
   return (
-    <article className="train-card">
+    <article className={`train-card${isReviewMode ? ' train-card--review' : ''}`}>
       <section className="train-card__route">
         <TrainRouteIcon className="train-card__route-icon" />
         <p className="train-card__train-number">{trainNumber}</p>
-        <div className="train-card__route-path">
-          <p className="train-card__train-route-city">{departureCityTrain}</p>
-          <RouteArrowIcon className="train-card__arrow" />
-          <p className="train-card__train-route-city train-card__train-route-city-active">{departureCityPassenger}</p>
-          <RouteArrowIcon className="train-card__arrow-active" />
-          <p className="train-card__train-route-city train-card__train-route-city-active">{arrivalCityPassenger}</p>
-          <RouteArrowIcon className="train-card__arrow" />
-          <p className="train-card__train-route-city">{arrivalCityTrain}</p>
-        </div>
+        {showRoutePath ? (
+          <div className="train-card__route-path">
+            <p className="train-card__train-route-city">{departureCityTrain}</p>
+            <RouteArrowIcon className="train-card__arrow" />
+            <p className="train-card__train-route-city train-card__train-route-city-active">{departureCityPassenger}</p>
+            <RouteArrowIcon className="train-card__arrow-active" />
+            <p className="train-card__train-route-city train-card__train-route-city-active">{arrivalCityPassenger}</p>
+            <RouteArrowIcon className="train-card__arrow" />
+            <p className="train-card__train-route-city">{arrivalCityTrain}</p>
+          </div>
+        ) : (
+          <>
+            <p className="train-card__train-route-city train-card__train-route-city-active">{departureCityTrain} →</p>
+            <p className="train-card__train-route-city train-card__train-route-city-active">{departureCityPassenger}</p>
+          </>
+        )}
       </section>
       <section className="train-card__schedule">
       <div className="train-card__trip">
@@ -78,45 +110,25 @@ export default function TrainCard() {
       </section>
 
       <section className="train-card__prices">
-        <div className="train-card__fare-row">
-          <span className="train-card__fare-type">Плацкарт</span>
-          <FareCountTooltip
-            count={52}
-            upperCount={19}
-            upperPrice="2 920"
-            lowerCount={5}
-            lowerPrice="3 530"
-          />
-          <span className="train-card__fare-from">от</span>
-          <span className="train-card__fare-price">2 530</span>
-          <FarePriceIcon className="train-card__fare-price-icon" />
-        </div>
-        <div className="train-card__fare-row">
-          <span className="train-card__fare-type">Купе</span>
-          <FareCountTooltip
-            count={24}
-            upperCount={19}
-            upperPrice="2 920"
-            lowerCount={5}
-            lowerPrice="3 530"
-          />
-          <span className="train-card__fare-from">от</span>
-          <span className="train-card__fare-price">3 820</span>
-          <FarePriceIcon className="train-card__fare-price-icon" />
-        </div>
-        <div className="train-card__fare-row">
-          <span className="train-card__fare-type">Люкс</span>
-          <FareCountTooltip
-            count={15}
-            upperCount={19}
-            upperPrice="2 920"
-            lowerCount={5}
-            lowerPrice="3 530"
-          />
-          <span className="train-card__fare-from">от</span>
-          <span className="train-card__fare-price">4 950</span>
-          <FarePriceIcon className="train-card__fare-price-icon" />
-        </div>
+        {fares.map((fare) => (
+          <div key={fare.type} className="train-card__fare-row">
+            <span className="train-card__fare-type">{fare.type}</span>
+            {isReviewMode ? (
+              <span className="train-card__fare-count">{fare.count}</span>
+            ) : (
+              <FareCountTooltip
+                count={fare.count}
+                upperCount={19}
+                upperPrice="2 920"
+                lowerCount={5}
+                lowerPrice="3 530"
+              />
+            )}
+            <span className="train-card__fare-from">от</span>
+            <span className="train-card__fare-price">{fare.price}</span>
+            <FarePriceIcon className="train-card__fare-price-icon" />
+          </div>
+        ))}
         <div className="train-card__prices-bottom">
           <div className="train-card__amenities">
             <AmenitiesIconWiFi className="train-card__amenities-icon" />
@@ -125,7 +137,9 @@ export default function TrainCard() {
           </div>
 
           <div className="train-card__booking-button">
-            <button className="train-card__booking-button-text">Выбрать места</button>
+            <button className={`train-card__booking-button-text${isReviewMode ? ' train-card__booking-button-text--review' : ''}`}>
+              {actionLabel}
+            </button>
           </div>
         </div>
       </section>
