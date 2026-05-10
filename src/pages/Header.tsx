@@ -31,7 +31,7 @@ export default function Header() {
 
   return (
     <header className="header">
-      <div className={`header__container ${isBookingSteps || isBookingSuccess ? 'header__container--booking-steps' : ''}`}>
+      <div className={`header__container ${isBookingSteps ? 'header__container--booking-steps' : isBookingSuccess ? 'header__container--booking-success' : ''}`}>
         <div className="header__content">
           <Link to="/" className="header__logo">Лого</Link>
         </div>
@@ -51,7 +51,7 @@ export default function Header() {
             </li>
           </ul>
         </div>
-        {!isBookingSuccess && (
+        {!isBookingSuccess ? (
         <div className={`header__search ${isBookingSteps ? 'header__search--booking-steps' : ''}`}>
           {!isBookingSteps && (
           <div className="header__search-content">
@@ -109,6 +109,8 @@ export default function Header() {
             </form>
           </div>
         </div>
+        ) : (
+          <div className="header__success-bg"></div>
         )}
         
         {/* <div className="header__line" /> */}
