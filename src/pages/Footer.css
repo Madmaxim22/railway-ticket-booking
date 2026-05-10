@@ -44,6 +44,16 @@
   gap: 36px;
 }
 
+.footer__contact-description-container svg {
+  flex-shrink: 0;
+  color: #e5e5e5;
+}
+
+.footer__copyright-icon {
+  flex-shrink: 0;
+  color: #e5e5e5;
+}
+
 .footer__contact-description {
   font-family: Roboto, sans-serif;
   font-size: 24px;
@@ -134,14 +144,16 @@
   cursor: pointer;
   flex-shrink: 0;
   -webkit-user-drag: none;
+  color: #e5e5e5;
+  transition: color 0.2s ease;
 }
 
 .footer__subscription-social-icon path {
-  transition: fill 0.2s ease;
+  fill: currentColor;
 }
 
-.footer__subscription-social-icon:hover path {
-  fill: #ffa800;
+.footer__subscription-social-icon:hover {
+  color: #ffa800;
 }
 
 .footer__copyright-content {
