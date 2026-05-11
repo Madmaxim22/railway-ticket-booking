@@ -3,6 +3,10 @@ import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { useSearchCitiesQuery, type CitySuggestion } from '@/store/api/citiesApi'
 import { useDebounce } from './useDebounce'
 
+function normalizeCityName(value: string) {
+  return value.trim().toLowerCase()
+}
+
 export function useAutocompleteField(initialValue = '') {
   const [value, setValue] = useState(initialValue)
   const [isFocused, setIsFocused] = useState(false)
@@ -38,8 +42,15 @@ export function useAutocompleteField(initialValue = '') {
     setIsFocused(false)
   }
 
+  const findExactSuggestions = (name: string) => {
+    const target = normalizeCityName(name)
+    if (!target) return [] as CitySuggestion[]
+    return suggestions.filter((city) => normalizeCityName(city.name) === target)
+  }
+
   return {
     value,
+    query,
     suggestions,
     isFetching,
     shouldShowSuggestions: isFocused && trimmedValue.length >= 2,
@@ -47,5 +58,6 @@ export function useAutocompleteField(initialValue = '') {
     onFocus,
     onBlur,
     selectSuggestion,
+    findExactSuggestions,
   }
 }
