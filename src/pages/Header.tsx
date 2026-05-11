@@ -1,11 +1,11 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import DatePickerPopover from '../components/DatePickerPopover'
 import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import LocationPinIcon from '@/shared/ui/icons/LocationPinIcon'
 import SearchSwapIcon from '@/shared/ui/icons/SearchSwapIcon'
-import { useAutocompleteField } from '@/shared/hooks/useAutocompleteField'
-import type { CitySuggestion } from '@/store/api/citiesApi'
+import { useHeaderCitySearchFields } from './useHeaderCitySearchFields'
+import { useHeaderSearchSubmit } from './useHeaderSearchSubmit'
 import './Header.css'
 
 const BOOKING_STEP_PATHS = [
@@ -18,46 +18,28 @@ const BOOKING_STEP_PATHS = [
 
 
 export default function Header() {
-  const [departureDate, setDepartureDate] = useState<Date | null>(null)
-  const [arrivalDate, setArrivalDate] = useState<Date | null>(null)
-  const fromField = useAutocompleteField()
-  const toField = useAutocompleteField()
-  const [fromCity, setFromCity] = useState<CitySuggestion | null>(null)
-  const [toCity, setToCity] = useState<CitySuggestion | null>(null)
+  const clearFormErrorRef = useRef<(() => void) | null>(null)
+  const citySearch = useHeaderCitySearchFields(clearFormErrorRef)
+  const {
+    departureDate,
+    setDepartureDate,
+    arrivalDate,
+    setArrivalDate,
+    handleSubmit,
+    formError,
+  } = useHeaderSearchSubmit(citySearch, clearFormErrorRef)
+  const {
+    fromField,
+    toField,
+    handleFromChange,
+    handleToChange,
+    handleFromSelect,
+    handleToSelect,
+  } = citySearch
 
   const { pathname } = useLocation()
   const isBookingSuccess = pathname === '/booking/success'
   const isBookingSteps = BOOKING_STEP_PATHS.includes(pathname as (typeof BOOKING_STEP_PATHS)[number])
-
-  const handleFromChange = (event: ChangeEvent<HTMLInputElement>) => {
-    fromField.onChange(event)
-    setFromCity(null)
-  }
-
-  const handleToChange = (event: ChangeEvent<HTMLInputElement>) => {
-    toField.onChange(event)
-    setToCity(null)
-  }
-
-  const handleFromSelect = (city: CitySuggestion) => {
-    fromField.selectSuggestion(city)
-    setFromCity(city)
-  }
-
-  const handleToSelect = (city: CitySuggestion) => {
-    toField.selectSuggestion(city)
-    setToCity(city)
-  }
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log('Selected route:', {
-      fromCityId: fromCity?._id ?? null,
-      fromCityName: fromCity?.name ?? fromField.value,
-      toCityId: toCity?._id ?? null,
-      toCityName: toCity?.name ?? toField.value,
-    })
-  }
 
   return (
     <header className="header">
@@ -204,14 +186,17 @@ export default function Header() {
                 </div>
               </div>
               <button type="submit" className="header__search-form-button">найти билеты</button>
+              {formError ? (
+                <p className="header__search-form-error" role="alert">
+                  {formError}
+                </p>
+              ) : null}
             </form>
           </div>
         </div>
         ) : (
           <div className="header__success-bg"></div>
         )}
-        
-        {/* <div className="header__line" /> */}
       </div>
     </header>
   )

@@ -280,3 +280,12 @@
   background-color: transparent;
   color: var(--color-accent);
 }
+
+.header__search-form-error {
+  margin: 12px 0 0 auto;
+  max-width: 325px;
+  color: #c62828;
+  font-size: 14px;
+  line-height: 1.35;
+  text-align: center;
+}
