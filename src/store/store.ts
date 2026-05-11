@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { baseApi } from './api/baseApi'
+import './api/citiesApi'
+import './api/routesApi'
 
 export const store = configureStore({
   reducer: {
