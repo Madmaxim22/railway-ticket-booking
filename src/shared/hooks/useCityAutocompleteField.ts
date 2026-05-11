@@ -7,7 +7,7 @@ function normalizeCityName(value: string) {
   return value.trim().toLowerCase()
 }
 
-export function useAutocompleteField(initialValue = '') {
+export function useCityAutocompleteField(initialValue = '') {
   const [value, setValue] = useState(initialValue)
   const [isFocused, setIsFocused] = useState(false)
   const previousLengthRef = useRef(0)

@@ -1,12 +1,12 @@
 import { useState, type ChangeEvent, type MutableRefObject } from 'react'
-import { useAutocompleteField } from '@/shared/hooks/useAutocompleteField'
+import { useCityAutocompleteField } from '@/shared/hooks/useCityAutocompleteField'
 import type { CitySuggestion } from '@/store/api/citiesApi'
 
 export function useHeaderCitySearchFields(
   clearFormErrorRef: MutableRefObject<(() => void) | null>,
 ) {
-  const fromField = useAutocompleteField()
-  const toField = useAutocompleteField()
+  const fromField = useCityAutocompleteField()
+  const toField = useCityAutocompleteField()
   const [fromCity, setFromCity] = useState<CitySuggestion | null>(null)
   const [toCity, setToCity] = useState<CitySuggestion | null>(null)
 
