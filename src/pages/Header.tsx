@@ -6,6 +6,7 @@ import LocationPinIcon from '@/shared/ui/icons/LocationPinIcon'
 import SearchSwapIcon from '@/shared/ui/icons/SearchSwapIcon'
 import { useHeaderCitySearchFields } from './useHeaderCitySearchFields'
 import { useHeaderSearchSubmit } from './useHeaderSearchSubmit'
+import { useRoutesSearch } from '@/shared/hooks/useRoutesSearch'
 import './Header.css'
 
 const BOOKING_STEP_PATHS = [
@@ -20,6 +21,7 @@ const BOOKING_STEP_PATHS = [
 export default function Header() {
   const clearFormErrorRef = useRef<(() => void) | null>(null)
   const citySearch = useHeaderCitySearchFields(clearFormErrorRef)
+  const routesSearch = useRoutesSearch()
   const {
     departureDate,
     setDepartureDate,
@@ -27,7 +29,7 @@ export default function Header() {
     setArrivalDate,
     handleSubmit,
     formError,
-  } = useHeaderSearchSubmit(citySearch, clearFormErrorRef)
+  } = useHeaderSearchSubmit(citySearch, clearFormErrorRef, routesSearch.sendServer)
   const {
     fromField,
     toField,

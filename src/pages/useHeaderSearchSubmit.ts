@@ -1,23 +1,17 @@
 import { useCallback, useLayoutEffect, useState, type FormEvent, type MutableRefObject } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {
-  buildRoutesSearchQuery,
-  routesApi,
-  type RoutesSearchParams,
-} from '@/store/api/routesApi'
-import { useAppDispatch } from '@/store/hooks'
-import { formatApiDate } from '@/shared/lib/formatApiDate'
 import type { HeaderCitySearchFields } from './useHeaderCitySearchFields'
+import type { RoutesQueryParams } from '@/store/api/routesQueryParams.types'
+import { useNavigate } from 'react-router-dom'
 
 export function useHeaderSearchSubmit(
   citySearch: HeaderCitySearchFields,
   clearFormErrorRef: MutableRefObject<(() => void) | null>,
+  sendServer: (patch?: Partial<RoutesQueryParams>) => void
 ) {
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const [departureDate, setDepartureDateInternal] = useState<Date | null>(null)
   const [arrivalDate, setArrivalDateInternal] = useState<Date | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const clearFormError = useCallback(() => {
     setFormError(null)
@@ -47,7 +41,7 @@ export function useHeaderSearchSubmit(
     resolveToByLastSuggestions,
   } = citySearch
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     clearFormError()
 
@@ -76,37 +70,14 @@ export function useHeaderSearchSubmit(
     setFromCity(resolvedFrom)
     setToCity(resolvedTo)
 
-    const params: RoutesSearchParams = {
+    sendServer({  
       from_city_id: resolvedFrom._id,
       to_city_id: resolvedTo._id,
-    }
-    if (departureDate) {
-      params.date_start = formatApiDate(departureDate)
-    }
-    if (arrivalDate) {
-      params.date_start_arrival = formatApiDate(arrivalDate)
-    }
-    const prefetchParams: RoutesSearchParams = {
-      ...params,
-      limit: 5,
-      offset: 0,
-      sort: 'date',
-    }
+      ...(departureDate ? { date_start: departureDate } : {}),
+      ...(arrivalDate ? { date_end_arrival: arrivalDate } : {}),
+    })
 
-    try {
-      await dispatch(
-        routesApi.endpoints.searchRoutes.initiate(prefetchParams, { forceRefetch: true }),
-      ).unwrap()
-
-      const qs = buildRoutesSearchQuery(params)
-      navigate({
-        pathname: '/booking/trains',
-        search: qs.startsWith('?') ? qs.slice(1) : qs,
-      })
-    } catch (error) {
-      console.error('Не удалось загрузить маршруты перед переходом', error)
-      setFormError('Не удалось загрузить маршруты. Попробуйте ещё раз.')
-    }
+    navigate('/booking/trains')
   }
 
   return {
