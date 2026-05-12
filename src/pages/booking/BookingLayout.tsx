@@ -3,6 +3,7 @@ import { Outlet, useMatch } from 'react-router-dom'
 import SearchFilters from './shared/components/SearchFilters'
 import TripSummary from './shared/components/TripSummary'
 import Breadcrumbs from './shared/breadcrumbs/Breadcrumbs'
+import SearchForm from './SearchForm'
 
 import './BookingLayout.css'
 
@@ -15,10 +16,23 @@ export default function BookingLayout() {
     <div className="booking-layout">
       <Breadcrumbs />
       <div className="booking-layout__body">
-        {asideIsSearchFilters ? <SearchFilters /> : <TripSummary />}
-        <main className="booking-layout__main">
-          <Outlet />
-        </main>
+        {asideIsSearchFilters ? (
+          <SearchForm>
+            <>
+              <SearchFilters />
+              <main className="booking-layout__main">
+                <Outlet />
+              </main>
+            </>
+          </SearchForm>
+        ) : (
+          <>
+            <TripSummary />
+            <main className="booking-layout__main">
+              <Outlet />
+            </main>
+          </>
+        )}
       </div>
     </div>
   )
