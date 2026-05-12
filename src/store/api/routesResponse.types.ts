@@ -59,14 +59,14 @@ export type RouteDirectionSegment = {
   have_fourth_class: boolean
   have_wifi: boolean
   have_air_conditioning: boolean
+  is_express: boolean
   train: RouteTrainRef
   from: RouteEndpoint
   to: RouteEndpoint
   min_price: number
-  /** Длительность сегмента в миллисекундах */
   duration: number
   price_info: RoutePriceInfo
-  seats_info: RouteSeatsInfo
+  available_seats_info: RouteSeatsInfo
 }
 
 /**

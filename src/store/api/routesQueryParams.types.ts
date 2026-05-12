@@ -5,10 +5,10 @@ export type RoutesSortParam = 'date' | 'price' | 'duration'
 export type RoutesQueryParams = {
   from_city_id: string
   to_city_id: string
-  date_start?: string | Date
-  date_end?: string | Date
-  date_start_arrival?: string | Date
-  date_end_arrival?: string | Date
+  date_start?: string
+  date_end?: string
+  date_start_arrival?: string
+  date_end_arrival?: string
   have_first_class?: boolean
   have_second_class?: boolean
   have_third_class?: boolean

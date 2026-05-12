@@ -11,4 +11,4 @@ export const routesApi = baseApi.injectEndpoints({
   }),
 })
 
-export const { useLazyGetRoutesQuery } = routesApi
+export const { useGetRoutesQuery } = routesApi
