@@ -6,7 +6,6 @@ import LocationPinIcon from '@/shared/ui/icons/LocationPinIcon'
 import SearchSwapIcon from '@/shared/ui/icons/SearchSwapIcon'
 import { useHeaderCitySearchFields } from './useHeaderCitySearchFields'
 import { useHeaderSearchSubmit } from './useHeaderSearchSubmit'
-import { useRoutesSearch } from '@/shared/hooks/useRoutesSearch'
 import './Header.css'
 
 const BOOKING_STEP_PATHS = [
@@ -21,15 +20,6 @@ const BOOKING_STEP_PATHS = [
 export default function Header() {
   const clearFormErrorRef = useRef<(() => void) | null>(null)
   const citySearch = useHeaderCitySearchFields(clearFormErrorRef)
-  const routesSearch = useRoutesSearch()
-  const {
-    departureDate,
-    setDepartureDate,
-    arrivalDate,
-    setArrivalDate,
-    handleSubmit,
-    formError,
-  } = useHeaderSearchSubmit(citySearch, clearFormErrorRef, routesSearch.sendServer)
   const {
     fromField,
     toField,
@@ -37,7 +27,17 @@ export default function Header() {
     handleToChange,
     handleFromSelect,
     handleToSelect,
+    handleSwapDirections,
   } = citySearch
+  const {
+    departureDate,
+    setDepartureDate,
+    arrivalDate,
+    setArrivalDate,
+    handleSubmit,
+    formError,
+  } = useHeaderSearchSubmit(citySearch, clearFormErrorRef)
+
 
   const { pathname } = useLocation()
   const isBookingSuccess = pathname === '/booking/success'
@@ -81,18 +81,30 @@ export default function Header() {
                 <div className="header__search-form-content-item">
                   <p className="header__search-form-title">Направление:</p>
                   <div className="header__search-form-fields">
-                    <div className="header__search-form-field">
+                    <div
+                      className="header__search-form-field"
+                      onBlur={fromField.onContainerBlur}
+                    >
                       <input
                         type="text"
                         placeholder="Откуда"
                         className="header__search-form-input"
                         value={fromField.value}
                         onFocus={fromField.onFocus}
-                        onBlur={fromField.onBlur}
                         onChange={handleFromChange}
+                        onKeyDown={(e) => fromField.onInputKeyDown(e, handleFromSelect)}
+                        role="combobox"
+                        aria-expanded={fromField.shouldShowSuggestions}
+                        aria-controls="header-city-from-suggestions"
+                        aria-autocomplete="list"
                       />
                       {fromField.shouldShowSuggestions && (
-                        <ul className="header__search-form-suggestions" role="listbox" aria-label="Подсказки городов отправления">
+                        <ul
+                          id="header-city-from-suggestions"
+                          className="header__search-form-suggestions"
+                          role="listbox"
+                          aria-label="Подсказки городов отправления"
+                        >
                           {fromField.isFetching && (
                             <li className="header__search-form-suggestion-item header__search-form-suggestion-item--muted">
                               Загрузка...
@@ -104,11 +116,17 @@ export default function Header() {
                             </li>
                           )}
                           {!fromField.isFetching &&
-                            fromField.suggestions.map((city) => (
-                              <li key={city._id}>
+                            fromField.suggestions.map((city, index) => (
+                              <li key={city._id} role="presentation">
                                 <button
                                   type="button"
-                                  className="header__search-form-suggestion-button"
+                                  role="option"
+                                  aria-selected={fromField.highlightedIndex === index}
+                                  className={
+                                    fromField.highlightedIndex === index
+                                      ? 'header__search-form-suggestion-button header__search-form-suggestion-button--highlighted'
+                                      : 'header__search-form-suggestion-button'
+                                  }
                                   onMouseDown={() => handleFromSelect(city)}
                                 >
                                   {city.name}
@@ -119,19 +137,38 @@ export default function Header() {
                       )}
                       <LocationPinIcon className="header__search-form-icon" />
                     </div>
-                    <SearchSwapIcon className="header__search-form-swap-icon" />
-                    <div className="header__search-form-field">
+                    <button
+                      type="button"
+                      className="header__search-form-swap"
+                      onClick={handleSwapDirections}
+                      aria-label="Поменять местами откуда и куда"
+                    >
+                      <SearchSwapIcon className="header__search-form-swap-icon" />
+                    </button>
+                    <div
+                      className="header__search-form-field"
+                      onBlur={toField.onContainerBlur}
+                    >
                       <input
                         type="text"
                         placeholder="Куда"
                         className="header__search-form-input"
                         value={toField.value}
                         onFocus={toField.onFocus}
-                        onBlur={toField.onBlur}
                         onChange={handleToChange}
+                        onKeyDown={(e) => toField.onInputKeyDown(e, handleToSelect)}
+                        role="combobox"
+                        aria-expanded={toField.shouldShowSuggestions}
+                        aria-controls="header-city-to-suggestions"
+                        aria-autocomplete="list"
                       />
                       {toField.shouldShowSuggestions && (
-                        <ul className="header__search-form-suggestions" role="listbox" aria-label="Подсказки городов прибытия">
+                        <ul
+                          id="header-city-to-suggestions"
+                          className="header__search-form-suggestions"
+                          role="listbox"
+                          aria-label="Подсказки городов прибытия"
+                        >
                           {toField.isFetching && (
                             <li className="header__search-form-suggestion-item header__search-form-suggestion-item--muted">
                               Загрузка...
@@ -143,11 +180,17 @@ export default function Header() {
                             </li>
                           )}
                           {!toField.isFetching &&
-                            toField.suggestions.map((city) => (
-                              <li key={city._id}>
+                            toField.suggestions.map((city, index) => (
+                              <li key={city._id} role="presentation">
                                 <button
                                   type="button"
-                                  className="header__search-form-suggestion-button"
+                                  role="option"
+                                  aria-selected={toField.highlightedIndex === index}
+                                  className={
+                                    toField.highlightedIndex === index
+                                      ? 'header__search-form-suggestion-button header__search-form-suggestion-button--highlighted'
+                                      : 'header__search-form-suggestion-button'
+                                  }
                                   onMouseDown={() => handleToSelect(city)}
                                 >
                                   {city.name}

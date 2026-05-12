@@ -1,5 +1,5 @@
 import { skipToken } from '@reduxjs/toolkit/query'
-import { useEffect, useRef, useState, type ChangeEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FocusEvent, type KeyboardEvent } from 'react'
 import { useSearchCitiesQuery, type CitySuggestion } from '@/store/api/citiesApi'
 import { useDebounce } from './useDebounce'
 
@@ -29,17 +29,71 @@ export function useCityAutocompleteField(initialValue = '') {
     setValue(event.target.value)
   }
 
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+
   const onFocus = () => {
     setIsFocused(true)
   }
 
-  const onBlur = () => {
-    window.setTimeout(() => setIsFocused(false), 100)
+  /** Вызывать на обёртке поля (инпут + список), чтобы Tab на кнопки подсказок не закрывал выпадашку. */
+  const onContainerBlur = (event: FocusEvent<HTMLElement>) => {
+    const next = event.relatedTarget as Node | null
+    if (next && event.currentTarget.contains(next)) return
+    setIsFocused(false)
+    setHighlightedIndex(-1)
   }
+
+  const selectableSuggestions =
+    isFocused && trimmedValue.length >= 2 && !isFetching ? suggestions : []
+
+  useEffect(() => {
+    setHighlightedIndex(-1)
+  }, [trimmedValue, suggestions, isFetching])
 
   const selectSuggestion = (city: CitySuggestion) => {
     setValue(city.name)
     setIsFocused(false)
+    setHighlightedIndex(-1)
+  }
+
+  const setInputValue = useCallback((next: string) => {
+    setValue(next)
+    setHighlightedIndex(-1)
+  }, [])
+
+  const onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>, onPick: (city: CitySuggestion) => void) => {
+    if (!isFocused || trimmedValue.length < 2) return
+
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      setIsFocused(false)
+      setHighlightedIndex(-1)
+      return
+    }
+
+    const list = selectableSuggestions
+    if (list.length === 0) return
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setHighlightedIndex((i) => (i < 0 ? 0 : Math.min(list.length - 1, i + 1)))
+      return
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      setHighlightedIndex((i) => (i <= 0 ? -1 : i - 1))
+      return
+    }
+
+    if (event.key === 'Enter') {
+      const index = highlightedIndex >= 0 ? highlightedIndex : 0
+      const city = list[index]
+      if (city) {
+        event.preventDefault()
+        onPick(city)
+      }
+    }
   }
 
   const findExactSuggestions = (name: string) => {
@@ -54,10 +108,14 @@ export function useCityAutocompleteField(initialValue = '') {
     suggestions,
     isFetching,
     shouldShowSuggestions: isFocused && trimmedValue.length >= 2,
+    highlightedIndex,
+    selectableSuggestions,
     onChange,
     onFocus,
-    onBlur,
+    onContainerBlur,
+    onInputKeyDown,
     selectSuggestion,
+    setInputValue,
     findExactSuggestions,
   }
 }

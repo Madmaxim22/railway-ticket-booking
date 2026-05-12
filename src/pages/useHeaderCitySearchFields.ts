@@ -34,20 +34,16 @@ export function useHeaderCitySearchFields(
     setToCity(city)
   }
 
-  const resolveFromByLastSuggestions = () => {
-    if (fromCity) return { city: fromCity, reason: null as null | 'not_found' | 'ambiguous' }
-    const matches = fromField.findExactSuggestions(fromField.value)
-    if (matches.length === 1) return { city: matches[0], reason: null as null | 'not_found' | 'ambiguous' }
-    if (matches.length > 1) return { city: null, reason: 'ambiguous' as const }
-    return { city: null, reason: 'not_found' as const }
-  }
-
-  const resolveToByLastSuggestions = () => {
-    if (toCity) return { city: toCity, reason: null as null | 'not_found' | 'ambiguous' }
-    const matches = toField.findExactSuggestions(toField.value)
-    if (matches.length === 1) return { city: matches[0], reason: null as null | 'not_found' | 'ambiguous' }
-    if (matches.length > 1) return { city: null, reason: 'ambiguous' as const }
-    return { city: null, reason: 'not_found' as const }
+  const handleSwapDirections = () => {
+    clearFormErrorRef.current?.()
+    const nextFromValue = toField.value
+    const nextToValue = fromField.value
+    const nextFromCity = toCity
+    const nextToCity = fromCity
+    fromField.setInputValue(nextFromValue)
+    toField.setInputValue(nextToValue)
+    setFromCity(nextFromCity)
+    setToCity(nextToCity)
   }
 
   return {
@@ -61,8 +57,7 @@ export function useHeaderCitySearchFields(
     handleToChange,
     handleFromSelect,
     handleToSelect,
-    resolveFromByLastSuggestions,
-    resolveToByLastSuggestions,
+    handleSwapDirections,
   }
 }
 
