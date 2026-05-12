@@ -1,4 +1,4 @@
-import Header from './pages/Header'
+import Header from './pages/header/Header'
 import HomePage from './pages/HomePage'
 import Footer from './pages/Footer'
 import './App.css'
