@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type MutableRefObject } from 'react'
-import { useCityAutocompleteField } from '@/shared/hooks/useCityAutocompleteField'
+import { useCityAutocompleteField } from './useCityAutocompleteField'
 import type { CitySuggestion } from '@/store/api/citiesApi'
 
 export function useHeaderCitySearchFields(

@@ -1,7 +1,7 @@
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FocusEvent, type KeyboardEvent } from 'react'
 import { useSearchCitiesQuery, type CitySuggestion } from '@/store/api/citiesApi'
-import { useDebounce } from './useDebounce'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 
 function normalizeCityName(value: string) {
   return value.trim().toLowerCase()

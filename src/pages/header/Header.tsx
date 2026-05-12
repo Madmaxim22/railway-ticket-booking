@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import DatePickerPopover from '../components/DatePickerPopover'
+import DatePickerPopover from '../../components/DatePickerPopover'
 import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import LocationPinIcon from '@/shared/ui/icons/LocationPinIcon'
 import SearchSwapIcon from '@/shared/ui/icons/SearchSwapIcon'
