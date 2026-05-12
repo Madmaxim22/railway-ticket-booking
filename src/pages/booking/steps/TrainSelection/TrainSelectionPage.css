@@ -38,6 +38,13 @@
   color: var(--color-text-heading);
 }
 
+.train-selection-page__error {
+  width: 100%;
+  margin: 0 0 16px;
+  font-size: 16px;
+  color: var(--color-error, #c62828);
+}
+
 .train-selection-page__dropdown {
   position: relative;
 }
@@ -175,4 +182,18 @@
 .train-selection-page__pagination-arrow:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.train-selection-page__pagination-arrow-icon {
+  display: block;
+  width: 17px;
+  height: 28px;
+  color: inherit;
+}
+
+.train-selection-page__pagination-dots-icon {
+  display: block;
+  width: 42px;
+  height: 9px;
+  color: inherit;
 }
