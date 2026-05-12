@@ -8,20 +8,25 @@ type SortOption<T extends string> = {
 type UseTrainSortParams<T extends string> = {
   options: readonly SortOption<T>[]
   initialValue?: T
+  /** Управляемый режим: значение сортировки снаружи */
+  value?: T
+  onSelect?: (value: T) => void
 }
 
 export function useTrainSort<T extends string>({
   options,
   initialValue,
+  value: controlledValue,
+  onSelect,
 }: UseTrainSortParams<T>) {
   if (options.length === 0) {
     throw new Error('Sort options must contain at least one element')
   }
 
   const fallbackValue = options[0].value
-  const [selectedSortValue, setSelectedSortValue] = useState<T>(
-    () => initialValue ?? fallbackValue,
-  )
+  const isControlled = controlledValue !== undefined
+  const [internalValue, setInternalValue] = useState<T>(() => initialValue ?? fallbackValue)
+  const selectedSortValue = isControlled ? (controlledValue as T) : internalValue
   const [isSortMenuOpen, setIsSortMenuOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
@@ -51,7 +56,10 @@ export function useTrainSort<T extends string>({
   }
 
   const selectSort = (value: T) => {
-    setSelectedSortValue(value)
+    onSelect?.(value)
+    if (!isControlled) {
+      setInternalValue(value)
+    }
     setIsSortMenuOpen(false)
   }
 
