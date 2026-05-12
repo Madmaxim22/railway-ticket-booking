@@ -1,9 +1,9 @@
-import CoupeIcon from '@/shared/ui/icons/CoupeIcon'
-import PlatkartIcon from '@/shared/ui/icons/PlatkartIcon'
-import SittingIcon from '@/shared/ui/icons/SittingIcon'
-import LuxIcon from '@/shared/ui/icons/LuxIcon'
-import WifiIcon from '@/shared/ui/icons/WifiIcon'
-import ExpressIcon from '@/shared/ui/icons/ExpressIcon'
+import CoupeIcon from '@/shared/ui/icons/filters/CoupeIcon'
+import PlatkartIcon from '@/shared/ui/icons/filters/PlatkartIcon'
+import SittingIcon from '@/shared/ui/icons/filters/SittingIcon'
+import LuxIcon from '@/shared/ui/icons/filters/LuxIcon'
+import WifiIcon from '@/shared/ui/icons/filters/WifiIcon'
+import ExpressIcon from '@/shared/ui/icons/filters/ExpressIcon'
 
 export const carriageFilterConfigs = [
   { id: 'isCoupeEnabled', label: 'Купе', icon: CoupeIcon },
