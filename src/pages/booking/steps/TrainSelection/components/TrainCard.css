@@ -1,9 +1,9 @@
-.train-card__arrow {
-  color: var(--color-text-muted);
-}
-
 .train-card__arrow-active {
   color: var(--color-text);
+  display: inline-block;
+  vertical-align: middle;
+  max-width: none;
+  margin-left: 4px;
 }
 
 .train-card {
@@ -32,11 +32,13 @@
   width: 190px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 15px;
   background-color: var(--color-bg-disabled);
 
-  padding-left: 25px;
-  padding-right: 25px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-top: 37px;
   padding-bottom: 22px;
 }
