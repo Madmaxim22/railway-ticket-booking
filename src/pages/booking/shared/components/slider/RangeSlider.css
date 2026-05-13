@@ -117,3 +117,7 @@
 .range-slider__input::-moz-range-track {
   background: transparent;
 }
+
+.range-slider--disabled {
+  opacity: 0.45;
+}

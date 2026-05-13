@@ -1,57 +1,50 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import './RangeSlider.css'
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max)
 }
 
+const KEYS_COMMIT_RANGE = new Set([
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+  'PageUp',
+  'PageDown'
+])
+
 export default function RangeSlider({
   minLimit,
   maxLimit,
   step = 1,
-  value,
-  initialMin,
-  initialMax,
   minGap = 0,
+  disabled = false,
   onChange,
+  onAfterChange,
   formatValue = (nextValue) => String(nextValue),
   minAriaLabel,
   maxAriaLabel
 }) {
   const limitsSpan = Math.max(0, maxLimit - minLimit)
-  const isControlled = Array.isArray(value) && value.length === 2
   const [currentMin, setCurrentMin] = useState(() => (
-    clamp(initialMin ?? minLimit, minLimit, maxLimit - minGap)
+    clamp(minLimit, minLimit, maxLimit - minGap)
   ))
   const [currentMax, setCurrentMax] = useState(() => (
-    clamp(initialMax ?? maxLimit, minLimit + minGap, maxLimit)
+    clamp(maxLimit, minLimit + minGap, maxLimit)
   ))
   const [activeThumb, setActiveThumb] = useState(null)
+  const rangeRef = useRef([currentMin, currentMax])
 
   useEffect(() => {
-    const safeInitialMin = clamp(initialMin ?? minLimit, minLimit, maxLimit - minGap)
-    const safeInitialMax = clamp(initialMax ?? maxLimit, minLimit + minGap, maxLimit)
-
-    if (isControlled) {
-      const safeControlledMin = clamp(value[0], minLimit, maxLimit - minGap)
-      const safeControlledMax = clamp(value[1], minLimit + minGap, maxLimit)
-
-      setCurrentMin(Math.min(safeControlledMin, safeControlledMax - minGap))
-      setCurrentMax(Math.max(safeControlledMax, safeControlledMin + minGap))
-      return
-    }
-
-    setCurrentMin(safeInitialMin)
-    setCurrentMax(safeInitialMax)
-  }, [
-    initialMax,
-    initialMin,
-    isControlled,
-    maxLimit,
-    minGap,
-    minLimit,
-    value
-  ])
+    const nextMin = clamp(minLimit, minLimit, maxLimit - minGap)
+    const nextMax = clamp(maxLimit, minLimit + minGap, maxLimit)
+    setCurrentMin(nextMin)
+    setCurrentMax(nextMax)
+    rangeRef.current = [nextMin, nextMax]
+  }, [minLimit, maxLimit, minGap])
 
   const minPercent = limitsSpan > 0 ? ((currentMin - minLimit) / limitsSpan) * 100 : 0
   const maxPercent = limitsSpan > 0 ? ((currentMax - minLimit) / limitsSpan) * 100 : 0
@@ -59,22 +52,45 @@ export default function RangeSlider({
   const isRangeVisible = rangeWidthPercent > 0
 
   const updateRange = (nextMin, nextMax) => {
-    if (!isControlled) {
-      setCurrentMin(nextMin)
-      setCurrentMax(nextMax)
-    }
-
+    rangeRef.current = [nextMin, nextMax]
+    setCurrentMin(nextMin)
+    setCurrentMax(nextMax)
     onChange?.([nextMin, nextMax])
   }
 
+  const commitAfterChange = useCallback(() => {
+    onAfterChange?.(rangeRef.current)
+  }, [onAfterChange])
+
+  const attachPointerReleaseListener = useCallback(() => {
+    if (disabled) {
+      return
+    }
+    window.addEventListener('pointerup', commitAfterChange, { once: true })
+  }, [commitAfterChange, disabled])
+
+  const handleRangeKeyUp = useCallback((event) => {
+    if (disabled) {
+      return
+    }
+    if (KEYS_COMMIT_RANGE.has(event.key)) {
+      commitAfterChange()
+    }
+  }, [commitAfterChange, disabled])
+
+  const thumbPointerHandlers = {
+    onPointerDown: attachPointerReleaseListener,
+    onKeyUp: handleRangeKeyUp
+  }
+
   return (
-    <div className="range-slider">
+    <div className={`range-slider${disabled ? ' range-slider--disabled' : ''}`}>
       <div className="range-slider__track-wrap">
         <div className="range-slider__track" />
         <div
           className="range-slider__range"
           style={{
-            left: `${minPercent}%`,
+            left: `${Math.max(0, minPercent - 1)}%`,
             width: `${rangeWidthPercent}%`,
             opacity: isRangeVisible ? 1 : 0
           }}
@@ -84,6 +100,7 @@ export default function RangeSlider({
           type="range"
           className={`range-slider__input range-slider__input--min ${activeThumb === 'min' ? 'range-slider__input--active' : ''}`}
           aria-label={minAriaLabel}
+          disabled={disabled}
           min={minLimit}
           max={maxLimit}
           step={step}
@@ -91,6 +108,7 @@ export default function RangeSlider({
           onMouseDown={() => setActiveThumb('min')}
           onTouchStart={() => setActiveThumb('min')}
           onFocus={() => setActiveThumb('min')}
+          {...thumbPointerHandlers}
           onChange={(event) => {
             const nextValue = Number(event.target.value)
             updateRange(Math.min(nextValue, currentMax - minGap), currentMax)
@@ -101,6 +119,7 @@ export default function RangeSlider({
           type="range"
           className={`range-slider__input range-slider__input--max ${activeThumb === 'max' ? 'range-slider__input--active' : ''}`}
           aria-label={maxAriaLabel}
+          disabled={disabled}
           min={minLimit}
           max={maxLimit}
           step={step}
@@ -108,6 +127,7 @@ export default function RangeSlider({
           onMouseDown={() => setActiveThumb('max')}
           onTouchStart={() => setActiveThumb('max')}
           onFocus={() => setActiveThumb('max')}
+          {...thumbPointerHandlers}
           onChange={(event) => {
             const nextValue = Number(event.target.value)
             updateRange(currentMin, Math.max(nextValue, currentMin + minGap))
