@@ -85,15 +85,6 @@ export default function TrainSelectionPage() {
         </div>
         <div className="train-selection-page__header-controls">
           <div className="train-selection-page__header-item">
-            <button
-              type="button"
-              className="train-selection-page__header-item-button"
-              onClick={() => void sendServer()}
-            >
-              Загрузить поезда
-            </button>
-          </div>
-          <div className="train-selection-page__header-item">
             <p className="train-selection-page__header-item-text">сортировать по:</p>
             <div className="train-selection-page__dropdown" ref={dropdownRef}>
               <button
@@ -153,53 +144,55 @@ export default function TrainSelectionPage() {
         ))}
       </div>
 
-      <div className="train-selection-page__pagination">
-        <button
-          type="button"
-          className="train-selection-page__pagination-arrow"
-          disabled={currentPage === 1 || isFetching}
-          aria-label="Предыдущая страница"
-          onClick={goToPreviousPage}
-        >
-          <PaginationArrowLeftIcon className="train-selection-page__pagination-arrow-icon" />
-        </button>
+      {totalItems > 0 && (
+        <div className="train-selection-page__pagination">
+          <button
+            type="button"
+            className="train-selection-page__pagination-arrow"
+            disabled={currentPage === 1 || isFetching}
+            aria-label="Предыдущая страница"
+            onClick={goToPreviousPage}
+          >
+            <PaginationArrowLeftIcon className="train-selection-page__pagination-arrow-icon" />
+          </button>
 
-        {paginationItems.map((item) =>
-          item.kind === 'page' ? (
-            <button
-              key={`page-${item.page}`}
-              type="button"
-              className={`train-selection-page__pagination-page${currentPage === item.page ? ' train-selection-page__pagination-page--active' : ''}`}
-              aria-current={currentPage === item.page ? 'page' : undefined}
-              disabled={isFetching}
-              onClick={() => goToPage(item.page)}
-            >
-              {item.page}
-            </button>
-          ) : (
-            <button
-              key={item.id}
-              type="button"
-              className="train-selection-page__pagination-page train-selection-page__pagination-page--dots"
-              aria-hidden
-              tabIndex={-1}
-              disabled
-            >
-              <PaginationDotsIcon className="train-selection-page__pagination-dots-icon" />
-            </button>
-          ),
-        )}
+          {paginationItems.map((item) =>
+            item.kind === 'page' ? (
+              <button
+                key={`page-${item.page}`}
+                type="button"
+                className={`train-selection-page__pagination-page${currentPage === item.page ? ' train-selection-page__pagination-page--active' : ''}`}
+                aria-current={currentPage === item.page ? 'page' : undefined}
+                disabled={isFetching}
+                onClick={() => goToPage(item.page)}
+              >
+                {item.page}
+              </button>
+            ) : (
+              <button
+                key={item.id}
+                type="button"
+                className="train-selection-page__pagination-page train-selection-page__pagination-page--dots"
+                aria-hidden
+                tabIndex={-1}
+                disabled
+              >
+                <PaginationDotsIcon className="train-selection-page__pagination-dots-icon" />
+              </button>
+            ),
+          )}
 
-        <button
-          type="button"
-          className="train-selection-page__pagination-arrow"
-          disabled={currentPage === totalPages || isFetching}
-          aria-label="Следующая страница"
-          onClick={goToNextPage}
-        >
-          <PaginationArrowRightIcon className="train-selection-page__pagination-arrow-icon" />
-        </button>
-      </div>
+          <button
+            type="button"
+            className="train-selection-page__pagination-arrow"
+            disabled={currentPage === totalPages || isFetching}
+            aria-label="Следующая страница"
+            onClick={goToNextPage}
+          >
+            <PaginationArrowRightIcon className="train-selection-page__pagination-arrow-icon" />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
