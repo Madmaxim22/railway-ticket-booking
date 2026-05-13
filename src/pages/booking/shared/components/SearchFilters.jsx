@@ -1,9 +1,16 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import DatePickerPopover from '@/components/DatePickerPopover'
-import { useCallback, useState } from 'react'
+import { formatApiDate } from '@/shared/lib/formatApiDate'
+import { parseFilterDate } from '@/shared/lib/parseFilterDate'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { mergeFilters } from '@/store/slices/filtersSlice'
+import { mergeSearch, selectSearch } from '@/store/slices/searchSlice'
+import { useGetLastRoutesQuery } from '@/store/api/routesApi'
+import { formatTitleCaseWords } from '@/shared/lib/formatTitleCaseWords'
 import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import AmenitiesIconWiFi from '@/shared/ui/icons/amenities/AmenitiesIconWiFi'
 import AmenitiesIconExpress from '@/shared/ui/icons/amenities/AmenitiesIconExpress'
-import AmenitiesIconFoot from '@/shared/ui/icons/amenities/AmenitiesIconFoot'
+import AmenitiesIconAirConditioning from '@/shared/ui/icons/amenities/AmenitiesIconAirConditioning'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import CarriageFilterItem from './carriage/CarriageFilterItem'
 import PriceRangeSlider from './slider/PriceRangeSlider'
@@ -11,14 +18,51 @@ import TimeRangeMenu from './time/TimeRangeMenu'
 import { carriageFilterConfigs } from './carriage/carriageFilterConfigs'
 import './SearchFilters.css'
 
+/** Соответствие слайдеров полям поиска (API). `arrivalDate` = date_end — при его отсутствии слайдер end_arrival_* отключён. */
+const SLIDER_SEARCH_INITIAL = {
+  price_from: 0,
+  price_to: 7000,
+  start_departure_hour_from: 0,
+  start_departure_hour_to: 24,
+  start_arrival_hour_from: 0,
+  start_arrival_hour_to: 24,
+  end_departure_hour_from: 0,
+  end_departure_hour_to: 24,
+  end_arrival_hour_from: 0,
+  end_arrival_hour_to: 24,
+}
+
+function stationWithVokzal(name) {
+  const trimmed = String(name).trim()
+  if (trimmed.toLowerCase().includes('вокзал')) return trimmed
+  return `${trimmed} вокзал`
+}
+
 export default function SearchFilters() {
-  const latestTickets = [
-    { id: 1, from: 'Санкт-Петербург', departureStation: 'Ленинградский вокзал',  to: 'Москва', arrivalStation: 'Казанский вокзал', date: '17.08.2018', price: '2 500' },
-    { id: 2, from: 'Москва', departureStation: 'Казанский вокзал', to: 'Казань', arrivalStation: 'Казанский вокзал', date: '17.08.2018', price: '3 500' },
-    { id: 3, from: 'Казань', departureStation: 'Казанский вокзал', to: 'Нижний Новгород', arrivalStation: 'Нижний Новгородский вокзал', date: '17.08.2018', price: '3 800' }
-  ]
-  const [departureDate, setDepartureDate] = useState(null)
-  const [arrivalDate, setArrivalDate] = useState(null)
+  const dispatch = useAppDispatch()
+  const search = useAppSelector(selectSearch)
+  const hasDateEnd = Boolean(search.date_end)
+  const { data: lastRoutesData } = useGetLastRoutesQuery()
+
+  const latestTickets = useMemo(() => {
+    if (!lastRoutesData?.length) return []
+    return lastRoutesData.map((item) => {
+      const d = item.departure
+      return {
+        id: d._id,
+        from: formatTitleCaseWords(d.from.city.name),
+        to: formatTitleCaseWords(d.to.city.name),
+        departureStation: stationWithVokzal(d.from.railway_station_name),
+        arrivalStation: stationWithVokzal(d.to.railway_station_name),
+        price: item.min_price.toLocaleString('ru-RU'),
+        haveWifi: d.have_wifi,
+        haveAirConditioning: d.have_air_conditioning,
+        isExpress: d.is_express,
+      }
+    })
+  }, [lastRoutesData])
+  const [departureDate, setDepartureDate] = useState(() => parseFilterDate(search.date_start))
+  const [arrivalDate, setArrivalDate] = useState(() => parseFilterDate(search.date_end))
   const [isDepartureTimeOpen, setIsDepartureTimeOpen] = useState(false)
   const [isArrivalTimeOpen, setIsArrivalTimeOpen] = useState(false)
   const [filters, setFilters] = useState({
@@ -29,6 +73,48 @@ export default function SearchFilters() {
     isWiFiEnabled: false,
     isExpressEnabled: false
   })
+  const [sliderSearch, setSliderSearch] = useState(SLIDER_SEARCH_INITIAL)
+
+  const handlePriceAfterChange = useCallback(([from, to]) => {
+    setSliderSearch((prev) => ({ ...prev, price_from: from, price_to: to }))
+    dispatch(mergeFilters({ price_from: from, price_to: to }))
+  }, [dispatch])
+
+  const handleStartDepartureAfterChange = useCallback(([from, to]) => {
+    const patch = {
+      start_departure_hour_from: from,
+      start_departure_hour_to: to,
+    }
+    setSliderSearch((prev) => ({ ...prev, ...patch }))
+    dispatch(mergeFilters(patch))
+  }, [dispatch])
+
+  const handleStartArrivalAfterChange = useCallback(([from, to]) => {
+    const patch = {
+      start_arrival_hour_from: from,
+      start_arrival_hour_to: to,
+    }
+    setSliderSearch((prev) => ({ ...prev, ...patch }))
+    dispatch(mergeFilters(patch))
+  }, [dispatch])
+
+  const handleEndDepartureAfterChange = useCallback(([from, to]) => {
+    const patch = {
+      end_departure_hour_from: from,
+      end_departure_hour_to: to,
+    }
+    setSliderSearch((prev) => ({ ...prev, ...patch }))
+    dispatch(mergeFilters(patch))
+  }, [dispatch])
+
+  const handleEndArrivalAfterChange = useCallback(([from, to]) => {
+    const patch = {
+      end_arrival_hour_from: from,
+      end_arrival_hour_to: to,
+    }
+    setSliderSearch((prev) => ({ ...prev, ...patch }))
+    dispatch(mergeFilters(patch))
+  }, [dispatch])
 
   const toggleFilter = useCallback((filterName) => {
     setFilters((prev) => ({
@@ -36,6 +122,22 @@ export default function SearchFilters() {
       [filterName]: !prev[filterName]
     }))
   }, [])
+
+  const handleDepartureDateChange = useCallback((date) => {
+    setDepartureDate(date)
+    dispatch(mergeSearch({ date_start: date ? formatApiDate(date) : undefined }))
+  }, [dispatch])
+
+  const handleArrivalDateChange = useCallback((date) => {
+    setArrivalDate(date)
+    dispatch(mergeSearch({ date_end: date ? formatApiDate(date) : undefined }))
+  }, [dispatch])
+
+  useEffect(() => {
+    if (!hasDateEnd) {
+      setIsArrivalTimeOpen(false)
+    }
+  }, [hasDateEnd])
 
   return (
     <aside className="search-filters">
@@ -45,7 +147,7 @@ export default function SearchFilters() {
           <div className="search-filters__field">
             <DatePickerPopover
               value={departureDate}
-              onChange={setDepartureDate}
+              onChange={handleDepartureDateChange}
               placeholder="30.08.2018"
               inputClassName="search-filters__input"
             />
@@ -57,7 +159,7 @@ export default function SearchFilters() {
           <div className="search-filters__field">
             <DatePickerPopover
               value={arrivalDate}
-              onChange={setArrivalDate}
+              onChange={handleArrivalDateChange}
               placeholder="30.08.2018"
               inputClassName="search-filters__input"
             />
@@ -81,10 +183,14 @@ export default function SearchFilters() {
           </ul>   
         </div>  
       </div>
-      <div className="search-filters__price-section">
+      <div
+        className="search-filters__price-section"
+        data-price-from={sliderSearch.price_from}
+        data-price-to={sliderSearch.price_to}
+      >
         <div className="search-filters__group">
           <p className="search-filters__title">Стоимость</p>
-          <PriceRangeSlider />
+          <PriceRangeSlider onAfterChange={handlePriceAfterChange} />
         </div>
       </div>
       <div className="search-filters__back-section">
@@ -92,6 +198,8 @@ export default function SearchFilters() {
           title="Туда"
           isOpen={isDepartureTimeOpen}
           onToggle={() => setIsDepartureTimeOpen((prev) => !prev)}
+          onDepartureTimeAfterChange={handleStartDepartureAfterChange}
+          onArrivalTimeAfterChange={handleStartArrivalAfterChange}
         />
       </div>
       <div className="search-filters__forth-section">
@@ -99,6 +207,10 @@ export default function SearchFilters() {
           title="Обратно"
           isOpen={isArrivalTimeOpen}
           onToggle={() => setIsArrivalTimeOpen((prev) => !prev)}
+          onDepartureTimeAfterChange={handleEndDepartureAfterChange}
+          onArrivalTimeAfterChange={handleEndArrivalAfterChange}
+          disableArrivalTimeSlider={!hasDateEnd}
+          isToggleDisabled={!hasDateEnd}
         />
       </div>
       <div className="search-filters__latest-tickets">
@@ -117,11 +229,19 @@ export default function SearchFilters() {
                 </div>
               </div>
               <div className="search-filters__latest-ticket-meta">
-                <div className="search-filters__latest-ticket-amenities">
-                  <AmenitiesIconWiFi className="search-filters__latest-ticket-amenity-icon" />
-                  <AmenitiesIconExpress className="search-filters__latest-ticket-amenity-icon" />
-                  <AmenitiesIconFoot className="search-filters__latest-ticket-amenity-icon" />
-                </div>
+                {(ticket.haveWifi || ticket.haveAirConditioning || ticket.isExpress) && (
+                  <div className="search-filters__latest-ticket-amenities">
+                    {ticket.haveWifi && (
+                      <AmenitiesIconWiFi className="search-filters__latest-ticket-amenity-icon" />
+                    )}
+                    {ticket.haveAirConditioning && (
+                      <AmenitiesIconAirConditioning className="search-filters__latest-ticket-amenity-icon" />
+                    )}
+                    {ticket.isExpress && (
+                      <AmenitiesIconExpress className="search-filters__latest-ticket-amenity-icon" />
+                    )}
+                  </div>
+                )}
                 <p className="search-filters__latest-ticket-price">
                   <span className="search-filters__latest-ticket-price-from">от</span>
                   <span className="search-filters__latest-ticket-price-value">{ticket.price}</span>

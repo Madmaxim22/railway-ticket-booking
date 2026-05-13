@@ -258,12 +258,12 @@
 .search-filters__latest-ticket-amenity-icon {
   width: 20px;
   height: 20px;
-  color: var(--color-border);
+  color: #e5e5e5;
   flex-shrink: 0;
 }
 
 .search-filters__latest-ticket-price {
-  margin: 0;
+  margin: 0 0 0 auto;
   display: flex;
   align-items: baseline;
   gap: 5px;
