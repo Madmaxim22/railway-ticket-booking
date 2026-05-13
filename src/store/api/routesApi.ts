@@ -1,5 +1,5 @@
 import { baseApi } from './baseApi'
-import type { RoutesListResponse } from './routesResponse.types'
+import type { LastRoutesApiResponse, RoutesListResponse } from './routesResponse.types'
 
 export const routesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,7 +8,10 @@ export const routesApi = baseApi.injectEndpoints({
         url: `/routes?${searchString}`,
       }),
     }),
+    getLastRoutes: builder.query<LastRoutesApiResponse, void>({
+      query: () => '/routes/last',
+    }),
   }),
 })
 
-export const { useGetRoutesQuery } = routesApi
+export const { useGetRoutesQuery, useGetLastRoutesQuery } = routesApi

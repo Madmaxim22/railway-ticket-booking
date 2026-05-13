@@ -93,3 +93,28 @@ export type RoutesListResponse = {
   total_count: number
   items: RoutesListItem[]
 }
+
+/**
+ * Сегмент `departure` в ответе GET /routes/last (поля `price_info` и места
+ * могут быть неполными — для карточки «последние билеты» достаточно концов и услуг).
+ */
+export type LastRouteDepartureSegment = {
+  _id: string
+  have_wifi: boolean
+  have_air_conditioning: boolean
+  is_express: boolean
+  min_price: number
+  duration: number
+  train: RouteTrainRef
+  from: RouteEndpoint
+  to: RouteEndpoint
+}
+
+/** Один элемент GET /routes/last (до 5 направлений) */
+export type LastRoutesApiItem = {
+  min_price: number
+  departure: LastRouteDepartureSegment
+}
+
+/** Тело ответа GET /routes/last */
+export type LastRoutesApiResponse = LastRoutesApiItem[]
