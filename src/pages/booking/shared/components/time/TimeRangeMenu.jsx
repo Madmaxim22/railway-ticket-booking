@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './TimeRangeMenu.css'
 import BackIcon from '@/shared/ui/icons/BackIcon'
 import ForthIcon from '@/shared/ui/icons/ForthIcon'
@@ -6,12 +5,16 @@ import CloseToggleIcon from '@/shared/ui/icons/CloseToggleIcon'
 import OpenToggleIcon from '@/shared/ui/icons/OpenToggleIcon'
 import TimeRangeSlider from '../slider/TimeRangeSlider'
 
-export default function TimeRangeMenu({ title, isOpen, onToggle }) {
-  const [fromHour, setFromHour] = useState(0)
-  const [toHour, setToHour] = useState(24)
-  const [arrivalFromHour, setArrivalFromHour] = useState(0)
-  const [arrivalToHour, setArrivalToHour] = useState(24)
-
+export default function TimeRangeMenu({
+  title,
+  isOpen,
+  onToggle,
+  onDepartureTimeAfterChange,
+  onArrivalTimeAfterChange,
+  disableArrivalTimeSlider = false,
+  isToggleDisabled = false,
+  toggleDisabledTitle = 'Сначала выберите дату возвращения',
+}) {
   return (
     <div className="search-filters__time-section">
       <div className="search-filters__time-content">
@@ -21,36 +24,25 @@ export default function TimeRangeMenu({ title, isOpen, onToggle }) {
         <button
           type="button"
           className={`search-filters__time-button ${isOpen ? 'search-filters__time-button--open' : ''}`}
+          disabled={isToggleDisabled}
+          title={isToggleDisabled ? toggleDisabledTitle : undefined}
+          aria-label={isToggleDisabled ? `${title}. ${toggleDisabledTitle}` : `${title}. ${isOpen ? 'Свернуть' : 'Развернуть'} фильтр по времени`}
           onClick={onToggle}
         >
           {isOpen ? <OpenToggleIcon className="search-filters__time-icon-open" /> : <CloseToggleIcon className="search-filters__time-icon-close" />}
         </button>
       </div>
       
-      {isOpen && (
-        <>
-          <div className="search-filters__time-slider-container">
-            <p className="search-filters__time-slider-title">Время отбытия</p>
-            <TimeRangeSlider
-              value={[fromHour, toHour]}
-              onChange={([nextFromHour, nextToHour]) => {
-                setFromHour(nextFromHour)
-                setToHour(nextToHour)
-              }}
-            />
-          </div>
-          <div className="search-filters__time-slider-container">
-            <p className="search-filters__time-slider-title">Время прибытия</p>
-            <TimeRangeSlider
-              value={[arrivalFromHour, arrivalToHour]}
-              onChange={([nextFromHour, nextToHour]) => {
-                setArrivalFromHour(nextFromHour)
-                setArrivalToHour(nextToHour)
-              }}
-            />
-          </div>
-        </>
-      )}
+      <div className="search-filters__time-sliders" hidden={!isOpen}>
+        <div className="search-filters__time-slider-container">
+          <p className="search-filters__time-slider-title">Время отбытия</p>
+          <TimeRangeSlider onAfterChange={onDepartureTimeAfterChange} />
+        </div>
+        <div className="search-filters__time-slider-container">
+          <p className="search-filters__time-slider-title">Время прибытия</p>
+          <TimeRangeSlider onAfterChange={onArrivalTimeAfterChange} disabled={disableArrivalTimeSlider} />
+        </div>
+      </div>
     </div>
   )
 }

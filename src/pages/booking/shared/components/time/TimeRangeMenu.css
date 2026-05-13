@@ -47,6 +47,19 @@
   color: var(--color-border);
 }
 
+.search-filters__time-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.search-filters__time-button:disabled:hover {
+  color: var(--color-surface);
+}
+
+.search-filters__time-button--open:disabled:hover {
+  color: var(--color-border);
+}
+
 .search-filters__time-icon-close,
 .search-filters__time-icon-open {
   color: inherit;
