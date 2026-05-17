@@ -66,7 +66,7 @@ export default function SearchFilters() {
   const [isDepartureTimeOpen, setIsDepartureTimeOpen] = useState(false)
   const [isArrivalTimeOpen, setIsArrivalTimeOpen] = useState(false)
   const [filters, setFilters] = useState({
-    isCoupeEnabled: true,
+    isCoupeEnabled: false,
     isPlatkartEnabled: false,
     isSittingEnabled: false,
     isLuxEnabled: false,
