@@ -1,6 +1,6 @@
 import Header from './pages/header/Header'
 import HomePage from './pages/HomePage'
-import Footer from './pages/Footer'
+import Footer from './pages/footer/Footer'
 import './App.css'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import BookingLayout from './pages/booking/BookingLayout'
