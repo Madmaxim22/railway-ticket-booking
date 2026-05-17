@@ -4,8 +4,8 @@ import DatePickerPopover from '../../components/DatePickerPopover'
 import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import LocationPinIcon from '@/shared/ui/icons/LocationPinIcon'
 import SearchSwapIcon from '@/shared/ui/icons/SearchSwapIcon'
-import { useHeaderCitySearchFields } from './useHeaderCitySearchFields'
-import { useHeaderSearchSubmit } from './useHeaderSearchSubmit'
+import { useHeaderCitySearchFields } from './hooks/useHeaderCitySearchFields'
+import { useHeaderSearchSubmit } from './hooks/useHeaderSearchSubmit'
 import './Header.css'
 
 const BOOKING_STEP_PATHS = [
