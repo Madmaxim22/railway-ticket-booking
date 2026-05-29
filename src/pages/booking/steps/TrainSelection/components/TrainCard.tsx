@@ -26,6 +26,7 @@ type TrainCardProps = {
   fares?: Fare[]
   showRoutePath?: boolean
   item: RoutesListItem
+  onActionClick?: () => void
 }
 
 function buildFaresFromDepartureSegment(segment: RouteDirectionSegment): Fare[] {
@@ -85,6 +86,7 @@ export default function TrainCard({
   actionLabel = 'Выбрать места',
   showRoutePath = true,
   item,
+  onActionClick,
 }: TrainCardProps) {
 
   const trainNumber = '111С'
@@ -192,7 +194,11 @@ export default function TrainCard({
           )}
 
           <div className="train-card__booking-button">
-            <button className={`train-card__booking-button-text${isReviewMode ? ' train-card__booking-button-text--review' : ''}`}>
+            <button
+              type="button"
+              className={`train-card__booking-button-text${isReviewMode ? ' train-card__booking-button-text--review' : ''}`}
+              onClick={onActionClick}
+            >
               {actionLabel}
             </button>
           </div>

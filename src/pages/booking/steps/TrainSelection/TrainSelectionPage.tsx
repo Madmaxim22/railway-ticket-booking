@@ -6,6 +6,7 @@ import { useRoutesSearchModel } from '@/shared/hooks/useRoutesSearchModel'
 import PaginationArrowLeftIcon from '@/shared/ui/icons/pagination/PaginationArrowLeftIcon'
 import PaginationArrowRightIcon from '@/shared/ui/icons/pagination/PaginationArrowRightIcon'
 import PaginationDotsIcon from '@/shared/ui/icons/pagination/PaginationDotsIcon'
+import { useNavigate } from 'react-router-dom'
 
 function formatRoutesRequestError(error: unknown): string {
   if (!error || typeof error !== 'object') return 'Не удалось загрузить маршруты.'
@@ -22,6 +23,7 @@ function formatRoutesRequestError(error: unknown): string {
 }
 
 export default function TrainSelectionPage() {
+  const navigate = useNavigate()
   const perPageOptions = [5, 10, 20] as const
   const SORT_LABEL_OPTIONS = [
     { value: 'date', label: 'времени' },
@@ -140,7 +142,11 @@ export default function TrainSelectionPage() {
 
       <div className="train-selection-page__content">
         {items.map((item) => (
-          <TrainCard key={item.departure._id} item={item}/>
+          <TrainCard
+            key={item.departure._id}
+            item={item}
+            onActionClick={() => navigate('/booking/seats')}
+          />
         ))}
       </div>
 
