@@ -158,6 +158,10 @@ export function SeatSelectionPageContainer() {
     [cycleTicketCount],
   )
 
+  const handleChangeTrain = () => {
+    navigate('/booking/trains')
+  }
+
   const handleNext = () => {
     const validationMessage = validateSeatSelection(
       trains,
@@ -269,6 +273,7 @@ export function SeatSelectionPageContainer() {
               isAtMax,
               remainingHint,
             }}
+            onChangeTrain={handleChangeTrain}
           />
         )
       })}

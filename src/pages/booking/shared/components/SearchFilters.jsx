@@ -3,7 +3,7 @@ import DatePickerPopover from '@/components/DatePickerPopover'
 import { formatApiDate } from '@/shared/lib/formatApiDate'
 import { parseFilterDate } from '@/shared/lib/parseFilterDate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { mergeFilters } from '@/store/slices/filtersSlice'
+import { mergeFilters, selectFilters } from '@/store/slices/filtersSlice'
 import { mergeSearch, selectSearch } from '@/store/slices/searchSlice'
 import { useGetLastRoutesQuery } from '@/store/api/routesApi'
 import { formatTitleCaseWords } from '@/shared/lib/formatTitleCaseWords'
@@ -41,6 +41,7 @@ function stationWithVokzal(name) {
 export default function SearchFilters() {
   const dispatch = useAppDispatch()
   const search = useAppSelector(selectSearch)
+  const reduxFilters = useAppSelector(selectFilters)
   const hasDateEnd = Boolean(search.date_end)
   const { data: lastRoutesData } = useGetLastRoutesQuery()
 
@@ -65,14 +66,6 @@ export default function SearchFilters() {
   const [arrivalDate, setArrivalDate] = useState(() => parseFilterDate(search.date_end))
   const [isDepartureTimeOpen, setIsDepartureTimeOpen] = useState(false)
   const [isArrivalTimeOpen, setIsArrivalTimeOpen] = useState(false)
-  const [filters, setFilters] = useState({
-    isCoupeEnabled: false,
-    isPlatkartEnabled: false,
-    isSittingEnabled: false,
-    isLuxEnabled: false,
-    isWiFiEnabled: false,
-    isExpressEnabled: false
-  })
   const [sliderSearch, setSliderSearch] = useState(SLIDER_SEARCH_INITIAL)
 
   const handlePriceAfterChange = useCallback(([from, to]) => {
@@ -116,12 +109,10 @@ export default function SearchFilters() {
     dispatch(mergeFilters(patch))
   }, [dispatch])
 
-  const toggleFilter = useCallback((filterName) => {
-    setFilters((prev) => ({
-      ...prev,
-      [filterName]: !prev[filterName]
-    }))
-  }, [])
+  const toggleFilter = useCallback((apiKey) => {
+    const isCurrentlyActive = Boolean(reduxFilters[apiKey])
+    dispatch(mergeFilters({ [apiKey]: isCurrentlyActive ? undefined : true }))
+  }, [dispatch, reduxFilters])
 
   const handleDepartureDateChange = useCallback((date) => {
     setDepartureDate(date)
@@ -170,14 +161,14 @@ export default function SearchFilters() {
       <div className="search-filters__type-carriage-section">
         <div className="search-filters__group">
           <ul className="search-filters__list">
-            {carriageFilterConfigs.map(({ id, label, icon: Icon }) => (
+            {carriageFilterConfigs.map(({ id, label, icon: Icon, apiKey }) => (
               <CarriageFilterItem
                 key={id}
                 Icon={Icon}
                 id={id}
                 label={label}
-                isActive={filters[id]}
-                onToggle={toggleFilter}
+                isActive={Boolean(reduxFilters[apiKey])}
+                onToggle={() => toggleFilter(apiKey)}
               />
             ))}
           </ul>   

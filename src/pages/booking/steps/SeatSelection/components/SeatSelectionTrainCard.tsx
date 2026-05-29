@@ -25,6 +25,7 @@ type SeatSelectionTrainCardProps = {
   onSelectedSeatsChange: (seats: number[]) => void
   showTicketsSection?: boolean
   ticketsSectionProps?: ComponentProps<typeof TicketsSection>
+  onChangeTrain?: () => void
 }
 
 export function SeatSelectionTrainCard({
@@ -38,6 +39,7 @@ export function SeatSelectionTrainCard({
   onSelectedSeatsChange,
   showTicketsSection = false,
   ticketsSectionProps,
+  onChangeTrain,
 }: SeatSelectionTrainCardProps) {
   const availableTypes = useMemo(
     () => new Set(train.carriages.map((carriage) => carriage.type)),
@@ -94,7 +96,11 @@ export function SeatSelectionTrainCard({
             isReturn ? ' seat-selection-page__card-header-icon--return' : ''
           }`}
         />
-        <button type="button" className="seat-selection-page__card-header-button">
+        <button
+          type="button"
+          className="seat-selection-page__card-header-button"
+          onClick={onChangeTrain}
+        >
           Выбрать другой поезд
         </button>
       </div>
