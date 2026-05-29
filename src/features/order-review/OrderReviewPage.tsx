@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import PassengersIcon from '@/shared/ui/icons/PassengersIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import { useCreateOrderMutation } from '@/store/api/orderApi'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { useAppSelector } from '@/store/hooks'
 import { buildOrderRequest } from '@/store/lib/buildOrderRequest'
 import { selectOrderReviewViewModel } from '@/store/selectors/orderReviewSelectors'
 import { buildSeatSelectionNavigationStateFromBooking } from '@/features/seat-selection/lib/seatSelectionNavigation'
@@ -12,7 +12,7 @@ import {
   formatPayerGreetingName,
   type BookingSuccessNavigationState,
 } from '@/features/booking-success/lib/bookingSuccessNavigation'
-import { resetBooking, selectBooking } from '@/store/slices/bookingSlice'
+import { selectBooking } from '@/store/slices/bookingSlice'
 import TrainCard from '@/features/train-selection/components/TrainCard'
 
 import './OrderReviewPage.css'
@@ -37,7 +37,6 @@ function formatOrderError(error: unknown): string {
 
 export default function OrderReviewPage() {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
   const booking = useAppSelector(selectBooking)
   const { trainCardItem, showReturnTrip, passengers, totalPrice, paymentMethodLabel } =
     useAppSelector(selectOrderReviewViewModel)
@@ -85,8 +84,7 @@ export default function OrderReviewPage() {
           ? { payerGreeting: formatPayerGreetingName(booking.contactInfo) }
           : undefined
 
-      dispatch(resetBooking())
-      navigate('/booking/success', { state: successNavigationState })
+      navigate('/booking/success', { replace: true, state: successNavigationState })
     } catch (error) {
       setSubmitError(formatOrderError(error))
     }
