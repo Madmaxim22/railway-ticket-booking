@@ -1,6 +1,7 @@
 import PassengersIcon from '@/shared/ui/icons/PassengersIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
-import TrainCard from '../TrainSelection/components/trains/TrainCard'
+import TrainCard from '../TrainSelection/components/TrainCard'
+import { orderReviewTrainCardItem } from './orderReviewTrainStub'
 
 import './OrderReviewPage.css'
 
@@ -41,18 +42,16 @@ const passengers: Passenger[] = [
 ]
 
 export default function OrderReviewPage() {
-  const reviewFares = [
-    { type: 'Сидячий', count: 88, price: '1 920' },
-    { type: 'Плацкарт', count: 52, price: '2 530' },
-    { type: 'Купе', count: 24, price: '3 820' },
-    { type: 'Люкс', count: 15, price: '4 950' },
-  ]
-
   return (
     <div className="order-review-page">
       <section className="order-review-page__card">
         <h2 className="order-review-page__section-title">Поезд</h2>
-        <TrainCard mode="review" actionLabel="Изменить" fares={reviewFares} showRoutePath={false} />
+        <TrainCard
+          mode="review"
+          actionLabel="Изменить"
+          showRoutePath={false}
+          item={orderReviewTrainCardItem}
+        />
       </section>
 
       <section className="order-review-page__card">
