@@ -1,11 +1,27 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import {
+  selectBookingPaymentMethod,
+  setPaymentMethod,
+  type PaymentMethod,
+} from '@/store/slices/bookingSlice'
 
 import './PaymentPage.css'
 
-type PaymentMethod = 'online' | 'cash'
-
 export default function PaymentPage() {
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('online')
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const savedPaymentMethod = useAppSelector(selectBookingPaymentMethod)
+  const [paymentMethod, setPaymentMethodState] = useState<PaymentMethod>(
+    savedPaymentMethod ?? 'online',
+  )
+
+  const handleBuyTickets = () => {
+    dispatch(setPaymentMethod(paymentMethod))
+    navigate('/booking/confirmation')
+  }
 
   return (
     <div className="payment-page">
@@ -57,7 +73,7 @@ export default function PaymentPage() {
                 className="payment-page__checkbox"
                 type="checkbox"
                 checked={paymentMethod === 'online'}
-                onChange={() => setPaymentMethod('online')}
+                onChange={() => setPaymentMethodState('online')}
               />
               <span className="payment-page__checkbox-label">Онлайн</span>
             </label>
@@ -77,7 +93,7 @@ export default function PaymentPage() {
                 className="payment-page__checkbox"
                 type="checkbox"
                 checked={paymentMethod === 'cash'}
-                onChange={() => setPaymentMethod('cash')}
+                onChange={() => setPaymentMethodState('cash')}
               />
               <span className="payment-page__checkbox-label">Наличными</span>
             </label>
@@ -86,7 +102,11 @@ export default function PaymentPage() {
       </div>
 
       <footer className="payment-page__footer">
-        <button type="button" className="payment-page__submit-btn">
+        <button
+          type="button"
+          className="payment-page__submit-btn"
+          onClick={handleBuyTickets}
+        >
           Купить билеты
         </button>
       </footer>

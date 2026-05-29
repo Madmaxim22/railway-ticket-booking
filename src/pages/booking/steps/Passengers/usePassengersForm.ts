@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useAppSelector } from '@/store/hooks'
-import { selectBookingTicketCounts } from '@/store/slices/bookingSlice'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import {
+  selectBookingPassengers,
+  selectBookingTicketCounts,
+  setPassengers,
+} from '@/store/slices/bookingSlice'
 
 import { buildPassengersFromTicketCounts, syncPassengersWithTicketCounts } from './lib/syncPassengersWithTicketCounts'
 import {
@@ -15,9 +19,13 @@ import { usePassengerValidation } from './usePassengerValidation'
 
 export function usePassengersForm() {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const ticketCounts = useAppSelector(selectBookingTicketCounts)
-  const [passengers, setPassengers] = useState<Passenger[]>(() =>
-    buildPassengersFromTicketCounts(ticketCounts),
+  const savedPassengers = useAppSelector(selectBookingPassengers)
+  const [passengers, setPassengersState] = useState<Passenger[]>(() =>
+    savedPassengers.length > 0
+      ? savedPassengers
+      : buildPassengersFromTicketCounts(ticketCounts),
   )
   const [errorsByPassengerId, setErrorsByPassengerId] = useState<Record<number, PassengerValidationErrors>>({})
   const [footerStateByPassengerId, setFooterStateByPassengerId] = useState<Record<number, PassengerFooterState>>({})
@@ -32,7 +40,7 @@ export function usePassengersForm() {
   const didAutoOpenFirstPassengerRef = useRef(false)
 
   useEffect(() => {
-    setPassengers(prev => {
+    setPassengersState(prev => {
       const next = syncPassengersWithTicketCounts(prev, ticketCounts)
       if (next.length === prev.length && next.every((p, i) => p === prev[i])) {
         return prev
@@ -77,7 +85,7 @@ export function usePassengersForm() {
   )
 
   const updatePassenger = useCallback(<K extends keyof Passenger>(id: number, key: K, value: Passenger[K]) => {
-    setPassengers(prev => {
+    setPassengersState(prev => {
       const nextPassengers = prev.map(p => (p.id === id ? { ...p, [key]: value } : p))
       const nextPassenger = nextPassengers.find(p => p.id === id)
       if (!nextPassenger) return nextPassengers
@@ -135,8 +143,9 @@ export function usePassengersForm() {
       return
     }
 
+    dispatch(setPassengers(passengers))
     navigate('/booking/payment')
-  }, [navigate, openPassenger, passengers, validatePassenger])
+  }, [dispatch, navigate, openPassenger, passengers, validatePassenger])
 
   return {
     passengers,

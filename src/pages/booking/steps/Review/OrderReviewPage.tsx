@@ -1,57 +1,27 @@
 import PassengersIcon from '@/shared/ui/icons/PassengersIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
+import { useAppSelector } from '@/store/hooks'
+import { selectOrderReviewViewModel } from '@/store/selectors/orderReviewSelectors'
 import TrainCard from '../TrainSelection/components/TrainCard'
-import { orderReviewTrainCardItem } from './orderReviewTrainStub'
 
 import './OrderReviewPage.css'
 
-type Passenger = {
-  id: number
-  fullName: string
-  type: string
-  gender: string
-  birthDate: string
-  document: string
-}
-
-const passengers: Passenger[] = [
-  {
-    id: 1,
-    fullName: 'Мартынюк Ирина Эдуардовна',
-    type: 'Взрослый',
-    gender: 'Пол женский',
-    birthDate: 'Дата рождения 17.02.1985',
-    document: 'Паспорт РФ 4204 380694',
-  },
-  {
-    id: 2,
-    fullName: 'Мартынюк Кирилл Сергеевич',
-    type: 'Детский',
-    gender: 'Пол мужской',
-    birthDate: 'Дата рождения 25.01.2006',
-    document: 'Свидетельство о рождении VIII УН 256319',
-  },
-  {
-    id: 3,
-    fullName: 'Мартынюк Сергей Петрович',
-    type: 'Взрослый',
-    gender: 'Пол мужской',
-    birthDate: 'Дата рождения 19.06.1982',
-    document: 'Паспорт РФ 4204 380694',
-  },
-]
-
 export default function OrderReviewPage() {
+  const { trainCardItem, showReturnTrip, passengers, totalPrice, paymentMethodLabel } =
+    useAppSelector(selectOrderReviewViewModel)
+
   return (
     <div className="order-review-page">
       <section className="order-review-page__card">
         <h2 className="order-review-page__section-title">Поезд</h2>
-        <TrainCard
-          mode="review"
-          actionLabel="Изменить"
-          showRoutePath={false}
-          item={orderReviewTrainCardItem}
-        />
+        {trainCardItem && (
+          <TrainCard
+            mode="review"
+            actionLabel="Изменить"
+            showReturnTrip={showReturnTrip}
+            item={trainCardItem}
+          />
+        )}
       </section>
 
       <section className="order-review-page__card">
@@ -81,7 +51,9 @@ export default function OrderReviewPage() {
           <div className="order-review-page__passengers-side">
             <div className="order-review-page__total">
               <span className="order-review-page__total-label">Всего</span>
-              <span className="order-review-page__total-value">7 760</span>
+              <span className="order-review-page__total-value">
+                {totalPrice.toLocaleString('ru-RU')}
+              </span>
               <FarePriceIcon className="order-review-page__total-currency" />
             </div>
 
@@ -96,7 +68,7 @@ export default function OrderReviewPage() {
         <h2 className="order-review-page__section-title">Способ оплаты</h2>
 
         <div className="order-review-page__payment-content">
-          <div className="order-review-page__payment-method">Наличными</div>
+          <div className="order-review-page__payment-method">{paymentMethodLabel}</div>
 
           <div className="order-review-page__payment-side">
             <button type="button" className="order-review-page__edit-button">

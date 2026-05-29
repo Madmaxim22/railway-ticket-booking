@@ -24,7 +24,7 @@ type TrainCardProps = {
   mode?: 'selection' | 'review'
   actionLabel?: string
   fares?: Fare[]
-  showRoutePath?: boolean
+  showReturnTrip?: boolean
   item: RoutesListItem
   onActionClick?: () => void
 }
@@ -84,12 +84,12 @@ function buildFaresFromDepartureSegment(segment: RouteDirectionSegment): Fare[] 
 export default function TrainCard({
   mode = 'selection',
   actionLabel = 'Выбрать места',
-  showRoutePath = true,
+  showReturnTrip,
   item,
   onActionClick,
 }: TrainCardProps) {
 
-  const trainNumber = '111С'
+  const trainNumber = item.departure.train.name
   const departureCityPassenger = formatTitleCaseWords(item.departure.from.city.name)
   const arrivalCityPassenger = formatTitleCaseWords(item.departure.to.city.name)
   const trainDuration = formatRouteDuration(item.departure.duration)
@@ -98,12 +98,25 @@ export default function TrainCard({
   const trainStationDeparture = item.departure.from.railway_station_name + ' вокзал'
   const trainStationArrival = item.departure.to.railway_station_name + ' вокзал'
 
-  const isReturn = item.arrival != null
+  const isReturn = showReturnTrip ?? item.arrival != null
   const isReviewMode = mode === 'review'
+  const returnSegment = isReturn ? item.arrival : null
 
-  const trainDurationReturn = isReturn ? formatRouteDuration(item.arrival!.duration) : null
-  const trainDepartureReturn = isReturn ? formatRouteTime(item.arrival!.from.datetime) : null
-  const trainArrivalReturn = isReturn ? formatRouteTime(item.arrival!.to.datetime) : null
+  const returnDepartureCity = returnSegment
+    ? formatTitleCaseWords(returnSegment.from.city.name)
+    : null
+  const returnArrivalCity = returnSegment
+    ? formatTitleCaseWords(returnSegment.to.city.name)
+    : null
+  const trainDurationReturn = returnSegment ? formatRouteDuration(returnSegment.duration) : null
+  const trainDepartureReturn = returnSegment ? formatRouteTime(returnSegment.from.datetime) : null
+  const trainArrivalReturn = returnSegment ? formatRouteTime(returnSegment.to.datetime) : null
+  const returnStationDeparture = returnSegment
+    ? returnSegment.from.railway_station_name + ' вокзал'
+    : null
+  const returnStationArrival = returnSegment
+    ? returnSegment.to.railway_station_name + ' вокзал'
+    : null
 
   const fares = buildFaresFromDepartureSegment(item.departure)
 
@@ -112,19 +125,15 @@ export default function TrainCard({
       <section className="train-card__route">
         <TrainRouteIcon className="train-card__route-icon" />
         <p className="train-card__train-number">{trainNumber}</p>
-        {showRoutePath ? (
-          <div className="train-card__route-path">
-            <p className="train-card__train-route-city train-card__train-route-city-active">
-              {departureCityPassenger}
-              <RouteArrowIcon className="train-card__arrow-active" />
-            </p>
-            <p className="train-card__train-route-city train-card__train-route-city-active">{arrivalCityPassenger}</p>
-          </div>
-        ) : (
+        <div className="train-card__route-path">
           <p className="train-card__train-route-city train-card__train-route-city-active">
-            {departureCityPassenger} → {arrivalCityPassenger}
+            {departureCityPassenger}
+            <RouteArrowIcon className="train-card__arrow-active" />
           </p>
-        )}
+          <p className="train-card__train-route-city train-card__train-route-city-active">
+            {arrivalCityPassenger}
+          </p>
+        </div>
       </section>
       <section className="train-card__schedule">
       <div className="train-card__trip" key={item.departure._id}>
@@ -145,12 +154,12 @@ export default function TrainCard({
       </div>
 
       {/* обратный рейс */}
-      {isReturn && (
-        <div className="train-card__trip train-card__trip--return" key={item.arrival._id}>
+      {isReturn && returnSegment && (
+        <div className="train-card__trip train-card__trip--return" key={returnSegment._id}>
           <div className="train-card__departure">
             <div className="train-card__time">{trainDepartureReturn}</div>
-            <div className="train-card__city">{arrivalCityPassenger}</div>
-            <div className="train-card__station">{trainStationArrival}</div>
+            <div className="train-card__city">{returnDepartureCity}</div>
+            <div className="train-card__station">{returnStationDeparture}</div>
           </div>
           <div className="train-card__duration">
             <span className="train-card__duration-value">{trainDurationReturn}</span>
@@ -158,10 +167,10 @@ export default function TrainCard({
           </div>
           <div className="train-card__arrival">
             <div className="train-card__time">{trainArrivalReturn}</div>
-            <div className="train-card__city">{departureCityPassenger}</div>
-            <div className="train-card__station">{trainStationDeparture}</div>
+            <div className="train-card__city">{returnArrivalCity}</div>
+            <div className="train-card__station">{returnStationArrival}</div>
           </div>
-        </div>  
+        </div>
       )}
 
       </section>
