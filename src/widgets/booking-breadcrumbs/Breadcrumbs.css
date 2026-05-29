@@ -96,6 +96,11 @@
   background-color: var(--color-accent);
 }
 
+.breadcrumbs__link--disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
 .breadcrumbs__badge {
   display: inline-flex;
   align-items: center;

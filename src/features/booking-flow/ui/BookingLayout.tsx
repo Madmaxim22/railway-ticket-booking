@@ -1,27 +1,22 @@
-import { Navigate, Outlet, useMatch } from 'react-router-dom'
+import { Outlet, useMatch } from 'react-router-dom'
 
-import { getBookingStepRedirect } from '@/features/booking-flow/lib/bookingStepAccess'
-import { useBookingStep } from '@/features/booking-flow/hooks/useBookingStep'
+import { useBookingStepGuard } from '@/features/booking-flow/hooks/useBookingStepGuard'
 import SearchFilters from '@/features/route-search/ui/SearchFilters'
 import TripSummary from '@/widgets/trip-summary/TripSummary'
 import Breadcrumbs from '@/widgets/booking-breadcrumbs/Breadcrumbs'
 import SearchForm from '@/features/route-search/ui/SearchForm'
-import { useAppSelector } from '@/store/hooks'
-import { selectBooking } from '@/store/slices/bookingSlice'
 
 import './BookingLayout.css'
 
 export default function BookingLayout() {
-  const booking = useAppSelector(selectBooking)
-  const bookingStep = useBookingStep()
-  const redirectTo = bookingStep ? getBookingStepRedirect(booking, bookingStep) : null
+  const { isStepAllowed } = useBookingStepGuard()
 
   const isTrainsStep = useMatch('/booking/trains')
   const isSeatsStep = useMatch('/booking/seats')
   const asideIsSearchFilters = Boolean(isTrainsStep || isSeatsStep)
 
-  if (redirectTo) {
-    return <Navigate to={redirectTo} replace />
+  if (!isStepAllowed) {
+    return <div className="booking-layout booking-layout--redirecting" aria-busy="true" />
   }
 
   return (

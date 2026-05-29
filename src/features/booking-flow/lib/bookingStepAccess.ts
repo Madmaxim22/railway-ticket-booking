@@ -2,6 +2,15 @@ import type { BookingState } from '@/store/slices/bookingSlice'
 
 export type BookingStep = 'trains' | 'seats' | 'passengers' | 'payment' | 'confirmation'
 
+export type BookingBreadcrumbId = 'tickets' | 'passengers' | 'payment' | 'review'
+
+const breadcrumbIdToStep: Record<BookingBreadcrumbId, BookingStep> = {
+  tickets: 'trains',
+  passengers: 'passengers',
+  payment: 'payment',
+  review: 'confirmation',
+}
+
 function hasSelectedDeparture(booking: BookingState): boolean {
   return booking.departure != null
 }
@@ -50,4 +59,13 @@ export function getBookingStepRedirect(
   }
 
   return null
+}
+
+/** Можно ли перейти по крошке без редиректа guard (для NavLink). */
+export function canAccessBookingBreadcrumb(
+  booking: BookingState,
+  breadcrumbId: BookingBreadcrumbId,
+): boolean {
+  const step = breadcrumbIdToStep[breadcrumbId]
+  return getBookingStepRedirect(booking, step) === null
 }
