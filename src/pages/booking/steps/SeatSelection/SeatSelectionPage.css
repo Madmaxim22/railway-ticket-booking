@@ -23,6 +23,12 @@
   color: #c62828;
 }
 
+.seat-selection-page__hint {
+  margin: 24px 0 0;
+  font-size: 18px;
+  color: #c62828;
+}
+
 .seat-selection-page__loading {
   margin: 0 0 24px;
   font-size: 18px;

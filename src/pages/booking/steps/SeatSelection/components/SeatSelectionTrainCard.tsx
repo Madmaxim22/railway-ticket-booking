@@ -8,15 +8,26 @@ import { TicketsSection } from './sections/TicketsSection.tsx'
 import { TrainRouteSection } from './sections/TrainRouteSection.tsx'
 import { WagonsSection } from './sections/WagonsSection.tsx'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
+import type { ComponentProps } from 'react'
 
 type SeatSelectionTrainCardProps = {
   train: TrainOption
   isReturn?: boolean
+  selectedSeats: number[]
+  onSelectedSeatsChange: (seats: number[]) => void
+  showTicketsSection?: boolean
+  ticketsSectionProps?: ComponentProps<typeof TicketsSection>
 }
 
-export function SeatSelectionTrainCard({ train, isReturn = false }: SeatSelectionTrainCardProps) {
+export function SeatSelectionTrainCard({
+  train,
+  isReturn = false,
+  selectedSeats,
+  onSelectedSeatsChange,
+  showTicketsSection = false,
+  ticketsSectionProps,
+}: SeatSelectionTrainCardProps) {
   const [activeType, setActiveType] = useState<CarriageType>(() => train.carriages[0]?.type ?? 'coupe')
-  const [draftSelectedSeats, setDraftSelectedSeats] = useState<number[]>([])
   const availableTypes = useMemo(
     () => new Set(train.carriages.map((carriage) => carriage.type)),
     [train.carriages]
@@ -49,7 +60,7 @@ export function SeatSelectionTrainCard({ train, isReturn = false }: SeatSelectio
   }, [filteredCarriages, selectedCarriageId])
 
   const selectedSeatsTotal = useMemo(() => {
-    if (!selectedCarriage || draftSelectedSeats.length === 0) {
+    if (!selectedCarriage || selectedSeats.length === 0) {
       return 0
     }
 
@@ -69,27 +80,27 @@ export function SeatSelectionTrainCard({ train, isReturn = false }: SeatSelectio
       return seatNumber % 2 === 0 ? selectedCarriage.topPrice : selectedCarriage.bottomPrice
     }
 
-    return draftSelectedSeats.reduce((total, seatNumber) => total + getSeatPrice(seatNumber), 0)
-  }, [selectedCarriage, draftSelectedSeats])
+    return selectedSeats.reduce((total, seatNumber) => total + getSeatPrice(seatNumber), 0)
+  }, [selectedCarriage, selectedSeats])
 
   const handleTypeChange = (type: CarriageType) => {
     setActiveType(type)
     const firstCarriageId =
       train.carriages.find((carriage) => carriage.type === type)?.id ?? null
     setSelectedCarriageId(firstCarriageId)
-    setDraftSelectedSeats([])
+    onSelectedSeatsChange([])
   }
 
   const handleCarriageSelect = (carriageId: string) => {
     setSelectedCarriageId(carriageId)
-    setDraftSelectedSeats([])
+    onSelectedSeatsChange([])
   }
 
   const handleSeatToggle = (seatNumber: number) => {
-    setDraftSelectedSeats((prev) =>
-      prev.includes(seatNumber)
-        ? prev.filter((seat) => seat !== seatNumber)
-        : [...prev, seatNumber].sort((a, b) => a - b)
+    onSelectedSeatsChange(
+      selectedSeats.includes(seatNumber)
+        ? selectedSeats.filter((seat) => seat !== seatNumber)
+        : [...selectedSeats, seatNumber].sort((a, b) => a - b),
     )
   }
 
@@ -111,7 +122,9 @@ export function SeatSelectionTrainCard({ train, isReturn = false }: SeatSelectio
       </div>
 
       <TrainRouteSection train={train} />
-      <TicketsSection />
+      {showTicketsSection && ticketsSectionProps ? (
+        <TicketsSection {...ticketsSectionProps} />
+      ) : null}
       <CarriageTypeTabsSection
         activeType={activeType}
         onTypeChange={handleTypeChange}
@@ -124,7 +137,7 @@ export function SeatSelectionTrainCard({ train, isReturn = false }: SeatSelectio
       />
       <SeatSchemeSection
         selectedCarriage={selectedCarriage}
-        selectedSeats={draftSelectedSeats}
+        selectedSeats={selectedSeats}
         onSeatToggle={handleSeatToggle}
       />
       <div className="seat-selection-page__selected-seats-summary">
