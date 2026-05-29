@@ -1,5 +1,10 @@
+import type { SeatSelectionTicketCounts } from '@/pages/booking/steps/SeatSelection/constants'
+
 export type Gender = 'male' | 'female'
 export type PassengerType = 'adult' | 'child'
+
+/** Категория из выбора билетов на шаге мест; определяет тип и документ по умолчанию. */
+export type PassengerCategory = 'adult' | 'child' | 'childWithoutSeat'
 
 export const TYPE_OPTIONS = [
   { value: 'child', label: 'Детский' },
@@ -15,6 +20,7 @@ export const DOCUMENT_OPTIONS = [
 
 export type Passenger = {
   id: number
+  category: PassengerCategory
   type: PassengerType
   lastName: string
   firstName: string
@@ -39,17 +45,40 @@ export type PassengerValidationResult = {
   footerMessage?: string
 }
 
-export function createPassenger(id: number): Passenger {
+export function getPassengerCategoryAtIndex(
+  index: number,
+  counts: SeatSelectionTicketCounts,
+): PassengerCategory {
+  if (index < counts.adults) return 'adult'
+  if (index < counts.adults + counts.children) return 'child'
+  return 'childWithoutSeat'
+}
+
+export function getPassengerCardTitle(
+  index: number,
+  category: PassengerCategory,
+  counts: SeatSelectionTicketCounts,
+): string {
+  if (category === 'childWithoutSeat') {
+    const num = index - counts.adults - counts.children + 1
+    return counts.childrenWithoutSeat > 1 ? `Ребёнок без места ${num}` : 'Ребёнок без места'
+  }
+  return `Пассажир ${index + 1}`
+}
+
+export function createPassenger(id: number, category: PassengerCategory = 'adult'): Passenger {
+  const isAdult = category === 'adult'
   return {
     id,
-    type: 'adult',
+    category,
+    type: isAdult ? 'adult' : 'child',
     lastName: '',
     firstName: '',
     middleName: '',
     gender: 'female',
     birthDate: '',
     limitedMobility: false,
-    documentType: 'passport',
+    documentType: isAdult ? 'passport' : 'birth_certificate',
     series: '',
     number: '',
   }

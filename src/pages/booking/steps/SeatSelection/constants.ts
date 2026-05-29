@@ -27,6 +27,13 @@ export function getRequiredSeatsCount(
   return counts.adults + counts.children
 }
 
+/** Все пассажиры, для которых нужно заполнить данные на шаге «Пассажиры». */
+export function getTotalPassengerCount(
+  counts: SeatSelectionTicketCounts = DEFAULT_TICKET_COUNTS,
+): number {
+  return counts.adults + counts.children + counts.childrenWithoutSeat
+}
+
 export const carriageTabs: Array<{ key: CarriageType; label: string }> = [
   { key: 'seated', label: 'Сидячий' },
   { key: 'platkart', label: 'Плацкарт' },

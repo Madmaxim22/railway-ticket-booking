@@ -3,7 +3,6 @@ import { CheckboxField, DateField, DocumentField, GenderField, TextField } from 
 import { DigitCellsInput } from '@/components/FormField/DigitCellsInput'
 import {
   ErrorStatusIcon,
-  RemovePassengerIcon,
   SuccessStatusIcon,
   ToggleCloseIcon,
   ToggleOpenIcon,
@@ -19,11 +18,10 @@ import {
 
 export type PassengerCardProps = {
   passenger: Passenger
-  index: number
+  title: string
   isOpen: boolean
   onToggleOpen: () => void
   onChange: <K extends keyof Passenger>(id: number, key: K, value: Passenger[K]) => void
-  onRemove: (id: number) => void
   errors?: PassengerValidationErrors
   footerState?: PassengerFooterState
   onNextPassenger: (id: number) => void
@@ -31,20 +29,19 @@ export type PassengerCardProps = {
 
 export function PassengerCard({
   passenger: p,
-  index,
+  title,
   isOpen,
   onToggleOpen,
   onChange,
-  onRemove,
   errors = {},
   footerState = 'default',
   onNextPassenger,
 }: PassengerCardProps) {
   const id = p.id
+  const isTypeLocked = p.category !== undefined
   const isErrorFooter = footerState === 'error'
   const isSuccessFooter = footerState === 'success'
   const footerErrors = Array.from(new Set(Object.values(errors).filter(Boolean)))
-
   return (
     <section className="passenger-card">
       <header className={`passenger-card__header${isOpen ? ' passenger-card__header--open' : ''}`}>
@@ -56,27 +53,17 @@ export function PassengerCard({
           )}
         </button>
 
-        <h2 className="passenger-card__title">Пассажир {index + 1}</h2>
-
-        {isOpen && (
-          <button
-            type="button"
-            className="passenger-card__remove-btn"
-            aria-label="Удалить пассажира"
-            onClick={() => onRemove(id)}
-          >
-            <RemovePassengerIcon className="passenger-card__remove-icon" />
-          </button>
-        )}
+        <h2 className="passenger-card__title">{title}</h2>
       </header>
 
       {isOpen && (
         <div className="passenger-card__body">
           <div className="passenger-card__block passenger-card__block--type">
-            <DropdownField 
-              value={p.type}  
+            <DropdownField
+              value={p.type}
               options={TYPE_OPTIONS}
               onChange={next => onChange(id, 'type', next)}
+              disabled={isTypeLocked}
             />
           </div>
 

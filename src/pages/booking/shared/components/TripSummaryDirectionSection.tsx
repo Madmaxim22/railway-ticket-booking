@@ -23,7 +23,7 @@ export function TripSummaryDirectionSection({
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="trip-summary__direction-section">
+    <div className={`trip-summary__direction-section${isOpen ? ' trip-summary__direction-section--open' : ''}`}>
       <div className="trip-summary__content">
         {icon}
         <div className="trip-summary__direction-title-container">
@@ -47,42 +47,37 @@ export function TripSummaryDirectionSection({
 
       {isOpen && (
         <div className="trip-summary__direction-section-content">
-          <p className="trip-summary__trip-number">
-            № Поезда
-            <span className="trip-summary__trip-number-value">{leg.trainNumber}</span>
-          </p>
-          <p className="trip-summary__train-name">
-            Название
-            <span className="trip-summary__train-name-value">
-              <span>{leg.fromCity}</span>
-              <br />
-              <span>{leg.toCity}</span>
-            </span>
-          </p>
-          <div className="trip-summary__train-info">
-            <div className="trip-summary__train-info-time-duration">
-              <p className="trip-summary__time">{leg.duration}</p>
+          <div className="trip-summary__meta">
+            <p className="trip-summary__trip-number">
+              № Поезда
+              <span className="trip-summary__trip-number-value">{leg.trainNumber}</span>
+            </p>
+            <p className="trip-summary__route">
+              <span className="trip-summary__route-label">Маршрут</span>
+              <span className="trip-summary__route-value">
+                {leg.fromCity} — {leg.toCity}
+              </span>
+            </p>
+          </div>
+
+          <div className="trip-summary__schedule">
+            <div className="trip-summary__endpoint trip-summary__endpoint--departure">
+              <span className="trip-summary__endpoint-time">{leg.departureTime}</span>
+              <span className="trip-summary__endpoint-date">{leg.departureDate}</span>
+              <span className="trip-summary__endpoint-city">{leg.departureCity}</span>
+              <span className="trip-summary__endpoint-station">{leg.departureStation}</span>
             </div>
-            <div className="trip-summary__time-direction">
-              <p className="trip-summary__train-info-item-departure">
-                <span className="trip-summary__train-info-item-title">{leg.departureTime}</span>
-                <span className="trip-summary__train-info-item-value">{leg.departureDate}</span>
-              </p>
+
+            <div className="trip-summary__schedule-middle">
+              <span className="trip-summary__duration">{leg.duration}</span>
               <TripArrowIcon className="trip-summary__train-info-icon" reverse={reverseArrow} />
-              <p className="trip-summary__train-info-item-arrival">
-                <span className="trip-summary__train-info-item-title">{leg.arrivalTime}</span>
-                <span className="trip-summary__train-info-item-value">{leg.arrivalDate}</span>
-              </p>
             </div>
-            <div className="trip-summary__station-direction">
-              <p className="trip-summary__train-info-item-departure">
-                <span className="trip-summary__train-info-item-city">{leg.departureCity}</span>
-                <span className="trip-summary__train-info-item-station">{leg.departureStation}</span>
-              </p>
-              <p className="trip-summary__train-info-item-arrival">
-                <span className="trip-summary__train-info-item-city">{leg.arrivalCity}</span>
-                <span className="trip-summary__train-info-item-station">{leg.arrivalStation}</span>
-              </p>
+
+            <div className="trip-summary__endpoint trip-summary__endpoint--arrival">
+              <span className="trip-summary__endpoint-time">{leg.arrivalTime}</span>
+              <span className="trip-summary__endpoint-date">{leg.arrivalDate}</span>
+              <span className="trip-summary__endpoint-city">{leg.arrivalCity}</span>
+              <span className="trip-summary__endpoint-station">{leg.arrivalStation}</span>
             </div>
           </div>
         </div>

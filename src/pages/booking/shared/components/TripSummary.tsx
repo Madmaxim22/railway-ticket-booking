@@ -61,7 +61,12 @@ export default function TripSummary() {
   if (ticketCounts.childrenWithoutSeat > 0) {
     passengerRows.push({
       count: ticketCounts.childrenWithoutSeat,
-      label: 'без места',
+      label: formatPassengerCountLabel(
+        ticketCounts.childrenWithoutSeat,
+        'ребёнок без места',
+        'ребёнка без места',
+        'детей без места',
+      ),
       price: passengerPrices.childrenWithoutSeat,
     })
   }
@@ -87,7 +92,9 @@ export default function TripSummary() {
         />
       )}
 
-      <div className="trip-summary__direction-section">
+      <div
+        className={`trip-summary__direction-section${isPassengersOpen ? ' trip-summary__direction-section--open' : ''}`}
+      >
         <div className="trip-summary__content">
           <PassengersIcon className="trip-summary__icon" />
           <div className="trip-summary__direction-title-container">
@@ -112,7 +119,7 @@ export default function TripSummary() {
           <div className="trip-summary__direction-section-content">
             <div className="trip-summary__passengers-list">
               {passengerRows.map((row) => (
-                <p key={row.label} className="trip-summary__passengers-item">
+                <p key={`${row.label}-${row.count}`} className="trip-summary__passengers-item">
                   <span className="trip-summary__passengers-item-count">
                     <span className="trip-summary__passengers-item-count-value">{row.count}</span>
                     <span className="trip-summary__passengers-item-count-text"> {row.label}</span>

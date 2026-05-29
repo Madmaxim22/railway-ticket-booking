@@ -10,6 +10,7 @@ export type DropdownFieldProps<T extends string> = {
   options: readonly DropdownFieldOption<T>[]
   onChange: (next: T) => void
   className?: string
+  disabled?: boolean
 }
 
 export function useDropdownField<T extends string>({
@@ -17,6 +18,7 @@ export function useDropdownField<T extends string>({
   options,
   onChange,
   className = '',
+  disabled = false,
 }: DropdownFieldProps<T>) {
   const [menuOpen, setMenuOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -40,9 +42,13 @@ export function useDropdownField<T extends string>({
 
   const rootClass =
     `dropdown-field${menuOpen ? ' dropdown-field--open' : ''}` +
+    (disabled ? ' dropdown-field--disabled' : '') +
     (className ? ` ${className}` : '')
 
-  const toggleMenu = () => setMenuOpen(o => !o)
+  const toggleMenu = () => {
+    if (disabled) return
+    setMenuOpen(o => !o)
+  }
 
   const selectOption = (next: T) => {
     onChange(next)

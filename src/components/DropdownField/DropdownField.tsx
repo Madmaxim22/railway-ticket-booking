@@ -8,7 +8,7 @@ export type { DropdownFieldOption, DropdownFieldProps } from './useDropdownField
 export function DropdownField<T extends string>(props: DropdownFieldProps<T>) {
   const { rootRef, menuOpen, rootClass, selectedLabel, toggleMenu, selectOption } =
     useDropdownField(props)
-  const { value, options } = props
+  const { value, options, disabled = false } = props
 
   return (
     <div className={rootClass} ref={rootRef}>
@@ -17,6 +17,7 @@ export function DropdownField<T extends string>(props: DropdownFieldProps<T>) {
         className="dropdown-field__trigger"
         aria-expanded={menuOpen}
         aria-haspopup="true"
+        disabled={disabled}
         onClick={toggleMenu}
       >
         <span className="dropdown-field__value">{selectedLabel}</span>

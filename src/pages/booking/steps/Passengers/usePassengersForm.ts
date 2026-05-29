@@ -1,7 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { useAppSelector } from '@/store/hooks'
+import { selectBookingTicketCounts } from '@/store/slices/bookingSlice'
+
+import { buildPassengersFromTicketCounts, syncPassengersWithTicketCounts } from './lib/syncPassengersWithTicketCounts'
 import {
-  createPassenger,
   type Passenger,
   type PassengerFooterState,
   type PassengerValidationErrors,
@@ -10,20 +13,49 @@ import { usePassengerCardsState } from './usePassengerCardsState'
 import { usePassengerValidation } from './usePassengerValidation'
 
 export function usePassengersForm() {
-  const [passengers, setPassengers] = useState<Passenger[]>(() => [createPassenger(1)])
+  const ticketCounts = useAppSelector(selectBookingTicketCounts)
+  const [passengers, setPassengers] = useState<Passenger[]>(() =>
+    buildPassengersFromTicketCounts(ticketCounts),
+  )
   const [errorsByPassengerId, setErrorsByPassengerId] = useState<Record<number, PassengerValidationErrors>>({})
   const [footerStateByPassengerId, setFooterStateByPassengerId] = useState<Record<number, PassengerFooterState>>({})
   const { validatePassenger } = usePassengerValidation()
   const {
-    activePassengerId,
     isPassengerOpen,
-    setActivePassengerId,
     openPassenger,
     closePassenger,
     togglePassenger,
-    onPassengerAdded,
     onPassengerRemoved,
   } = usePassengerCardsState()
+  const didAutoOpenFirstPassengerRef = useRef(false)
+
+  useEffect(() => {
+    setPassengers(prev => {
+      const next = syncPassengersWithTicketCounts(prev, ticketCounts)
+      if (next.length === prev.length && next.every((p, i) => p === prev[i])) {
+        return prev
+      }
+
+      const allowedIds = new Set(next.map(p => p.id))
+      setErrorsByPassengerId(errors =>
+        Object.fromEntries(Object.entries(errors).filter(([id]) => allowedIds.has(Number(id)))),
+      )
+      setFooterStateByPassengerId(states =>
+        Object.fromEntries(Object.entries(states).filter(([id]) => allowedIds.has(Number(id)))),
+      )
+
+      const removedIds = prev.filter(p => !allowedIds.has(p.id)).map(p => p.id)
+      removedIds.forEach(id => onPassengerRemoved(id))
+
+      return next
+    })
+  }, [ticketCounts.adults, ticketCounts.children, ticketCounts.childrenWithoutSeat, onPassengerRemoved])
+
+  useEffect(() => {
+    if (didAutoOpenFirstPassengerRef.current || passengers.length === 0) return
+    didAutoOpenFirstPassengerRef.current = true
+    openPassenger(passengers[0].id)
+  }, [openPassenger, passengers])
 
   const validatePassengerById = useCallback(
     (passengerId: number, source = passengers) => {
@@ -56,32 +88,6 @@ export function usePassengersForm() {
     })
   }, [validatePassenger])
 
-  const addPassenger = useCallback(() => {
-    setPassengers(prev => {
-      const nextId = (prev.at(-1)?.id ?? 0) + 1
-      onPassengerAdded(nextId)
-      return [...prev, createPassenger(nextId)]
-    })
-  }, [onPassengerAdded])
-
-  const removePassenger = useCallback((id: number) => {
-    setPassengers(prev => {
-      if (prev.length <= 1) return prev
-      onPassengerRemoved(id)
-      return prev.filter(p => p.id !== id)
-    })
-    setErrorsByPassengerId(prev => {
-      const next = { ...prev }
-      delete next[id]
-      return next
-    })
-    setFooterStateByPassengerId(prev => {
-      const next = { ...prev }
-      delete next[id]
-      return next
-    })
-  }, [onPassengerRemoved])
-
   const goToNextPassenger = useCallback(
     (id: number) => {
       if (!validatePassengerById(id)) return
@@ -94,16 +100,9 @@ export function usePassengersForm() {
 
       if (nextPassenger) {
         openPassenger(nextPassenger.id)
-        return
       }
-
-      setPassengers(prev => {
-        const nextId = (prev.at(-1)?.id ?? 0) + 1
-        onPassengerAdded(nextId)
-        return [...prev, createPassenger(nextId)]
-      })
     },
-    [closePassenger, onPassengerAdded, openPassenger, passengers, validatePassengerById],
+    [closePassenger, openPassenger, passengers, validatePassengerById],
   )
 
   const getFooterState = useCallback(
@@ -113,15 +112,11 @@ export function usePassengersForm() {
 
   return {
     passengers,
-    activePassengerId,
     isPassengerOpen,
-    setActivePassengerId,
     openPassenger,
     closePassenger,
     toggleOpen: togglePassenger,
     updatePassenger,
-    addPassenger,
-    removePassenger,
     validatePassengerById,
     goToNextPassenger,
     getFooterState,
