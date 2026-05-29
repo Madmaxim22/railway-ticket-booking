@@ -56,6 +56,8 @@ function mapCoachItem(item: RouteCoachSeatsItem, wagonFallback: number): Carriag
     number: parseWagonNumber(coach.name, wagonFallback),
     type: mapping.type,
     classLabel: mapping.classLabel,
+    haveWifi: coach.have_wifi,
+    haveAirConditioning: coach.have_air_conditioning,
     topPrice: coach.top_price,
     bottomPrice: coach.bottom_price,
     ...(coach.side_price > 0 ? { sidePrice: coach.side_price } : {}),

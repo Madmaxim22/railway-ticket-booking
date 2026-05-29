@@ -102,14 +102,18 @@ export function WagonsSection({
               Обслуживание <span className="seat-selection-page__wagon-service-title-firm-name">ФПК</span>
             </p>
             <div className="seat-selection-page__wagon-service-icons">
-              <div className="seat-selection-page__wagon-service-item" tabIndex={0}>
-                <ServiceSnowflakeIcon className="seat-selection-page__wagon-service-icon" />
-                <span className="seat-selection-page__wagon-service-tooltip">кондиционер</span>
-              </div>
-              <div className="seat-selection-page__wagon-service-item" tabIndex={0}>
-                <ServiceWifiIcon className="seat-selection-page__wagon-service-icon" />
-                <span className="seat-selection-page__wagon-service-tooltip">WI-FI</span>
-              </div>
+              {selectedCarriage.haveAirConditioning && (
+                <div className="seat-selection-page__wagon-service-item" tabIndex={0}>
+                  <ServiceSnowflakeIcon className="seat-selection-page__wagon-service-icon" />
+                  <span className="seat-selection-page__wagon-service-tooltip">кондиционер</span>
+                </div>
+              )}
+              {selectedCarriage.haveWifi && (
+                <div className="seat-selection-page__wagon-service-item" tabIndex={0}>
+                  <ServiceWifiIcon className="seat-selection-page__wagon-service-icon" />
+                  <span className="seat-selection-page__wagon-service-tooltip">WI-FI</span>
+                </div>
+              )}
               <div className="seat-selection-page__wagon-service-item" tabIndex={0}>
                 <ServiceTrainIcon className="seat-selection-page__wagon-service-icon seat-selection-page__wagon-service-icon--active" />
                 <span className="seat-selection-page__wagon-service-tooltip">белье</span>

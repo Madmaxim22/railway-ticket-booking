@@ -5,6 +5,8 @@ export type Carriage = {
   number: number
   type: CarriageType
   classLabel: string
+  haveWifi: boolean
+  haveAirConditioning: boolean
   topPrice: number
   bottomPrice: number
   sidePrice?: number
