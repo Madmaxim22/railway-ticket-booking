@@ -8,6 +8,10 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { buildOrderRequest } from '@/store/lib/buildOrderRequest'
 import { selectOrderReviewViewModel } from '@/store/selectors/orderReviewSelectors'
 import { buildSeatSelectionNavigationStateFromBooking } from '@/pages/booking/steps/SeatSelection/lib/seatSelectionNavigation'
+import {
+  formatPayerGreetingName,
+  type BookingSuccessNavigationState,
+} from '@/pages/booking/steps/Success/lib/bookingSuccessNavigation'
 import { resetBooking, selectBooking } from '@/store/slices/bookingSlice'
 import TrainCard from '../TrainSelection/components/TrainCard'
 
@@ -76,8 +80,13 @@ export default function OrderReviewPage() {
         return
       }
 
+      const successNavigationState: BookingSuccessNavigationState | undefined =
+        booking.contactInfo
+          ? { payerGreeting: formatPayerGreetingName(booking.contactInfo) }
+          : undefined
+
       dispatch(resetBooking())
-      navigate('/booking/success')
+      navigate('/booking/success', { state: successNavigationState })
     } catch (error) {
       setSubmitError(formatOrderError(error))
     }

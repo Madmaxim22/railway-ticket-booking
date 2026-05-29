@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
+import { readBookingSuccessNavigationState } from './lib/bookingSuccessNavigation'
 import SuccessFeatureConductorIcon from './icons/SuccessFeatureConductorIcon'
 import SuccessFeatureEmailIcon from './icons/SuccessFeatureEmailIcon'
 import SuccessFeaturePrintIcon from './icons/SuccessFeaturePrintIcon'
@@ -10,6 +11,10 @@ import './BookingSuccessPage.css'
 const RATING_STARS_COUNT = 5
 
 export default function BookingSuccessPage() {
+  const location = useLocation()
+  const successState = readBookingSuccessNavigationState(location.state)
+  const payerGreeting = successState?.payerGreeting ?? 'Уважаемый клиент!'
+
   return (
     <section className="booking-success-page">
       <div className="booking-success-page__hero">
@@ -70,7 +75,7 @@ export default function BookingSuccessPage() {
             </div>
 
             <div className="booking-success-card__message">
-              <h2 className="booking-success-card__name">Ирина Эдуардовна!</h2>
+              <h2 className="booking-success-card__name">{payerGreeting}</h2>
               <p className="booking-success-card__paragraph">
                 Ваш заказ успешно оформлен.
                 <br />
