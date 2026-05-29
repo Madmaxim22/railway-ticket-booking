@@ -25,6 +25,7 @@ export function CityAutocompleteField({
   return (
     <div className="header__search-form-field" onBlur={field.onContainerBlur}>
       <input
+        ref={field.inputRef}
         type="text"
         placeholder={placeholder}
         className="header__search-form-input"

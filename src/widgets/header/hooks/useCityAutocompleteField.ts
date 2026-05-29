@@ -11,6 +11,7 @@ export function useCityAutocompleteField(initialValue = '') {
   const [value, setValue] = useState(initialValue)
   const [isFocused, setIsFocused] = useState(false)
   const previousLengthRef = useRef(0)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const trimmedValue = value.trim()
   const debouncedValue = useDebounce(trimmedValue, 350)
@@ -59,6 +60,12 @@ export function useCityAutocompleteField(initialValue = '') {
   const setInputValue = useCallback((next: string) => {
     setValue(next)
     setHighlightedIndex(-1)
+  }, [])
+
+  const focusInput = useCallback(() => {
+    requestAnimationFrame(() => {
+      inputRef.current?.focus()
+    })
   }, [])
 
   const onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>, onPick: (city: CitySuggestion) => void) => {
@@ -110,12 +117,14 @@ export function useCityAutocompleteField(initialValue = '') {
     shouldShowSuggestions: isFocused && trimmedValue.length >= 2,
     highlightedIndex,
     selectableSuggestions,
+    inputRef,
     onChange,
     onFocus,
     onContainerBlur,
     onInputKeyDown,
     selectSuggestion,
     setInputValue,
+    focusInput,
     findExactSuggestions,
   }
 }

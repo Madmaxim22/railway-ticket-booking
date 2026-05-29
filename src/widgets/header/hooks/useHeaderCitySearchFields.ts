@@ -26,6 +26,7 @@ export function useHeaderCitySearchFields(
     clearFormErrorRef.current?.()
     fromField.selectSuggestion(city)
     setFromCity(city)
+    toField.focusInput()
   }
 
   const handleToSelect = (city: CitySuggestion) => {
