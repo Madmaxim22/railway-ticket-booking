@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { useAppSelector } from '@/store/hooks'
 import { selectBookingTicketCounts } from '@/store/slices/bookingSlice'
@@ -13,6 +14,7 @@ import { usePassengerCardsState } from './usePassengerCardsState'
 import { usePassengerValidation } from './usePassengerValidation'
 
 export function usePassengersForm() {
+  const navigate = useNavigate()
   const ticketCounts = useAppSelector(selectBookingTicketCounts)
   const [passengers, setPassengers] = useState<Passenger[]>(() =>
     buildPassengersFromTicketCounts(ticketCounts),
@@ -110,6 +112,32 @@ export function usePassengersForm() {
     [footerStateByPassengerId],
   )
 
+  const submitPassengers = useCallback(() => {
+    let firstInvalidId: number | null = null
+    const nextErrors: Record<number, PassengerValidationErrors> = {}
+    const nextFooterStates: Record<number, PassengerFooterState> = {}
+
+    for (const passenger of passengers) {
+      const result = validatePassenger(passenger)
+      nextErrors[passenger.id] = result.errors
+      nextFooterStates[passenger.id] = result.isValid ? 'success' : 'error'
+
+      if (!result.isValid && firstInvalidId === null) {
+        firstInvalidId = passenger.id
+      }
+    }
+
+    setErrorsByPassengerId(prev => ({ ...prev, ...nextErrors }))
+    setFooterStateByPassengerId(prev => ({ ...prev, ...nextFooterStates }))
+
+    if (firstInvalidId !== null) {
+      openPassenger(firstInvalidId)
+      return
+    }
+
+    navigate('/booking/payment')
+  }, [navigate, openPassenger, passengers, validatePassenger])
+
   return {
     passengers,
     isPassengerOpen,
@@ -119,6 +147,7 @@ export function usePassengersForm() {
     updatePassenger,
     validatePassengerById,
     goToNextPassenger,
+    submitPassengers,
     getFooterState,
     errorsByPassengerId,
   }

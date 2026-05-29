@@ -17,6 +17,7 @@ export default function PassengersPage() {
     goToNextPassenger,
     getFooterState,
     errorsByPassengerId,
+    submitPassengers,
   } = usePassengersForm()
 
   return (
@@ -36,7 +37,7 @@ export default function PassengersPage() {
       ))}
 
       <footer className="passengers-page__footer">
-        <button type="button" className="next-page-btn">
+        <button type="button" className="next-page-btn" onClick={submitPassengers}>
           Далее
         </button>
       </footer>
