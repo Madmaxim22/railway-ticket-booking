@@ -3,8 +3,8 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import {
   DEFAULT_TICKET_COUNTS,
   type SeatSelectionTicketCounts,
-} from '@/pages/booking/steps/SeatSelection/constants'
-import type { Passenger } from '@/pages/booking/steps/Passengers/passengers.types'
+} from '@/entities/booking/model/ticketCounts'
+import type { Passenger } from '@/entities/passenger/model/passenger.types'
 import type { RouteDirectionSegment } from '@/store/api/routesResponse.types'
 
 export type PaymentMethod = 'online' | 'cash'

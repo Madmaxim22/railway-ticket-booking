@@ -1,5 +1,5 @@
-import type { Passenger } from '@/pages/booking/steps/Passengers/passengers.types'
-import type { SeatSelectionTicketCounts } from '@/pages/booking/steps/SeatSelection/constants'
+import type { Passenger } from '@/entities/passenger/model/passenger.types'
+import type { SeatSelectionTicketCounts } from '@/entities/booking/model/ticketCounts'
 import type {
   CreateOrderRequest,
   OrderDirectionPayload,

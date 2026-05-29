@@ -1,11 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit'
 
-import { mapSegmentToTripLeg, type TripLegView } from '@/pages/booking/shared/lib/mapSegmentToTripLeg'
-import { estimateBookingPassengerPrices } from '@/pages/booking/shared/lib/estimateBookingPrices'
+import { mapSegmentToTripLeg, type TripLegView } from '@/entities/route/lib/mapSegmentToTripLeg'
+import { estimateBookingPassengerPrices } from '@/entities/booking/lib/estimateBookingPrices'
 import type { BookingPassengerPrices } from '@/store/slices/bookingSlice'
 import { selectBooking } from '@/store/slices/bookingSlice'
 import { selectSearch } from '@/store/slices/searchSlice'
-import type { SeatSelectionTicketCounts } from '@/pages/booking/steps/SeatSelection/constants'
+import type { SeatSelectionTicketCounts } from '@/entities/booking/model/ticketCounts'
 import { parseFilterDate } from '@/shared/lib/parseFilterDate'
 import { formatDateRu } from '@/utils/calendarMonth'
 

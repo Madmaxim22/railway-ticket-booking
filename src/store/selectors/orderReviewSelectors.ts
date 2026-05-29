@@ -3,8 +3,8 @@ import { createSelector } from '@reduxjs/toolkit'
 import {
   buildRoutesListItemFromBooking,
   hasReturnTripInBooking,
-} from '@/pages/booking/steps/Review/lib/buildRoutesListItemFromBooking'
-import { mapPassengerToReviewDisplay } from '@/pages/booking/steps/Review/lib/mapPassengerToReviewDisplay'
+} from '@/features/order-review/lib/buildRoutesListItemFromBooking'
+import { mapPassengerToReviewDisplay } from '@/features/order-review/lib/mapPassengerToReviewDisplay'
 import type { PaymentMethod } from '@/store/slices/bookingSlice'
 import { selectBooking } from '@/store/slices/bookingSlice'
 import { selectTripSummaryViewModel } from '@/store/selectors/tripSummarySelectors'
