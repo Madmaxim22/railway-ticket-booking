@@ -1,20 +1,46 @@
-import { trains } from './constants'
 import { SeatSelectionTrainCard } from './components/SeatSelectionTrainCard'
-import { useLocation } from 'react-router-dom'
+import { useSeatSelectionTrains } from './hooks/useSeatSelectionTrains'
 
 export function SeatSelectionPageContainer() {
-  const location = useLocation()
-  const hasReturnDirection = (location.state as { hasReturnDirection?: boolean } | null)
-    ?.hasReturnDirection === true
-  const trainsForRender = hasReturnDirection ? trains : trains.slice(0, 1)
+  const { trains, isLoading, isError, errorMessage, isMissingNavigation } =
+    useSeatSelectionTrains()
+
+  if (isMissingNavigation) {
+    return (
+      <div className="seat-selection-page">
+        <h1 className="seat-selection-page__title">выбор мест</h1>
+        <p className="seat-selection-page__error" role="alert">
+          Сначала выберите поезд на предыдущем шаге.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="seat-selection-page">
       <h1 className="seat-selection-page__title">выбор мест</h1>
-      {trainsForRender.map((train, index) => (
-        <SeatSelectionTrainCard key={train.id} train={train} isReturn={index === 1} />
+
+      {isError && (
+        <p className="seat-selection-page__error" role="alert">
+          {errorMessage}
+        </p>
+      )}
+
+      {isLoading && trains.length === 0 && (
+        <p className="seat-selection-page__loading">Загрузка мест…</p>
+      )}
+
+      {trains.map((train, index) => (
+        <SeatSelectionTrainCard
+          key={train.id}
+          train={train}
+          isReturn={index === 1}
+        />
       ))}
-      <button type="button" className="seat-selection-page__next-button">Далее</button>
+
+      <button type="button" className="seat-selection-page__next-button" disabled={isLoading}>
+        Далее
+      </button>
     </div>
   )
 }

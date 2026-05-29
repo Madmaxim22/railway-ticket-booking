@@ -7,6 +7,7 @@ import PaginationArrowLeftIcon from '@/shared/ui/icons/pagination/PaginationArro
 import PaginationArrowRightIcon from '@/shared/ui/icons/pagination/PaginationArrowRightIcon'
 import PaginationDotsIcon from '@/shared/ui/icons/pagination/PaginationDotsIcon'
 import { useNavigate } from 'react-router-dom'
+import type { SeatSelectionNavigationState } from '@/pages/booking/steps/SeatSelection/lib/seatSelectionNavigation'
 
 function formatRoutesRequestError(error: unknown): string {
   if (!error || typeof error !== 'object') return 'Не удалось загрузить маршруты.'
@@ -145,11 +146,23 @@ export default function TrainSelectionPage() {
           <TrainCard
             key={item.departure._id}
             item={item}
-            onActionClick={() =>
-              navigate('/booking/seats', {
-                state: { hasReturnDirection: item.arrival != null },
-              })
-            }
+            onActionClick={() => {
+              const state: SeatSelectionNavigationState = {
+                departure: {
+                  routeId: item.departure._id,
+                  segment: item.departure,
+                },
+                ...(item.arrival
+                  ? {
+                      returnTrip: {
+                        routeId: item.arrival._id,
+                        segment: item.arrival,
+                      },
+                    }
+                  : {}),
+              }
+              navigate('/booking/seats', { state })
+            }}
           />
         ))}
       </div>
