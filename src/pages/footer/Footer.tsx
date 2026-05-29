@@ -1,10 +1,62 @@
+import { useState, type FormEvent, type MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
-import type { MouseEvent } from 'react'
+
+import { useSubscribeMutation } from '@/store/api/subscribeApi'
+
 import './Footer.css'
 
+function formatSubscribeError(error: unknown): string {
+  if (!error || typeof error !== 'object') {
+    return 'Не удалось оформить подписку. Попробуйте ещё раз.'
+  }
+
+  if ('data' in error && typeof (error as { data: unknown }).data === 'object') {
+    const data = (error as { data: Record<string, unknown> }).data
+    if (typeof data.message === 'string') return data.message
+    if (typeof data.error === 'string') return data.error
+  }
+
+  if ('status' in error) {
+    return `Ошибка подписки (${String((error as { status: unknown }).status)})`
+  }
+
+  return 'Не удалось оформить подписку. Попробуйте ещё раз.'
+}
+
 export default function Footer() {
+  const [email, setEmail] = useState('')
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(
+    null,
+  )
+  const [subscribe, { isLoading }] = useSubscribeMutation()
+
   const preventFocusShift = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
+  }
+
+  const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setFeedback(null)
+
+    const trimmedEmail = email.trim()
+    if (!trimmedEmail) {
+      setFeedback({ type: 'error', message: 'Введите e-mail для подписки.' })
+      return
+    }
+
+    try {
+      const result = await subscribe({ email: trimmedEmail }).unwrap()
+
+      if (!result.status) {
+        setFeedback({ type: 'error', message: 'Сервер отклонил подписку. Попробуйте снова.' })
+        return
+      }
+
+      setEmail('')
+      setFeedback({ type: 'success', message: 'Подписка оформлена. Спасибо!' })
+    } catch (error) {
+      setFeedback({ type: 'error', message: formatSubscribeError(error) })
+    }
   }
 
   return (
@@ -44,9 +96,29 @@ export default function Footer() {
         <div className="footer__subscription-content">
           <h2 className="footer__subscription-title">Подписка</h2>
           <p className="footer__subscription-description">Будьте в курсе событий</p>
-          <div className="footer__subscription-form">
-            <input type="email" placeholder="e-mail" className="footer__subscription-input" />
-            <button className="footer__subscription-button">отправить</button>
+          <div className="footer__subscription-form-block">
+            <form className="footer__subscription-form" onSubmit={handleSubscribe} noValidate>
+              <input
+                type="email"
+                placeholder="e-mail"
+                className="footer__subscription-input"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                disabled={isLoading}
+                required
+              />
+              <button type="submit" className="footer__subscription-button" disabled={isLoading}>
+                {isLoading ? 'отправка…' : 'отправить'}
+              </button>
+            </form>
+            {feedback ? (
+              <p
+                className={`footer__subscription-feedback footer__subscription-feedback--${feedback.type}`}
+                role="status"
+              >
+                {feedback.message}
+              </p>
+            ) : null}
           </div>
           <p className="footer__subscription-title">Подписаться на нас</p>
           <div
