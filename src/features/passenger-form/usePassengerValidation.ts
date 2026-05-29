@@ -54,7 +54,9 @@ export function usePassengerValidation() {
         const isInvalidCalendarDate =
           parsedDate.getFullYear() !== year || parsedDate.getMonth() !== month - 1 || parsedDate.getDate() !== day
 
-        if (!isInvalidCalendarDate) {
+        if (isInvalidCalendarDate) {
+          errors.birthDate = 'Некорректно указана дата'
+        } else {
           const today = new Date()
           today.setHours(0, 0, 0, 0)
 
