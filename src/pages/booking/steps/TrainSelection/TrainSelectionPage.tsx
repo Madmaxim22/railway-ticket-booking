@@ -145,7 +145,11 @@ export default function TrainSelectionPage() {
           <TrainCard
             key={item.departure._id}
             item={item}
-            onActionClick={() => navigate('/booking/seats')}
+            onActionClick={() =>
+              navigate('/booking/seats', {
+                state: { hasReturnDirection: item.arrival != null },
+              })
+            }
           />
         ))}
       </div>
