@@ -11,9 +11,7 @@ export const trains: TrainOption[] = [
   {
     id: 'train-1',
     trainNumber: '116С',
-    departureCityTrain: 'Адлер',
     departureCityPassenger: 'Москва',
-    arrivalCityTrain: 'Санкт-Петербург',
     arrivalCityPassenger: 'Санкт-Петербург',
     fromStation: 'Курский вокзал',
     toStation: 'Ладожский вокзал',
@@ -58,9 +56,7 @@ export const trains: TrainOption[] = [
   {
     id: 'train-2',
     trainNumber: '116С',
-    departureCityTrain: 'Адлер',
     departureCityPassenger: 'Москва',
-    arrivalCityTrain: 'Санкт-Петербург',
     arrivalCityPassenger: 'Санкт-Петербург',
     fromStation: 'Курский вокзал',
     toStation: 'Ладожский вокзал',

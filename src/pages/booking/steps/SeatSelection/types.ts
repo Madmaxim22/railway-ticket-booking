@@ -16,8 +16,6 @@ export type Carriage = {
 export type TrainOption = {
   id: string
   trainNumber: string
-  departureCityTrain: string
-  arrivalCityTrain: string
   departureCityPassenger: string
   arrivalCityPassenger: string
   fromStation: string

@@ -34,19 +34,13 @@ export function TrainRouteSection({ train }: TrainRouteSectionProps) {
         <TrainRouteIcon className="seat-selection-page__route-icon" />
         <div className="seat-selection-page__route-col-content">
           <p className="seat-selection-page__train-number">{train.trainNumber}</p>
-          <p className="seat-selection-page__station-city">
-            {train.departureCityTrain}
-            <RouteArrowIcon className="seat-selection-page__route-arrow" />
-          </p>
           <p className="seat-selection-page__station-city seat-selection-page__station-city--active">
             {train.departureCityPassenger}
             <RouteArrowIcon className="seat-selection-page__route-arrow-active" />
           </p>
           <p className="seat-selection-page__station-city seat-selection-page__station-city--active">
             {train.arrivalCityPassenger}
-            <RouteArrowIcon className="seat-selection-page__route-arrow" />
           </p>
-          <p className="seat-selection-page__station-city">{train.arrivalCityTrain}</p>
         </div>
       </div>
       <div className="seat-selection-page__route-col seat-selection-page__route-col--center">
@@ -58,7 +52,7 @@ export function TrainRouteSection({ train }: TrainRouteSectionProps) {
         <TripArrowIcon className="seat-selection-page__arrow-icon" />
         <div className="seat-selection-page__route-col-content">
           <p className="seat-selection-page__time">{train.arrivalTime}</p>
-          <p className="seat-selection-page__station-city">{train.arrivalCityTrain}</p>
+          <p className="seat-selection-page__station-city">{train.fromStation}</p>
           <p className="seat-selection-page__station-name">{train.toStation}</p>
         </div>
       </div>
