@@ -1,12 +1,10 @@
 import type { ChangeEvent } from 'react'
 import LocationPinIcon from '@/shared/ui/icons/LocationPinIcon'
 import type { CitySuggestion } from '@/store/api/citiesApi'
-import type { useCityAutocompleteField } from '../hooks/useCityAutocompleteField'
-
-type CityAutocompleteFieldState = ReturnType<typeof useCityAutocompleteField>
+import type { CityAutocompleteFieldApi } from '../hooks/useCityAutocompleteField'
 
 type CityAutocompleteFieldProps = {
-  field: CityAutocompleteFieldState
+  field: CityAutocompleteFieldApi
   placeholder: string
   suggestionsId: string
   suggestionsAriaLabel: string
@@ -22,48 +20,60 @@ export function CityAutocompleteField({
   onChange,
   onSelect,
 }: CityAutocompleteFieldProps) {
+  const {
+    value,
+    inputRef,
+    onFocus,
+    onContainerBlur,
+    onInputKeyDown,
+    shouldShowSuggestions,
+    isFetching,
+    suggestions,
+    highlightedIndex,
+  } = field
+
   return (
-    <div className="header__search-form-field" onBlur={field.onContainerBlur}>
+    <div className="header__search-form-field" onBlur={onContainerBlur}>
       <input
-        ref={field.inputRef}
+        ref={inputRef}
         type="text"
         placeholder={placeholder}
         className="header__search-form-input"
-        value={field.value}
-        onFocus={field.onFocus}
+        value={value}
+        onFocus={onFocus}
         onChange={onChange}
-        onKeyDown={(e) => field.onInputKeyDown(e, onSelect)}
+        onKeyDown={(e) => onInputKeyDown(e, onSelect)}
         role="combobox"
-        aria-expanded={field.shouldShowSuggestions}
+        aria-expanded={shouldShowSuggestions}
         aria-controls={suggestionsId}
         aria-autocomplete="list"
       />
-      {field.shouldShowSuggestions && (
+      {shouldShowSuggestions && (
         <ul
           id={suggestionsId}
           className="header__search-form-suggestions"
           role="listbox"
           aria-label={suggestionsAriaLabel}
         >
-          {field.isFetching && (
+          {isFetching && (
             <li className="header__search-form-suggestion-item header__search-form-suggestion-item--muted">
               Загрузка...
             </li>
           )}
-          {!field.isFetching && field.suggestions.length === 0 && (
+          {!isFetching && suggestions.length === 0 && (
             <li className="header__search-form-suggestion-item header__search-form-suggestion-item--muted">
               Ничего не найдено
             </li>
           )}
-          {!field.isFetching &&
-            field.suggestions.map((city, index) => (
+          {!isFetching &&
+            suggestions.map((city, index) => (
               <li key={city._id} role="presentation">
                 <button
                   type="button"
                   role="option"
-                  aria-selected={field.highlightedIndex === index}
+                  aria-selected={highlightedIndex === index}
                   className={
-                    field.highlightedIndex === index
+                    highlightedIndex === index
                       ? 'header__search-form-suggestion-button header__search-form-suggestion-button--highlighted'
                       : 'header__search-form-suggestion-button'
                   }

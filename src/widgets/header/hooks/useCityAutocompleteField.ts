@@ -1,5 +1,13 @@
 import { skipToken } from '@reduxjs/toolkit/query'
-import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FocusEvent, type KeyboardEvent } from 'react'
+import {
+  useCallback,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FocusEvent,
+  type KeyboardEvent,
+  type RefObject,
+} from 'react'
 import { useSearchCitiesQuery, type CitySuggestion } from '@/store/api/citiesApi'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 
@@ -7,30 +15,59 @@ function normalizeCityName(value: string) {
   return value.trim().toLowerCase()
 }
 
-export function useCityAutocompleteField(initialValue = '') {
+export type CityAutocompleteFieldApi = {
+  value: string
+  query: string
+  suggestions: CitySuggestion[]
+  isFetching: boolean
+  shouldShowSuggestions: boolean
+  highlightedIndex: number
+  selectableSuggestions: CitySuggestion[]
+  inputRef: RefObject<HTMLInputElement | null>
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
+  onFocus: () => void
+  onContainerBlur: (event: FocusEvent<HTMLElement>) => void
+  onInputKeyDown: (event: KeyboardEvent<HTMLInputElement>, onPick: (city: CitySuggestion) => void) => void
+  selectSuggestion: (city: CitySuggestion) => void
+  setInputValue: (next: string) => void
+  focusInput: () => void
+  findExactSuggestions: (name: string) => CitySuggestion[]
+}
+
+export function useCityAutocompleteField(initialValue = ''): CityAutocompleteFieldApi {
   const [value, setValue] = useState(initialValue)
   const [isFocused, setIsFocused] = useState(false)
-  const previousLengthRef = useRef(0)
+  const [previousTrimmedLength, setPreviousTrimmedLength] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const trimmedValue = value.trim()
+  const trimmedLength = trimmedValue.length
   const debouncedValue = useDebounce(trimmedValue, 350)
-  const shouldFetchImmediately = trimmedValue.length >= 2 && previousLengthRef.current < 2
+  const shouldFetchImmediately = trimmedLength >= 2 && previousTrimmedLength < 2
   const query = shouldFetchImmediately ? trimmedValue : debouncedValue
 
-  useEffect(() => {
-    previousLengthRef.current = trimmedValue.length
-  }, [trimmedValue])
+  if (trimmedLength !== previousTrimmedLength) {
+    setPreviousTrimmedLength(trimmedLength)
+  }
 
   const { data: suggestions = [], isFetching } = useSearchCitiesQuery(
     query.length >= 2 ? query : skipToken,
   )
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const suggestionsSignature = suggestions.map((city) => city._id).join(',')
+  const highlightResetKey = `${trimmedValue}\0${isFetching}\0${suggestionsSignature}`
+  const [prevHighlightResetKey, setPrevHighlightResetKey] = useState(highlightResetKey)
+
+  if (highlightResetKey !== prevHighlightResetKey) {
+    setPrevHighlightResetKey(highlightResetKey)
+    setHighlightedIndex(-1)
   }
 
-  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
+    setHighlightedIndex(-1)
+  }
 
   const onFocus = () => {
     setIsFocused(true)
@@ -46,10 +83,6 @@ export function useCityAutocompleteField(initialValue = '') {
 
   const selectableSuggestions =
     isFocused && trimmedValue.length >= 2 && !isFetching ? suggestions : []
-
-  useEffect(() => {
-    setHighlightedIndex(-1)
-  }, [trimmedValue, suggestions, isFetching])
 
   const selectSuggestion = (city: CitySuggestion) => {
     setValue(city.name)
