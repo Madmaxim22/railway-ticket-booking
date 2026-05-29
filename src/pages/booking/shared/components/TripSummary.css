@@ -1,3 +1,10 @@
+.trip-summary__empty {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-text-secondary, #6b6b6b);
+  margin: 0;
+}
+
 .trip-summary__title {
   font-size: 30px;
   font-weight: 500;

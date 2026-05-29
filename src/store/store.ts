@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { baseApi } from './api/baseApi'
 import './api/citiesApi'
 import './api/routesApi'
+import { bookingReducer } from './slices/bookingSlice'
 import { filtersReducer } from './slices/filtersSlice'
 import { searchReducer } from './slices/searchSlice'
 import { trainsReducer } from './slices/trainsSlice'
@@ -11,6 +12,7 @@ export const store = configureStore({
     search: searchReducer,
     filters: filtersReducer,
     trains: trainsReducer,
+    booking: bookingReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

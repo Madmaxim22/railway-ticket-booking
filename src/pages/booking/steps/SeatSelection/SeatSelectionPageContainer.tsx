@@ -1,13 +1,34 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { useAppDispatch } from '@/store/hooks'
+import { setBookingPricing } from '@/store/slices/bookingSlice'
+
 import { SeatSelectionTrainCard } from './components/SeatSelectionTrainCard'
+import { createDefaultTrainSeatSelection } from './lib/createDefaultTrainSeatSelection'
+import {
+  calculateBookingPassengerPrices,
+  type TrainSeatSelection,
+} from './lib/seatSelectionPricing'
+import { validateSeatSelection } from './lib/validateSeatSelection'
+import type { CarriageType } from './types'
 import { useSeatSelectionTrains } from './hooks/useSeatSelectionTrains'
 import { useTicketCounts } from './hooks/useTicketCounts'
-import { validateSeatSelection } from './lib/validateSeatSelection'
+
+type TrainSelectionState = TrainSeatSelection & {
+  activeType: CarriageType
+}
+
+function getActiveTypeForCarriage(
+  train: { carriages: Array<{ id: string; type: CarriageType }> },
+  carriageId: string,
+): CarriageType {
+  return train.carriages.find((carriage) => carriage.id === carriageId)?.type ?? 'coupe'
+}
 
 export function SeatSelectionPageContainer() {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { trains, isLoading, isError, errorMessage, isMissingNavigation } =
     useSeatSelectionTrains()
   const {
@@ -18,25 +39,63 @@ export function SeatSelectionPageContainer() {
     isAtMax,
     remainingHint,
   } = useTicketCounts()
-  const [selectedSeatsByTrainId, setSelectedSeatsByTrainId] = useState<Record<string, number[]>>(
+  const [selectionByTrainId, setSelectionByTrainId] = useState<Record<string, TrainSelectionState>>(
     {},
   )
   const [seatSelectionHint, setSeatSelectionHint] = useState<string | null>(null)
 
   useEffect(() => {
-    setSelectedSeatsByTrainId((prev) => {
-      const next: Record<string, number[]> = {}
+    setSelectionByTrainId((prev) => {
+      const next: Record<string, TrainSelectionState> = {}
+      let changed = false
+
       for (const train of trains) {
-        next[train.id] = prev[train.id] ?? []
+        const existing = prev[train.id]
+        if (existing) {
+          next[train.id] = existing
+          continue
+        }
+
+        const defaults = createDefaultTrainSeatSelection(train)
+        if (!defaults) continue
+
+        changed = true
+        next[train.id] = {
+          ...defaults,
+          activeType: train.carriages[0]?.type ?? 'coupe',
+        }
       }
+
+      if (!changed && Object.keys(next).length === Object.keys(prev).length) {
+        return prev
+      }
+
       return next
     })
   }, [trains])
 
-  const handleSelectedSeatsChange = useCallback((trainId: string, seats: number[]) => {
-    setSelectedSeatsByTrainId((prev) => ({ ...prev, [trainId]: seats }))
-    setSeatSelectionHint(null)
-  }, [])
+  const selectedSeatsByTrainId = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(selectionByTrainId).map(([trainId, selection]) => [
+          trainId,
+          selection.seats,
+        ]),
+      ),
+    [selectionByTrainId],
+  )
+
+  const updateTrainSelection = useCallback(
+    (trainId: string, patch: Partial<TrainSelectionState>) => {
+      setSelectionByTrainId((prev) => {
+        const current = prev[trainId]
+        if (!current) return prev
+        return { ...prev, [trainId]: { ...current, ...patch } }
+      })
+      setSeatSelectionHint(null)
+    },
+    [],
+  )
 
   const handleTicketCycle = useCallback(
     (key: Parameters<typeof cycleTicketCount>[0]) => {
@@ -59,6 +118,17 @@ export function SeatSelectionPageContainer() {
     }
 
     setSeatSelectionHint(null)
+
+    const seatSelections: Record<string, TrainSeatSelection> = Object.fromEntries(
+      Object.entries(selectionByTrainId).map(([trainId, { carriageId, seats }]) => [
+        trainId,
+        { carriageId, seats },
+      ]),
+    )
+
+    const pricing = calculateBookingPassengerPrices(trains, seatSelections, ticketCounts)
+    dispatch(setBookingPricing(pricing))
+
     navigate('/booking/passengers')
   }
 
@@ -87,24 +157,39 @@ export function SeatSelectionPageContainer() {
         <p className="seat-selection-page__loading">Загрузка мест…</p>
       )}
 
-      {trains.map((train, index) => (
-        <SeatSelectionTrainCard
-          key={train.id}
-          train={train}
-          isReturn={index === 1}
-          selectedSeats={selectedSeatsByTrainId[train.id] ?? []}
-          onSelectedSeatsChange={(seats) => handleSelectedSeatsChange(train.id, seats)}
-          showTicketsSection={index === 0}
-          ticketsSectionProps={{
-            counts: ticketCounts,
-            activeKey,
-            onActiveKeyChange: setActiveKey,
-            onCycle: handleTicketCycle,
-            isAtMax,
-            remainingHint,
-          }}
-        />
-      ))}
+      {trains.map((train, index) => {
+        const selection = selectionByTrainId[train.id]
+        if (!selection) return null
+
+        return (
+          <SeatSelectionTrainCard
+            key={train.id}
+            train={train}
+            isReturn={index === 1}
+            activeType={selection.activeType}
+            onActiveTypeChange={(activeType) => updateTrainSelection(train.id, { activeType })}
+            selectedCarriageId={selection.carriageId}
+            onCarriageSelect={(carriageId) =>
+              updateTrainSelection(train.id, {
+                carriageId,
+                activeType: getActiveTypeForCarriage(train, carriageId),
+                seats: [],
+              })
+            }
+            selectedSeats={selection.seats}
+            onSelectedSeatsChange={(seats) => updateTrainSelection(train.id, { seats })}
+            showTicketsSection={index === 0}
+            ticketsSectionProps={{
+              counts: ticketCounts,
+              activeKey,
+              onActiveKeyChange: setActiveKey,
+              onCycle: handleTicketCycle,
+              isAtMax,
+              remainingHint,
+            }}
+          />
+        )
+      })}
 
       {seatSelectionHint && (
         <p className="seat-selection-page__hint" role="alert">

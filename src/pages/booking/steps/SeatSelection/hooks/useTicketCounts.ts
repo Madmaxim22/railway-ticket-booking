@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react'
 
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { selectBookingTicketCounts, setTicketCounts } from '@/store/slices/bookingSlice'
+
 import {
-  DEFAULT_TICKET_COUNTS,
   TICKET_COUNT_LIMITS,
   type SeatSelectionTicketCounts,
   type TicketCountKey,
@@ -16,46 +18,54 @@ function cycleCount(current: number, min: number, max: number): number {
   return current + 1
 }
 
-export function useTicketCounts(
-  initial: SeatSelectionTicketCounts = DEFAULT_TICKET_COUNTS,
-) {
-  const [counts, setCounts] = useState<SeatSelectionTicketCounts>(initial)
+function computeNextCounts(
+  prev: SeatSelectionTicketCounts,
+  key: TicketCountKey,
+): SeatSelectionTicketCounts {
+  if (key === 'adults') {
+    const adults = cycleCount(
+      prev.adults,
+      TICKET_COUNT_LIMITS.adults.min,
+      TICKET_COUNT_LIMITS.adults.max,
+    )
+    return {
+      ...prev,
+      adults,
+      childrenWithoutSeat: Math.min(prev.childrenWithoutSeat, adults),
+    }
+  }
+
+  if (key === 'children') {
+    return {
+      ...prev,
+      children: cycleCount(
+        prev.children,
+        TICKET_COUNT_LIMITS.children.min,
+        TICKET_COUNT_LIMITS.children.max,
+      ),
+    }
+  }
+
+  const maxWithoutSeat = getChildrenWithoutSeatMax(prev.adults)
+  return {
+    ...prev,
+    childrenWithoutSeat: cycleCount(prev.childrenWithoutSeat, 0, maxWithoutSeat),
+  }
+}
+
+export function useTicketCounts() {
+  const dispatch = useAppDispatch()
+  const counts = useAppSelector(selectBookingTicketCounts)
   const [activeKey, setActiveKey] = useState<TicketCountKey>('adults')
 
-  const cycleTicketCount = useCallback((key: TicketCountKey) => {
-    setActiveKey(key)
-    setCounts((prev) => {
-      if (key === 'adults') {
-        const adults = cycleCount(
-          prev.adults,
-          TICKET_COUNT_LIMITS.adults.min,
-          TICKET_COUNT_LIMITS.adults.max,
-        )
-        return {
-          ...prev,
-          adults,
-          childrenWithoutSeat: Math.min(prev.childrenWithoutSeat, adults),
-        }
-      }
-
-      if (key === 'children') {
-        return {
-          ...prev,
-          children: cycleCount(
-            prev.children,
-            TICKET_COUNT_LIMITS.children.min,
-            TICKET_COUNT_LIMITS.children.max,
-          ),
-        }
-      }
-
-      const maxWithoutSeat = getChildrenWithoutSeatMax(prev.adults)
-      return {
-        ...prev,
-        childrenWithoutSeat: cycleCount(prev.childrenWithoutSeat, 0, maxWithoutSeat),
-      }
-    })
-  }, [])
+  const cycleTicketCount = useCallback(
+    (key: TicketCountKey) => {
+      setActiveKey(key)
+      const next = computeNextCounts(counts, key)
+      dispatch(setTicketCounts(next))
+    },
+    [counts, dispatch],
+  )
 
   const isAtMax = useCallback(
     (key: TicketCountKey): boolean => {

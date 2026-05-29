@@ -1,5 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import type { ComponentProps } from 'react'
+
+import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import type { Carriage, CarriageType, TrainOption } from '../types'
+import {
+  calculateCarriageSeatsTotal,
+} from '../lib/seatSelectionPricing'
 import ChangeTrainIcon from '../icons/ChangeTrainIcon'
 import './SeatSelectionTrainCard.css'
 import { CarriageTypeTabsSection } from './sections/CarriageTypeTabsSection.tsx'
@@ -7,12 +13,14 @@ import { SeatSchemeSection } from './sections/SeatSchemeSection.tsx'
 import { TicketsSection } from './sections/TicketsSection.tsx'
 import { TrainRouteSection } from './sections/TrainRouteSection.tsx'
 import { WagonsSection } from './sections/WagonsSection.tsx'
-import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
-import type { ComponentProps } from 'react'
 
 type SeatSelectionTrainCardProps = {
   train: TrainOption
   isReturn?: boolean
+  activeType: CarriageType
+  onActiveTypeChange: (type: CarriageType) => void
+  selectedCarriageId: string | null
+  onCarriageSelect: (carriageId: string) => void
   selectedSeats: number[]
   onSelectedSeatsChange: (seats: number[]) => void
   showTicketsSection?: boolean
@@ -22,37 +30,23 @@ type SeatSelectionTrainCardProps = {
 export function SeatSelectionTrainCard({
   train,
   isReturn = false,
+  activeType,
+  onActiveTypeChange,
+  selectedCarriageId,
+  onCarriageSelect,
   selectedSeats,
   onSelectedSeatsChange,
   showTicketsSection = false,
   ticketsSectionProps,
 }: SeatSelectionTrainCardProps) {
-  const [activeType, setActiveType] = useState<CarriageType>(() => train.carriages[0]?.type ?? 'coupe')
   const availableTypes = useMemo(
     () => new Set(train.carriages.map((carriage) => carriage.type)),
-    [train.carriages]
+    [train.carriages],
   )
   const filteredCarriages = useMemo(
     () => train.carriages.filter((carriage) => carriage.type === activeType),
-    [train.carriages, activeType]
+    [train.carriages, activeType],
   )
-
-  const [selectedCarriageId, setSelectedCarriageId] = useState<string | null>(
-    filteredCarriages[0]?.id ?? null
-  )
-
-  useEffect(() => {
-    if (!filteredCarriages.length) {
-      setSelectedCarriageId(null)
-      return
-    }
-
-    setSelectedCarriageId((prev) =>
-      prev && filteredCarriages.some((carriage) => carriage.id === prev)
-        ? prev
-        : filteredCarriages[0].id
-    )
-  }, [filteredCarriages])
 
   const selectedCarriage: Carriage | null = useMemo(() => {
     const byId = filteredCarriages.find((carriage) => carriage.id === selectedCarriageId)
@@ -63,36 +57,20 @@ export function SeatSelectionTrainCard({
     if (!selectedCarriage || selectedSeats.length === 0) {
       return 0
     }
-
-    const getSeatPrice = (seatNumber: number) => {
-      if (selectedCarriage.type === 'seated') {
-        return selectedCarriage.bottomPrice
-      }
-
-      if (selectedCarriage.type === 'lux') {
-        return selectedCarriage.luxPrice ?? selectedCarriage.bottomPrice
-      }
-
-      if (selectedCarriage.sidePrice && seatNumber > 32) {
-        return selectedCarriage.sidePrice
-      }
-
-      return seatNumber % 2 === 0 ? selectedCarriage.topPrice : selectedCarriage.bottomPrice
-    }
-
-    return selectedSeats.reduce((total, seatNumber) => total + getSeatPrice(seatNumber), 0)
+    return calculateCarriageSeatsTotal(selectedCarriage, selectedSeats)
   }, [selectedCarriage, selectedSeats])
 
   const handleTypeChange = (type: CarriageType) => {
-    setActiveType(type)
-    const firstCarriageId =
-      train.carriages.find((carriage) => carriage.type === type)?.id ?? null
-    setSelectedCarriageId(firstCarriageId)
+    onActiveTypeChange(type)
+    const firstCarriage = train.carriages.find((carriage) => carriage.type === type)
+    if (firstCarriage) {
+      onCarriageSelect(firstCarriage.id)
+    }
     onSelectedSeatsChange([])
   }
 
   const handleCarriageSelect = (carriageId: string) => {
-    setSelectedCarriageId(carriageId)
+    onCarriageSelect(carriageId)
     onSelectedSeatsChange([])
   }
 
@@ -142,7 +120,7 @@ export function SeatSelectionTrainCard({
       />
       <div className="seat-selection-page__selected-seats-summary">
         <p className="seat-selection-page__selected-seats-summary-price">
-          {selectedSeatsTotal.toLocaleString('ru-RU')} 
+          {selectedSeatsTotal.toLocaleString('ru-RU')}
           <FarePriceIcon className="seat-selection-page__fare-price-icon" />
         </p>
       </div>
