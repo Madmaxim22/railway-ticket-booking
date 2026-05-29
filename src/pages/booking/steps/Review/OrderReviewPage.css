@@ -206,3 +206,11 @@
   background-color: var(--color-disabled-solid);
   box-shadow: none;
 }
+
+.order-review-page__error {
+  margin: 0;
+  padding: 12px 0 0;
+  color: var(--color-error);
+  font-size: 14px;
+  line-height: 1.4;
+}

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import { readFromConfirmationFlag } from '@/pages/booking/shared/lib/bookingEditNavigation'
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
@@ -19,6 +21,8 @@ import { usePassengerValidation } from './usePassengerValidation'
 
 export function usePassengersForm() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const fromConfirmation = readFromConfirmationFlag(location.state)
   const dispatch = useAppDispatch()
   const ticketCounts = useAppSelector(selectBookingTicketCounts)
   const savedPassengers = useAppSelector(selectBookingPassengers)
@@ -144,8 +148,8 @@ export function usePassengersForm() {
     }
 
     dispatch(setPassengers(passengers))
-    navigate('/booking/payment')
-  }, [dispatch, navigate, openPassenger, passengers, validatePassenger])
+    navigate(fromConfirmation ? '/booking/confirmation' : '/booking/payment')
+  }, [dispatch, fromConfirmation, navigate, openPassenger, passengers, validatePassenger])
 
   return {
     passengers,

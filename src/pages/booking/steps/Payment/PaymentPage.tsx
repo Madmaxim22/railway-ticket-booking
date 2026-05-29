@@ -3,22 +3,42 @@ import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
+  selectBookingContactInfo,
   selectBookingPaymentMethod,
+  setContactInfo,
   setPaymentMethod,
+  type BookingContactInfo,
   type PaymentMethod,
 } from '@/store/slices/bookingSlice'
 
 import './PaymentPage.css'
 
+const EMPTY_CONTACT: BookingContactInfo = {
+  firstName: '',
+  lastName: '',
+  patronymic: '',
+  phone: '',
+  email: '',
+}
+
 export default function PaymentPage() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const savedPaymentMethod = useAppSelector(selectBookingPaymentMethod)
+  const savedContactInfo = useAppSelector(selectBookingContactInfo)
   const [paymentMethod, setPaymentMethodState] = useState<PaymentMethod>(
     savedPaymentMethod ?? 'online',
   )
+  const [contactInfo, setContactInfoState] = useState<BookingContactInfo>(
+    savedContactInfo ?? EMPTY_CONTACT,
+  )
+
+  const updateContact = <K extends keyof BookingContactInfo>(key: K, value: BookingContactInfo[K]) => {
+    setContactInfoState((prev) => ({ ...prev, [key]: value }))
+  }
 
   const handleBuyTickets = () => {
+    dispatch(setContactInfo(contactInfo))
     dispatch(setPaymentMethod(paymentMethod))
     navigate('/booking/confirmation')
   }
@@ -34,31 +54,58 @@ export default function PaymentPage() {
             <div className="payment-page__row payment-page__row--three-cols">
               <label className="payment-page__field">
                 <span className="payment-page__label">Фамилия</span>
-                <input className="payment-page__input" type="text" />
+                <input
+                  className="payment-page__input"
+                  type="text"
+                  value={contactInfo.lastName}
+                  onChange={(event) => updateContact('lastName', event.target.value)}
+                />
               </label>
 
               <label className="payment-page__field">
                 <span className="payment-page__label">Имя</span>
-                <input className="payment-page__input" type="text" />
+                <input
+                  className="payment-page__input"
+                  type="text"
+                  value={contactInfo.firstName}
+                  onChange={(event) => updateContact('firstName', event.target.value)}
+                />
               </label>
 
               <label className="payment-page__field">
                 <span className="payment-page__label">Отчество</span>
-                <input className="payment-page__input" type="text" />
+                <input
+                  className="payment-page__input"
+                  type="text"
+                  value={contactInfo.patronymic}
+                  onChange={(event) => updateContact('patronymic', event.target.value)}
+                />
               </label>
             </div>
 
             <div className="payment-page__row payment-page__row--single">
               <label className="payment-page__field payment-page__field--short">
                 <span className="payment-page__label">Контактный телефон</span>
-                <input className="payment-page__input" type="tel" placeholder="+7 ___ ___ __ __" />
+                <input
+                  className="payment-page__input"
+                  type="tel"
+                  placeholder="+7 ___ ___ __ __"
+                  value={contactInfo.phone}
+                  onChange={(event) => updateContact('phone', event.target.value)}
+                />
               </label>
             </div>
 
             <div className="payment-page__row payment-page__row--single">
               <label className="payment-page__field payment-page__field--short">
                 <span className="payment-page__label">E-mail</span>
-                <input className="payment-page__input" type="email" placeholder="inbox@gmail.ru" />
+                <input
+                  className="payment-page__input"
+                  type="email"
+                  placeholder="inbox@gmail.ru"
+                  value={contactInfo.email}
+                  onChange={(event) => updateContact('email', event.target.value)}
+                />
               </label>
             </div>
           </div>

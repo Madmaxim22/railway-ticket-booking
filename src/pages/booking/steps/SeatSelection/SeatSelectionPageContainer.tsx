@@ -1,9 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { useAppDispatch } from '@/store/hooks'
-import { setBookingPricing } from '@/store/slices/bookingSlice'
+import { readFromConfirmationFlag } from '@/pages/booking/shared/lib/bookingEditNavigation'
 
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import {
+  selectBooking,
+  setBookingPricing,
+  setSeatSelections,
+  type BookingSeatSelection,
+} from '@/store/slices/bookingSlice'
+
+import { getTotalPassengerCount } from './constants'
 import { SeatSelectionTrainCard } from './components/SeatSelectionTrainCard'
 import { createDefaultTrainSeatSelection } from './lib/createDefaultTrainSeatSelection'
 import {
@@ -26,9 +34,24 @@ function getActiveTypeForCarriage(
   return train.carriages.find((carriage) => carriage.id === carriageId)?.type ?? 'coupe'
 }
 
+function getSavedSeatSelectionForTrain(
+  trainId: string,
+  departureSegmentId: string | undefined,
+  returnSegmentId: string | undefined,
+  departureSeats: BookingSeatSelection | null,
+  returnTripSeats: BookingSeatSelection | null,
+): BookingSeatSelection | null {
+  if (trainId === departureSegmentId && departureSeats) return departureSeats
+  if (trainId === returnSegmentId && returnTripSeats) return returnTripSeats
+  return null
+}
+
 export function SeatSelectionPageContainer() {
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useAppDispatch()
+  const booking = useAppSelector(selectBooking)
+  const fromConfirmation = readFromConfirmationFlag(location.state)
   const { trains, isLoading, isError, errorMessage, isMissingNavigation } =
     useSeatSelectionTrains()
   const {
@@ -49,10 +72,34 @@ export function SeatSelectionPageContainer() {
       const next: Record<string, TrainSelectionState> = {}
       let changed = false
 
+      const departureSegmentId = booking.departure?.segment._id
+      const returnSegmentId = booking.returnTrip?.segment._id
+
       for (const train of trains) {
         const existing = prev[train.id]
         if (existing) {
           next[train.id] = existing
+          continue
+        }
+
+        const saved = getSavedSeatSelectionForTrain(
+          train.id,
+          departureSegmentId,
+          returnSegmentId,
+          booking.departureSeats,
+          booking.returnTripSeats,
+        )
+
+        if (saved) {
+          const carriage = train.carriages.find((item) => item.id === saved.carriageId)
+          const activeType = carriage?.type ?? train.carriages[0]?.type ?? 'coupe'
+
+          changed = true
+          next[train.id] = {
+            carriageId: saved.carriageId,
+            seats: [...saved.seats],
+            activeType,
+          }
           continue
         }
 
@@ -72,7 +119,13 @@ export function SeatSelectionPageContainer() {
 
       return next
     })
-  }, [trains])
+  }, [
+    trains,
+    booking.departure?.segment._id,
+    booking.returnTrip?.segment._id,
+    booking.departureSeats,
+    booking.returnTripSeats,
+  ])
 
   const selectedSeatsByTrainId = useMemo(
     () =>
@@ -128,6 +181,35 @@ export function SeatSelectionPageContainer() {
 
     const pricing = calculateBookingPassengerPrices(trains, seatSelections, ticketCounts)
     dispatch(setBookingPricing(pricing))
+
+    const departureTrain = trains[0]
+    const returnTrain = trains[1]
+    const departureSelection = departureTrain ? seatSelections[departureTrain.id] : undefined
+
+    if (!departureSelection) {
+      setSeatSelectionHint('Не удалось сохранить выбранные места. Попробуйте выбрать места снова.')
+      return
+    }
+
+    dispatch(
+      setSeatSelections({
+        departure: departureSelection,
+        ...(returnTrain && seatSelections[returnTrain.id]
+          ? { returnTrip: seatSelections[returnTrain.id] }
+          : {}),
+      }),
+    )
+
+    if (fromConfirmation) {
+      const passengersMatchTickets =
+        booking.passengers.length === getTotalPassengerCount(ticketCounts)
+
+      navigate(
+        passengersMatchTickets ? '/booking/confirmation' : '/booking/passengers',
+        passengersMatchTickets ? undefined : { state: { fromConfirmation: true } },
+      )
+      return
+    }
 
     navigate('/booking/passengers')
   }

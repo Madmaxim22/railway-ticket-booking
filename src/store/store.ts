@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { baseApi } from './api/baseApi'
 import './api/citiesApi'
+import './api/orderApi'
 import './api/routesApi'
 import { bookingReducer } from './slices/bookingSlice'
 import { filtersReducer } from './slices/filtersSlice'

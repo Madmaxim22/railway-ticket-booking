@@ -5,7 +5,11 @@ import { buildRouteSeatsQueryString } from '@/store/api/routesSeatsQuerySerializ
 import { selectRouteSeatsQueryParams } from '@/store/selectors/routeSeatsQuerySelectors'
 import { useAppSelector } from '@/store/hooks'
 import { mapRouteSeatsToTrainOption } from '../lib/mapRouteSeatsToTrainOption'
-import { readSeatSelectionNavigationState } from '../lib/seatSelectionNavigation'
+import {
+  buildSeatSelectionNavigationStateFromBooking,
+  readSeatSelectionNavigationState,
+} from '../lib/seatSelectionNavigation'
+import { selectBooking } from '@/store/slices/bookingSlice'
 import type { TrainOption } from '../types'
 
 function formatSeatsRequestError(error: unknown): string {
@@ -24,9 +28,12 @@ function formatSeatsRequestError(error: unknown): string {
 
 export function useSeatSelectionTrains() {
   const location = useLocation()
+  const booking = useAppSelector(selectBooking)
   const navigation = useMemo(
-    () => readSeatSelectionNavigationState(location.state),
-    [location.state],
+    () =>
+      readSeatSelectionNavigationState(location.state) ??
+      buildSeatSelectionNavigationStateFromBooking(booking),
+    [location.state, booking],
   )
   const seatsFilters = useAppSelector(selectRouteSeatsQueryParams)
   const queryString = useMemo(

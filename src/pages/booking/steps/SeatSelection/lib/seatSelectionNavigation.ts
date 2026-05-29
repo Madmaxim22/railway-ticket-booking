@@ -1,4 +1,5 @@
 import type { RouteDirectionSegment } from '@/store/api/routesResponse.types'
+import type { BookingState } from '@/store/slices/bookingSlice'
 
 export type SeatSelectionDirection = {
   routeId: string
@@ -20,6 +21,19 @@ export function readSeatSelectionNavigationState(
     departure: value.departure,
     ...(value.returnTrip?.routeId && value.returnTrip?.segment
       ? { returnTrip: value.returnTrip }
+      : {}),
+  }
+}
+
+export function buildSeatSelectionNavigationStateFromBooking(
+  booking: Pick<BookingState, 'departure' | 'returnTrip'>,
+): SeatSelectionNavigationState | null {
+  if (!booking.departure?.routeId || !booking.departure.segment) return null
+
+  return {
+    departure: booking.departure,
+    ...(booking.returnTrip?.routeId && booking.returnTrip.segment
+      ? { returnTrip: booking.returnTrip }
       : {}),
   }
 }
