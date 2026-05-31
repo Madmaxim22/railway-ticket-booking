@@ -6,6 +6,7 @@ import HomePage from '@/pages/home/HomePage'
 import Footer from '@/widgets/footer/Footer'
 import './App.css'
 import { useBookingSearchUrlSync } from '@/features/route-search/model/useBookingSearchUrlSync'
+import { RouteErrorBoundary } from '@/shared/ui/ErrorBoundary/RouteErrorBoundary'
 import { RouteFallback } from '@/shared/ui/RouteFallback/RouteFallback'
 
 const BookingLayout = lazy(() => import('@/features/booking-flow/ui/BookingLayout'))
@@ -27,20 +28,22 @@ function App() {
     <>
     <div className="app">
       <Header />
-      <Suspense fallback={<RouteFallback />}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/booking" element={<BookingLayout />}>
-            <Route index element={<Navigate to="trains" replace />} />
-            <Route path="trains" element={<TrainSelectionPage />} />
-            <Route path="seats" element={<SeatSelectionPage />} />
-            <Route path="passengers" element={<PassengersPage />} />
-            <Route path="payment" element={<PaymentPage />} />
-            <Route path="confirmation" element={<OrderReviewPage />} />
-          </Route>
-          <Route path="/booking/success" element={<BookingSuccessPage />} />
-        </Routes>
-      </Suspense>
+      <RouteErrorBoundary>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/booking" element={<BookingLayout />}>
+              <Route index element={<Navigate to="trains" replace />} />
+              <Route path="trains" element={<TrainSelectionPage />} />
+              <Route path="seats" element={<SeatSelectionPage />} />
+              <Route path="passengers" element={<PassengersPage />} />
+              <Route path="payment" element={<PaymentPage />} />
+              <Route path="confirmation" element={<OrderReviewPage />} />
+            </Route>
+            <Route path="/booking/success" element={<BookingSuccessPage />} />
+          </Routes>
+        </Suspense>
+      </RouteErrorBoundary>
       <Footer />
     </div>
     </>

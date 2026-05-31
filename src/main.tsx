@@ -4,13 +4,16 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import { RootErrorBoundary } from '@/shared/ui/ErrorBoundary/RootErrorBoundary'
 import { store } from './store/store'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter basename="/railway-ticket-booking">
-        <App />
+        <RootErrorBoundary>
+          <App />
+        </RootErrorBoundary>
       </BrowserRouter>
     </Provider>
   </StrictMode>,
