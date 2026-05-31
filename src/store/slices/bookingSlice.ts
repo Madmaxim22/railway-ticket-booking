@@ -1,4 +1,6 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit'
+
+import type { RootState } from '@/store/store'
 
 import {
   DEFAULT_TICKET_COUNTS,
@@ -124,12 +126,24 @@ export const {
 } = bookingSlice.actions
 export const bookingReducer = bookingSlice.reducer
 
-export const selectBooking = (state: { booking: BookingState }) => state.booking
-export const selectBookingTicketCounts = (state: { booking: BookingState }) =>
-  state.booking.ticketCounts
-export const selectBookingPassengers = (state: { booking: BookingState }) =>
-  state.booking.passengers
-export const selectBookingPaymentMethod = (state: { booking: BookingState }) =>
-  state.booking.paymentMethod
-export const selectBookingContactInfo = (state: { booking: BookingState }) =>
-  state.booking.contactInfo
+export const selectBooking = (state: RootState) => state.booking
+
+export const selectBookingTicketCounts = createSelector(
+  selectBooking,
+  (booking) => booking.ticketCounts,
+)
+
+export const selectBookingPassengers = createSelector(
+  selectBooking,
+  (booking) => booking.passengers,
+)
+
+export const selectBookingPaymentMethod = createSelector(
+  selectBooking,
+  (booking) => booking.paymentMethod,
+)
+
+export const selectBookingContactInfo = createSelector(
+  selectBooking,
+  (booking) => booking.contactInfo,
+)

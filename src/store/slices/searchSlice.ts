@@ -1,5 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
+import type { RootState } from '@/store/store'
+
 export type SearchState = {
   from_city_id: string
   to_city_id: string
@@ -32,4 +34,4 @@ export const searchSlice = createSlice({
 export const { mergeSearch } = searchSlice.actions
 export const searchReducer = searchSlice.reducer
 
-export const selectSearch = (state: { search: SearchState }) => state.search
+export const selectSearch = (state: RootState) => state.search

@@ -1,4 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+
+import type { RootState } from '@/store/store'
 import type { RoutesQueryParams, RoutesSortParam } from '@/store/api/routesQueryParams.types'
 
 export type TrainsState = {
@@ -31,4 +33,4 @@ export const trainsSlice = createSlice({
 export const { mergeTrains } = trainsSlice.actions
 export const trainsReducer = trainsSlice.reducer
 
-export const selectTrains = (state: { trains: TrainsState }) => state.trains
+export const selectTrains = (state: RootState) => state.trains
