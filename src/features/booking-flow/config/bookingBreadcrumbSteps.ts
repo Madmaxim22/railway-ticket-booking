@@ -1,4 +1,13 @@
-export const bookingBreadcrumbSteps = [
+import type { BookingBreadcrumbId } from '@/features/booking-flow/lib/bookingStepAccess'
+
+export type BookingBreadcrumbStep = {
+  id: BookingBreadcrumbId
+  to: string
+  label: string
+  badge: number
+}
+
+export const bookingBreadcrumbSteps: BookingBreadcrumbStep[] = [
   {
     id: 'tickets',
     to: '/booking/trains',

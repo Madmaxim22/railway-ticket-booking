@@ -1,12 +1,16 @@
-import RangeSlider from './RangeSlider'
+import RangeSlider, { type RangeSliderProps } from './RangeSlider'
+
+type PriceRangeSliderProps = Partial<
+  Pick<RangeSliderProps, 'minLimit' | 'maxLimit' | 'step' | 'onChange' | 'onAfterChange'>
+>
 
 export default function PriceRangeSlider({
   minLimit = 0,
   maxLimit = 7000,
   step = 10,
   onChange,
-  onAfterChange
-}) {
+  onAfterChange,
+}: PriceRangeSliderProps) {
   return (
     <>
       <div className="range-slider__labels">

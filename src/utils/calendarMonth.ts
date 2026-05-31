@@ -1,5 +1,10 @@
+export type CalendarCell = {
+  date: Date
+  inCurrentMonth: boolean
+}
+
 /** Неделя с понедельника: индекс колонки 0–6 (пн–вс). */
-export function getMondayFirstColumnIndex(date) {
+export function getMondayFirstColumnIndex(date: Date): number {
   return (date.getDay() + 6) % 7
 }
 
@@ -7,7 +12,7 @@ export function getMondayFirstColumnIndex(date) {
  * Ячейки календаря для отображаемого месяца (year, month 0–11).
  * Включает дни до/после для полных недель.
  */
-export function buildMonthCells(viewYear, viewMonth) {
+export function buildMonthCells(viewYear: number, viewMonth: number): CalendarCell[] {
   const first = new Date(viewYear, viewMonth, 1)
   const daysInCurrent = new Date(viewYear, viewMonth + 1, 0).getDate()
   const leading = getMondayFirstColumnIndex(first)
@@ -16,7 +21,7 @@ export function buildMonthCells(viewYear, viewMonth) {
   const prevYear = viewMonth === 0 ? viewYear - 1 : viewYear
   const daysInPrev = new Date(viewYear, viewMonth, 0).getDate()
 
-  const cells = []
+  const cells: CalendarCell[] = []
 
   for (let i = 0; i < leading; i++) {
     const day = daysInPrev - leading + i + 1
@@ -60,9 +65,9 @@ export const MONTH_NAMES_RU = [
   'Октябрь',
   'Ноябрь',
   'Декабрь',
-]
+] as const
 
-export function formatDateRu(date) {
+export function formatDateRu(date: Date | null | undefined): string {
   if (!date) return ''
   const d = String(date.getDate()).padStart(2, '0')
   const m = String(date.getMonth() + 1).padStart(2, '0')
@@ -70,7 +75,7 @@ export function formatDateRu(date) {
   return `${d}.${m}.${y}`
 }
 
-export function isSameCalendarDay(a, b) {
+export function isSameCalendarDay(a: Date, b: Date): boolean {
   return (
     a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
@@ -79,13 +84,13 @@ export function isSameCalendarDay(a, b) {
 }
 
 /** Начало текущих суток по локальному времени. */
-export function startOfToday() {
+export function startOfToday(): Date {
   const n = new Date()
   return new Date(n.getFullYear(), n.getMonth(), n.getDate())
 }
 
 /** Сравнение только календарных дат (без времени). */
-export function isCalendarDayBefore(a, b) {
+export function isCalendarDayBefore(a: Date, b: Date): boolean {
   const da = new Date(a.getFullYear(), a.getMonth(), a.getDate())
   const db = new Date(b.getFullYear(), b.getMonth(), b.getDate())
   return da < db

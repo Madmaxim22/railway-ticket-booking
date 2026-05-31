@@ -1,21 +1,21 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import DatePickerPopover from '@/components/DatePickerPopover'
 import { formatApiDate } from '@/shared/lib/formatApiDate'
 import { parseFilterDate } from '@/shared/lib/parseFilterDate'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { mergeFilters, selectFilters } from '@/store/slices/filtersSlice'
-import { mergeSearch, selectSearch } from '@/store/slices/searchSlice'
-import { useGetLastRoutesQuery } from '@/store/api/routesApi'
 import { formatTitleCaseWords } from '@/shared/lib/formatTitleCaseWords'
-import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
-import AmenitiesIconWiFi from '@/shared/ui/icons/amenities/AmenitiesIconWiFi'
-import AmenitiesIconExpress from '@/shared/ui/icons/amenities/AmenitiesIconExpress'
 import AmenitiesIconAirConditioning from '@/shared/ui/icons/amenities/AmenitiesIconAirConditioning'
+import AmenitiesIconExpress from '@/shared/ui/icons/amenities/AmenitiesIconExpress'
+import AmenitiesIconWiFi from '@/shared/ui/icons/amenities/AmenitiesIconWiFi'
+import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
+import { useGetLastRoutesQuery } from '@/store/api/routesApi'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { mergeFilters, selectFilters, type FiltersState } from '@/store/slices/filtersSlice'
+import { mergeSearch, selectSearch } from '@/store/slices/searchSlice'
 import CarriageFilterItem from './carriage/CarriageFilterItem'
+import { carriageFilterConfigs } from './carriage/carriageFilterConfigs'
 import PriceRangeSlider from './slider/PriceRangeSlider'
 import TimeRangeMenu from './time/TimeRangeMenu'
-import { carriageFilterConfigs } from './carriage/carriageFilterConfigs'
 import './SearchFilters.css'
 
 /** Соответствие слайдеров полям поиска (API). `arrivalDate` = date_end — при его отсутствии слайдер end_arrival_* отключён. */
@@ -30,9 +30,13 @@ const SLIDER_SEARCH_INITIAL = {
   end_departure_hour_to: 24,
   end_arrival_hour_from: 0,
   end_arrival_hour_to: 24,
+} as const
+
+type SliderSearchState = {
+  [K in keyof typeof SLIDER_SEARCH_INITIAL]: number
 }
 
-function stationWithVokzal(name) {
+function stationWithVokzal(name: string): string {
   const trimmed = String(name).trim()
   if (trimmed.toLowerCase().includes('вокзал')) return trimmed
   return `${trimmed} вокзал`
@@ -62,73 +66,97 @@ export default function SearchFilters() {
       }
     })
   }, [lastRoutesData])
-  const [departureDate, setDepartureDate] = useState(() => parseFilterDate(search.date_start))
-  const [arrivalDate, setArrivalDate] = useState(() => parseFilterDate(search.date_end))
+  const [departureDate, setDepartureDate] = useState<Date | null>(() =>
+    parseFilterDate(search.date_start),
+  )
+  const [arrivalDate, setArrivalDate] = useState<Date | null>(() =>
+    parseFilterDate(search.date_end),
+  )
   const [isDepartureTimeOpen, setIsDepartureTimeOpen] = useState(false)
   const [isArrivalTimeOpen, setIsArrivalTimeOpen] = useState(false)
-  const [sliderSearch, setSliderSearch] = useState(SLIDER_SEARCH_INITIAL)
+  const [sliderSearch, setSliderSearch] = useState<SliderSearchState>(SLIDER_SEARCH_INITIAL)
 
-  const handlePriceAfterChange = useCallback(([from, to]) => {
-    setSliderSearch((prev) => ({ ...prev, price_from: from, price_to: to }))
-    dispatch(mergeFilters({ price_from: from, price_to: to }))
-  }, [dispatch])
+  const handlePriceAfterChange = useCallback(
+    ([from, to]: [number, number]) => {
+      setSliderSearch((prev) => ({ ...prev, price_from: from, price_to: to }))
+      dispatch(mergeFilters({ price_from: from, price_to: to }))
+    },
+    [dispatch],
+  )
 
-  const handleStartDepartureAfterChange = useCallback(([from, to]) => {
-    const patch = {
-      start_departure_hour_from: from,
-      start_departure_hour_to: to,
-    }
-    setSliderSearch((prev) => ({ ...prev, ...patch }))
-    dispatch(mergeFilters(patch))
-  }, [dispatch])
+  const handleStartDepartureAfterChange = useCallback(
+    ([from, to]: [number, number]) => {
+      const patch = {
+        start_departure_hour_from: from,
+        start_departure_hour_to: to,
+      }
+      setSliderSearch((prev) => ({ ...prev, ...patch }))
+      dispatch(mergeFilters(patch))
+    },
+    [dispatch],
+  )
 
-  const handleStartArrivalAfterChange = useCallback(([from, to]) => {
-    const patch = {
-      start_arrival_hour_from: from,
-      start_arrival_hour_to: to,
-    }
-    setSliderSearch((prev) => ({ ...prev, ...patch }))
-    dispatch(mergeFilters(patch))
-  }, [dispatch])
+  const handleStartArrivalAfterChange = useCallback(
+    ([from, to]: [number, number]) => {
+      const patch = {
+        start_arrival_hour_from: from,
+        start_arrival_hour_to: to,
+      }
+      setSliderSearch((prev) => ({ ...prev, ...patch }))
+      dispatch(mergeFilters(patch))
+    },
+    [dispatch],
+  )
 
-  const handleEndDepartureAfterChange = useCallback(([from, to]) => {
-    const patch = {
-      end_departure_hour_from: from,
-      end_departure_hour_to: to,
-    }
-    setSliderSearch((prev) => ({ ...prev, ...patch }))
-    dispatch(mergeFilters(patch))
-  }, [dispatch])
+  const handleEndDepartureAfterChange = useCallback(
+    ([from, to]: [number, number]) => {
+      const patch = {
+        end_departure_hour_from: from,
+        end_departure_hour_to: to,
+      }
+      setSliderSearch((prev) => ({ ...prev, ...patch }))
+      dispatch(mergeFilters(patch))
+    },
+    [dispatch],
+  )
 
-  const handleEndArrivalAfterChange = useCallback(([from, to]) => {
-    const patch = {
-      end_arrival_hour_from: from,
-      end_arrival_hour_to: to,
-    }
-    setSliderSearch((prev) => ({ ...prev, ...patch }))
-    dispatch(mergeFilters(patch))
-  }, [dispatch])
+  const handleEndArrivalAfterChange = useCallback(
+    ([from, to]: [number, number]) => {
+      const patch = {
+        end_arrival_hour_from: from,
+        end_arrival_hour_to: to,
+      }
+      setSliderSearch((prev) => ({ ...prev, ...patch }))
+      dispatch(mergeFilters(patch))
+    },
+    [dispatch],
+  )
 
-  const toggleFilter = useCallback((apiKey) => {
-    const isCurrentlyActive = Boolean(reduxFilters[apiKey])
-    dispatch(mergeFilters({ [apiKey]: isCurrentlyActive ? undefined : true }))
-  }, [dispatch, reduxFilters])
+  const toggleFilter = useCallback(
+    (apiKey: keyof FiltersState) => {
+      const isCurrentlyActive = Boolean(reduxFilters[apiKey])
+      dispatch(mergeFilters({ [apiKey]: isCurrentlyActive ? undefined : true }))
+    },
+    [dispatch, reduxFilters],
+  )
 
-  const handleDepartureDateChange = useCallback((date) => {
-    setDepartureDate(date)
-    dispatch(mergeSearch({ date_start: date ? formatApiDate(date) : undefined }))
-  }, [dispatch])
+  const handleDepartureDateChange = useCallback(
+    (date: Date) => {
+      setDepartureDate(date)
+      dispatch(mergeSearch({ date_start: formatApiDate(date) }))
+    },
+    [dispatch],
+  )
 
-  const handleArrivalDateChange = useCallback((date) => {
-    setArrivalDate(date)
-    dispatch(mergeSearch({ date_end: date ? formatApiDate(date) : undefined }))
-  }, [dispatch])
+  const handleArrivalDateChange = useCallback(
+    (date: Date) => {
+      setArrivalDate(date)
+      dispatch(mergeSearch({ date_end: formatApiDate(date) }))
+    },
+    [dispatch],
+  )
 
-  useEffect(() => {
-    if (!hasDateEnd) {
-      setIsArrivalTimeOpen(false)
-    }
-  }, [hasDateEnd])
+  const arrivalTimeMenuOpen = hasDateEnd && isArrivalTimeOpen
 
   return (
     <aside className="search-filters">
@@ -171,8 +199,8 @@ export default function SearchFilters() {
                 onToggle={() => toggleFilter(apiKey)}
               />
             ))}
-          </ul>   
-        </div>  
+          </ul>
+        </div>
       </div>
       <div
         className="search-filters__price-section"
@@ -196,7 +224,7 @@ export default function SearchFilters() {
       <div className="search-filters__forth-section">
         <TimeRangeMenu
           title="Обратно"
-          isOpen={isArrivalTimeOpen}
+          isOpen={arrivalTimeMenuOpen}
           onToggle={() => setIsArrivalTimeOpen((prev) => !prev)}
           onDepartureTimeAfterChange={handleEndDepartureAfterChange}
           onArrivalTimeAfterChange={handleEndArrivalAfterChange}
@@ -212,10 +240,12 @@ export default function SearchFilters() {
               <div className="search-filters__latest-ticket-route">
                 <div className="search-filters__latest-ticket-route-from">
                   <p className="search-filters__latest-ticket-city">{ticket.from}</p>
-                  <p className="search-filters__latest-ticket-station">{ticket.departureStation}</p> 
+                  <p className="search-filters__latest-ticket-station">{ticket.departureStation}</p>
                 </div>
                 <div className="search-filters__latest-ticket-route-to">
-                  <p className="search-filters__latest-ticket-city search-filters__latest-ticket-city--to">{ticket.to}</p>
+                  <p className="search-filters__latest-ticket-city search-filters__latest-ticket-city--to">
+                    {ticket.to}
+                  </p>
                   <p className="search-filters__latest-ticket-station">{ticket.arrivalStation}</p>
                 </div>
               </div>

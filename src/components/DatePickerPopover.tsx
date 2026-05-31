@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+
 import {
   MONTH_NAMES_RU,
   buildMonthCells,
@@ -6,12 +7,21 @@ import {
   isCalendarDayBefore,
   isSameCalendarDay,
   startOfToday,
-} from '../utils/calendarMonth'
+  type CalendarCell,
+} from '@/utils/calendarMonth'
 import './DatePickerPopover.css'
 
-function addMonths(year, month, delta) {
+function addMonths(year: number, month: number, delta: number): { year: number; month: number } {
   const d = new Date(year, month + delta, 1)
   return { year: d.getFullYear(), month: d.getMonth() }
+}
+
+type DatePickerPopoverProps = {
+  value: Date | null | undefined
+  onChange: (date: Date) => void
+  placeholder?: string
+  inputClassName?: string
+  id?: string
 }
 
 export default function DatePickerPopover({
@@ -20,10 +30,10 @@ export default function DatePickerPopover({
   placeholder = 'Выберите дату',
   inputClassName = '',
   id: idProp,
-}) {
+}: DatePickerPopoverProps) {
   const reactId = useId()
   const inputId = idProp ?? `datepicker-${reactId.replace(/:/g, '')}`
-  const wrapRef = useRef(null)
+  const wrapRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
 
   const initial = value ?? new Date()
@@ -31,21 +41,14 @@ export default function DatePickerPopover({
   const [viewMonth, setViewMonth] = useState(initial.getMonth())
 
   useEffect(() => {
-    if (open && value) {
-      setViewYear(value.getFullYear())
-      setViewMonth(value.getMonth())
-    }
-  }, [open, value])
-
-  useEffect(() => {
     if (!open) return undefined
 
-    const onDocMouseDown = (e) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target)) {
+    const onDocMouseDown = (e: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
         setOpen(false)
       }
     }
-    const onKey = (e) => {
+    const onKey = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false)
     }
 
@@ -77,20 +80,18 @@ export default function DatePickerPopover({
     setViewMonth(month)
   }
 
-  const isDayDisabled = (date) => isCalendarDayBefore(date, todayStart)
+  const isDayDisabled = (date: Date) => isCalendarDayBefore(date, todayStart)
 
-  const handleDayClick = (cell) => {
+  const handleDayClick = (cell: CalendarCell) => {
     if (isDayDisabled(cell.date)) return
     onChange(cell.date)
     setOpen(false)
   }
 
   const openCalendar = () => {
-    if (!value) {
-      const t = new Date()
-      setViewYear(t.getFullYear())
-      setViewMonth(t.getMonth())
-    }
+    const anchor = value ?? new Date()
+    setViewYear(anchor.getFullYear())
+    setViewMonth(anchor.getMonth())
     setOpen(true)
   }
 
@@ -103,7 +104,7 @@ export default function DatePickerPopover({
     openCalendar()
   }
 
-  const handleInputKeyDown = (e) => {
+  const handleInputKeyDown = (e: ReactKeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
       if (open) {

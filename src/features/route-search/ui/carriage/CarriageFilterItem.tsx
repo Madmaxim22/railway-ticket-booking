@@ -1,6 +1,14 @@
-import { memo } from 'react'
+import { memo, type ComponentType } from 'react'
 
-function CarriageFilterItem({ Icon, id, label, isActive, onToggle }) {
+type CarriageFilterItemProps = {
+  Icon: ComponentType<{ className?: string }>
+  id: string
+  label: string
+  isActive: boolean
+  onToggle: (id: string) => void
+}
+
+function CarriageFilterItem({ Icon, id, label, isActive, onToggle }: CarriageFilterItemProps) {
   return (
     <li className="search-filters__item">
       <Icon className="search-filters__carriage-icon" />

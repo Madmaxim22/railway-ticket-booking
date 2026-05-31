@@ -7,7 +7,7 @@ import { selectBooking } from '@/store/slices/bookingSlice'
 import './Breadcrumbs.css'
 
 /** Индекс последнего шага с классом активности (0 — только «Билеты», …, 3 — все этапы). */
-function getMaxActiveBreadcrumbIndex(pathname) {
+function getMaxActiveBreadcrumbIndex(pathname: string): number {
   const segments = pathname.split('/').filter(Boolean)
   const bookingIdx = segments.indexOf('booking')
   const segment = bookingIdx >= 0 ? segments[bookingIdx + 1] : null

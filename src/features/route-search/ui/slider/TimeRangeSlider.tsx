@@ -1,8 +1,12 @@
-import RangeSlider from './RangeSlider'
+import RangeSlider, { type RangeSliderProps } from './RangeSlider'
 
-function formatHour(value) {
+function formatHour(value: number): string {
   return `${String(value).padStart(2, '0')}:00`
 }
+
+type TimeRangeSliderProps = Partial<
+  Pick<RangeSliderProps, 'onChange' | 'onAfterChange' | 'disabled' | 'minLimit' | 'maxLimit' | 'step'>
+>
 
 export default function TimeRangeSlider({
   onChange,
@@ -11,7 +15,7 @@ export default function TimeRangeSlider({
   minLimit = 0,
   maxLimit = 24,
   step = 1,
-}) {
+}: TimeRangeSliderProps) {
   return (
     <>
       <RangeSlider

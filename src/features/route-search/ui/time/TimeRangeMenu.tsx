@@ -1,9 +1,20 @@
 import './TimeRangeMenu.css'
 import BackIcon from '@/shared/ui/icons/BackIcon'
-import ForthIcon from '@/shared/ui/icons/ForthIcon'
 import CloseToggleIcon from '@/shared/ui/icons/CloseToggleIcon'
+import ForthIcon from '@/shared/ui/icons/ForthIcon'
 import OpenToggleIcon from '@/shared/ui/icons/OpenToggleIcon'
 import TimeRangeSlider from '../slider/TimeRangeSlider'
+
+type TimeRangeMenuProps = {
+  title: string
+  isOpen: boolean
+  onToggle: () => void
+  onDepartureTimeAfterChange: (range: [number, number]) => void
+  onArrivalTimeAfterChange: (range: [number, number]) => void
+  disableArrivalTimeSlider?: boolean
+  isToggleDisabled?: boolean
+  toggleDisabledTitle?: string
+}
 
 export default function TimeRangeMenu({
   title,
@@ -14,11 +25,15 @@ export default function TimeRangeMenu({
   disableArrivalTimeSlider = false,
   isToggleDisabled = false,
   toggleDisabledTitle = 'Сначала выберите дату возвращения',
-}) {
+}: TimeRangeMenuProps) {
   return (
     <div className="search-filters__time-section">
       <div className="search-filters__time-content">
-        {title === 'Туда' ? <BackIcon className="search-filters__time-icon" /> : <ForthIcon className="search-filters__time-icon" />}
+        {title === 'Туда' ? (
+          <BackIcon className="search-filters__time-icon" />
+        ) : (
+          <ForthIcon className="search-filters__time-icon" />
+        )}
         <p className="search-filters__time-title">{title}</p>
 
         <button
@@ -26,13 +41,21 @@ export default function TimeRangeMenu({
           className={`search-filters__time-button ${isOpen ? 'search-filters__time-button--open' : ''}`}
           disabled={isToggleDisabled}
           title={isToggleDisabled ? toggleDisabledTitle : undefined}
-          aria-label={isToggleDisabled ? `${title}. ${toggleDisabledTitle}` : `${title}. ${isOpen ? 'Свернуть' : 'Развернуть'} фильтр по времени`}
+          aria-label={
+            isToggleDisabled
+              ? `${title}. ${toggleDisabledTitle}`
+              : `${title}. ${isOpen ? 'Свернуть' : 'Развернуть'} фильтр по времени`
+          }
           onClick={onToggle}
         >
-          {isOpen ? <OpenToggleIcon className="search-filters__time-icon-open" /> : <CloseToggleIcon className="search-filters__time-icon-close" />}
+          {isOpen ? (
+            <OpenToggleIcon className="search-filters__time-icon-open" />
+          ) : (
+            <CloseToggleIcon className="search-filters__time-icon-close" />
+          )}
         </button>
       </div>
-      
+
       <div className="search-filters__time-sliders" hidden={!isOpen}>
         <div className="search-filters__time-slider-container">
           <p className="search-filters__time-slider-title">Время отбытия</p>
@@ -40,7 +63,10 @@ export default function TimeRangeMenu({
         </div>
         <div className="search-filters__time-slider-container">
           <p className="search-filters__time-slider-title">Время прибытия</p>
-          <TimeRangeSlider onAfterChange={onArrivalTimeAfterChange} disabled={disableArrivalTimeSlider} />
+          <TimeRangeSlider
+            onAfterChange={onArrivalTimeAfterChange}
+            disabled={disableArrivalTimeSlider}
+          />
         </div>
       </div>
     </div>
