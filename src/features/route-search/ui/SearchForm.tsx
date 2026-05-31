@@ -1,4 +1,5 @@
-import { useMemo, type ReactNode } from 'react'
+import { useEffect, useMemo, type ReactNode } from 'react'
+import { prefetchTrainSearchAnimation } from '@/shared/lib/prefetchTrainSearchAnimation'
 import { buildRoutesQueryString } from '@/store/api/routesQuerySerialize'
 import { useGetRoutesQuery } from '@/store/api/routesApi'
 import { useAppSelector } from '@/store/hooks'
@@ -20,6 +21,12 @@ export default function SearchForm({ children }: Props) {
     !params.from_city_id?.trim() || !params.to_city_id?.trim()
 
   const { refetch } = useGetRoutesQuery(queryString, { skip })
+
+  useEffect(() => {
+    if (!skip) {
+      void prefetchTrainSearchAnimation()
+    }
+  }, [skip])
 
   const contextValue = useMemo(() => ({ refetch }), [refetch])
 

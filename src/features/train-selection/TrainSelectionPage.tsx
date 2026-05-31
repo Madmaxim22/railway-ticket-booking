@@ -78,8 +78,6 @@ export default function TrainSelectionPage() {
     },
   })
 
-
-  /* TODO: Add loading state editor*/
   return (
     <div className="train-selection-page">
       <div className="train-selection-page__header">

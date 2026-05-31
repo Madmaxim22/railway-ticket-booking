@@ -1,10 +1,12 @@
 import {
   useCallback,
+  useEffect,
   useLayoutEffect,
   useState,
   type FormEvent,
   type MutableRefObject,
 } from 'react'
+import { prefetchTrainSearchAnimation } from '@/shared/lib/prefetchTrainSearchAnimation'
 import { useNavigate } from 'react-router-dom'
 import type { HeaderCitySearchFields } from './useHeaderCitySearchFields'
 import { formatApiDate } from '@/shared/lib/formatApiDate'
@@ -55,6 +57,12 @@ export function useHeaderSearchSubmit(
 
   const { fromCity, toCity } = citySearch
 
+  useEffect(() => {
+    if (fromCity && toCity) {
+      void prefetchTrainSearchAnimation()
+    }
+  }, [fromCity, toCity])
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     clearFormError()
@@ -78,6 +86,7 @@ export function useHeaderSearchSubmit(
       }),
     )
 
+    void prefetchTrainSearchAnimation()
     navigate('/booking/trains')
   }
 

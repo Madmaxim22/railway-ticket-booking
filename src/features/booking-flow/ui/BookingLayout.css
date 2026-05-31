@@ -7,11 +7,13 @@
 }
 
 .booking-layout__body {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
   gap: 85px;
+  box-sizing: border-box;
 
   background-color: var(--color-bg-page);
 
@@ -19,6 +21,15 @@
   padding-left: 255px;
   padding-right: 255px;
   padding-bottom: 195px;
+}
+
+.booking-layout__body--loading {
+  height: 775px;
+  min-height: 775px;
+  max-height: 775px;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .booking-layout__body > aside {

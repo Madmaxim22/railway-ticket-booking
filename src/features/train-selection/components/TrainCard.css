@@ -51,9 +51,12 @@
 }
 
 .train-card__train-number {
+  width: 100%;
+  margin: 0;
   font-size: 24px;
   font-weight: 700;
   color: var(--color-text-heading);
+  text-align: center;
   text-transform: uppercase;
 }
 
