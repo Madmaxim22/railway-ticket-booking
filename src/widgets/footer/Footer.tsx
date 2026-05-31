@@ -4,24 +4,9 @@ import { Link } from 'react-router-dom'
 import { useSubscribeMutation } from '@/store/api/subscribeApi'
 
 import './Footer.css'
+import { formatRtkQueryError } from '@/shared/lib/formatRtkQueryError'
 
-function formatSubscribeError(error: unknown): string {
-  if (!error || typeof error !== 'object') {
-    return 'Не удалось оформить подписку. Попробуйте ещё раз.'
-  }
-
-  if ('data' in error && typeof (error as { data: unknown }).data === 'object') {
-    const data = (error as { data: Record<string, unknown> }).data
-    if (typeof data.message === 'string') return data.message
-    if (typeof data.error === 'string') return data.error
-  }
-
-  if ('status' in error) {
-    return `Ошибка подписки (${String((error as { status: unknown }).status)})`
-  }
-
-  return 'Не удалось оформить подписку. Попробуйте ещё раз.'
-}
+const SUBSCRIBE_ERROR_FALLBACK = 'Не удалось оформить подписку. Попробуйте ещё раз.'
 
 export default function Footer() {
   const [email, setEmail] = useState('')
@@ -55,7 +40,13 @@ export default function Footer() {
       setEmail('')
       setFeedback({ type: 'success', message: 'Подписка оформлена. Спасибо!' })
     } catch (error) {
-      setFeedback({ type: 'error', message: formatSubscribeError(error) })
+      setFeedback({
+        type: 'error',
+        message: formatRtkQueryError(error, {
+          fallback: SUBSCRIBE_ERROR_FALLBACK,
+          statusErrorPrefix: 'Ошибка подписки',
+        }),
+      })
     }
   }
 

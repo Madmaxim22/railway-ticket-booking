@@ -11,20 +11,7 @@ import {
 } from '../lib/seatSelectionNavigation'
 import { selectBooking } from '@/store/slices/bookingSlice'
 import type { TrainOption } from '../types'
-
-function formatSeatsRequestError(error: unknown): string {
-  if (!error || typeof error !== 'object') return 'Не удалось загрузить места.'
-  if ('message' in error && typeof (error as { message: unknown }).message === 'string') {
-    return (error as { message: string }).message
-  }
-  if ('error' in error && typeof (error as { error: unknown }).error === 'string') {
-    return (error as { error: string }).error
-  }
-  if ('status' in error) {
-    return `Ошибка запроса (${String((error as { status: unknown }).status)})`
-  }
-  return 'Не удалось загрузить места.'
-}
+import { formatRtkQueryError } from '@/shared/lib/formatRtkQueryError'
 
 export function useSeatSelectionTrains() {
   const location = useLocation()
@@ -83,7 +70,7 @@ export function useSeatSelectionTrains() {
     trains,
     isLoading,
     isError,
-    errorMessage: isError ? formatSeatsRequestError(error) : null,
+    errorMessage: isError ? formatRtkQueryError(error, 'Не удалось загрузить места.') : null,
     isMissingNavigation,
   }
 }

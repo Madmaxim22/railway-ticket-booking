@@ -16,24 +16,9 @@ import { selectBooking } from '@/store/slices/bookingSlice'
 import TrainCard from '@/features/train-selection/components/TrainCard'
 
 import './OrderReviewPage.css'
+import { formatRtkQueryError } from '@/shared/lib/formatRtkQueryError'
 
-function formatOrderError(error: unknown): string {
-  if (!error || typeof error !== 'object') {
-    return 'Не удалось оформить заказ. Попробуйте ещё раз.'
-  }
-
-  if ('data' in error && typeof (error as { data: unknown }).data === 'object') {
-    const data = (error as { data: Record<string, unknown> }).data
-    if (typeof data.message === 'string') return data.message
-    if (typeof data.error === 'string') return data.error
-  }
-
-  if ('status' in error) {
-    return `Ошибка оформления заказа (${String((error as { status: unknown }).status)})`
-  }
-
-  return 'Не удалось оформить заказ. Попробуйте ещё раз.'
-}
+const ORDER_ERROR_FALLBACK = 'Не удалось оформить заказ. Попробуйте ещё раз.'
 
 export default function OrderReviewPage() {
   const navigate = useNavigate()
@@ -86,7 +71,12 @@ export default function OrderReviewPage() {
 
       navigate('/booking/success', { replace: true, state: successNavigationState })
     } catch (error) {
-      setSubmitError(formatOrderError(error))
+      setSubmitError(
+        formatRtkQueryError(error, {
+          fallback: ORDER_ERROR_FALLBACK,
+          statusErrorPrefix: 'Ошибка оформления заказа',
+        }),
+      )
     }
   }
 

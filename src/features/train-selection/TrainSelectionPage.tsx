@@ -10,20 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import type { SeatSelectionNavigationState } from '@/features/seat-selection/lib/seatSelectionNavigation'
 import { useAppDispatch } from '@/store/hooks'
 import { setSelectedRoutes } from '@/store/slices/bookingSlice'
-
-function formatRoutesRequestError(error: unknown): string {
-  if (!error || typeof error !== 'object') return 'Не удалось загрузить маршруты.'
-  if ('message' in error && typeof (error as { message: unknown }).message === 'string') {
-    return (error as { message: string }).message
-  }
-  if ('error' in error && typeof (error as { error: unknown }).error === 'string') {
-    return (error as { error: string }).error
-  }
-  if ('status' in error) {
-    return `Ошибка запроса (${String((error as { status: unknown }).status)})`
-  }
-  return 'Не удалось загрузить маршруты.'
-}
+import { formatRtkQueryError } from '@/shared/lib/formatRtkQueryError'
 
 export default function TrainSelectionPage() {
   const navigate = useNavigate()
@@ -138,7 +125,7 @@ export default function TrainSelectionPage() {
 
       {isError && (
         <p className="train-selection-page__error" role="alert">
-          {formatRoutesRequestError(error)}
+          {formatRtkQueryError(error, 'Не удалось загрузить маршруты.')}
         </p>
       )}
 
