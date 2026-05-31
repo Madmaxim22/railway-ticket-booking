@@ -10,6 +10,7 @@ import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import { useGetLastRoutesQuery } from '@/store/api/routesApi'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { useRoutesSearchModel } from '@/features/route-search/model/useRoutesSearchModel'
 import {
   mergeSliderSearchFromFilters,
   sliderSearchFromFilters,
@@ -31,6 +32,7 @@ function stationWithVokzal(name: string): string {
 
 export default function SearchFilters() {
   const dispatch = useAppDispatch()
+  const { sendServer } = useRoutesSearchModel()
   const search = useAppSelector(selectSearch)
   const reduxFilters = useAppSelector(selectFilters)
   const hasDateEnd = Boolean(search.date_end)
@@ -83,9 +85,9 @@ export default function SearchFilters() {
   const handlePriceAfterChange = useCallback(
     ([from, to]: [number, number]) => {
       setSliderSearch((prev) => ({ ...prev, price_from: from, price_to: to }))
-      dispatch(mergeFilters({ price_from: from, price_to: to }))
+      void sendServer({ price_from: from, price_to: to })
     },
-    [dispatch],
+    [sendServer],
   )
 
   const handleStartDepartureAfterChange = useCallback(
