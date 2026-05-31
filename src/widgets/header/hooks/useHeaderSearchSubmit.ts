@@ -71,6 +71,14 @@ export function useHeaderSearchSubmit(
   })
 
   useEffect(() => {
+    setDepartureDateState(parseFilterDate(search.date_start))
+  }, [search.date_start])
+
+  useEffect(() => {
+    setArrivalDateState(parseFilterDate(search.date_end))
+  }, [search.date_end])
+
+  useEffect(() => {
     if (fromCity && toCity) {
       void prefetchTrainSearchAnimation()
     }

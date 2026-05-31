@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 
-import { readFromConfirmationFlag } from '@/features/booking-flow/lib/bookingEditNavigation'
 import { useFormStep } from '@/shared/hooks/useFormStep'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
@@ -21,32 +19,34 @@ import { usePassengerCardsState } from './usePassengerCardsState'
 import { usePassengerValidation } from './usePassengerValidation'
 
 export function usePassengersForm() {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const fromConfirmation = readFromConfirmationFlag(location.state)
   const dispatch = useAppDispatch()
   const ticketCounts = useAppSelector(selectBookingTicketCounts)
   const savedPassengers = useAppSelector(selectBookingPassengers)
   const { validatePassenger } = usePassengerValidation()
+  const submitMetaRef = useRef<Pick<ReturnType<typeof validateAllPassengers>, 'firstInvalidId'>>({
+    firstInvalidId: null,
+  })
 
   const validatePassengers = useCallback(
     (passengers: Passenger[]) => {
       const result = validateAllPassengers(passengers, validatePassenger)
+      submitMetaRef.current = { firstInvalidId: result.firstInvalidId }
       return { isValid: result.isValid, errors: result.errors }
     },
     [validatePassenger],
   )
 
-  const { draft: passengers, setDraft, setErrors, errors: errorsByPassengerId } = useFormStep<
-    Passenger[],
-    Record<number, PassengerValidationErrors>
-  >({
-    initial: () =>
-      savedPassengers.length > 0
-        ? savedPassengers
-        : buildPassengersFromTicketCounts(ticketCounts),
-    validate: validatePassengers,
-  })
+  const { draft: passengers, setDraft, setErrors, errors: errorsByPassengerId, submit: commitForm } =
+    useFormStep<Passenger[], Record<number, PassengerValidationErrors>>({
+      initial: () =>
+        savedPassengers.length > 0
+          ? savedPassengers
+          : buildPassengersFromTicketCounts(ticketCounts),
+      validate: validatePassengers,
+      onCommit: (value) => {
+        dispatch(setPassengers(value))
+      },
+    })
 
   const [footerStateByPassengerId, setFooterStateByPassengerId] = useState<Record<number, PassengerFooterState>>({})
   const {
@@ -149,10 +149,9 @@ export function usePassengersForm() {
     [footerStateByPassengerId],
   )
 
-  const submitPassengers = useCallback(() => {
-    const result = validateAllPassengers(passengers, validatePassenger)
+  const submit = useCallback(() => {
+    const isValid = commitForm()
 
-    setErrors(result.errors)
     setFooterStateByPassengerId(
       Object.fromEntries(
         passengers.map((passenger) => {
@@ -162,24 +161,15 @@ export function usePassengersForm() {
       ),
     )
 
-    if (!result.isValid) {
-      if (result.firstInvalidId !== null) {
-        openPassenger(result.firstInvalidId)
+    if (!isValid) {
+      const { firstInvalidId } = submitMetaRef.current
+      if (firstInvalidId !== null) {
+        openPassenger(firstInvalidId)
       }
-      return
     }
 
-    dispatch(setPassengers(passengers))
-    navigate(fromConfirmation ? '/booking/confirmation' : '/booking/payment')
-  }, [
-    dispatch,
-    setErrors,
-    fromConfirmation,
-    navigate,
-    openPassenger,
-    passengers,
-    validatePassenger,
-  ])
+    return isValid
+  }, [commitForm, openPassenger, passengers, validatePassenger])
 
   return {
     passengers,
@@ -190,7 +180,7 @@ export function usePassengersForm() {
     updatePassenger,
     validatePassengerById,
     goToNextPassenger,
-    submitPassengers,
+    submit,
     getFooterState,
     errorsByPassengerId,
   }

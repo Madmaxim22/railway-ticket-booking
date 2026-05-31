@@ -56,12 +56,8 @@ export default function SearchFilters() {
   }, [lastRoutesData])
   const departureDatePickerRef = useRef<DatePickerPopoverHandle>(null)
   const arrivalDatePickerRef = useRef<DatePickerPopoverHandle>(null)
-  const [departureDate, setDepartureDate] = useState<Date | null>(() =>
-    parseFilterDate(search.date_start),
-  )
-  const [arrivalDate, setArrivalDate] = useState<Date | null>(() =>
-    parseFilterDate(search.date_end),
-  )
+  const departureDate = useMemo(() => parseFilterDate(search.date_start), [search.date_start])
+  const arrivalDate = useMemo(() => parseFilterDate(search.date_end), [search.date_end])
   const [isDepartureTimeOpen, setIsDepartureTimeOpen] = useState(false)
   const [isArrivalTimeOpen, setIsArrivalTimeOpen] = useState(false)
   const [sliderSearch, setSliderSearch] = useState<SliderSearchState>(() =>
@@ -149,7 +145,6 @@ export default function SearchFilters() {
 
   const handleDepartureDateChange = useCallback(
     (date: Date | null) => {
-      setDepartureDate(date)
       void sendServer({ date_start: date ? formatApiDate(date) : undefined })
     },
     [sendServer],
@@ -157,7 +152,6 @@ export default function SearchFilters() {
 
   const handleArrivalDateChange = useCallback(
     (date: Date | null) => {
-      setArrivalDate(date)
       void sendServer({ date_end: date ? formatApiDate(date) : undefined })
     },
     [sendServer],

@@ -1,5 +1,8 @@
 import './PassengersPage.css'
 
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import { readFromConfirmationFlag } from '@/features/booking-flow/lib/bookingEditNavigation'
 import { useAppSelector } from '@/store/hooks'
 import { selectBookingTicketCounts } from '@/store/slices/bookingSlice'
 
@@ -8,6 +11,9 @@ import { getPassengerCardTitle } from './passengers.types'
 import { usePassengersForm } from './usePassengersForm'
 
 export default function PassengersPage() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const fromConfirmation = readFromConfirmationFlag(location.state)
   const ticketCounts = useAppSelector(selectBookingTicketCounts)
   const {
     passengers,
@@ -17,8 +23,13 @@ export default function PassengersPage() {
     goToNextPassenger,
     getFooterState,
     errorsByPassengerId,
-    submitPassengers,
+    submit,
   } = usePassengersForm()
+
+  const handleNext = () => {
+    if (!submit()) return
+    navigate(fromConfirmation ? '/booking/confirmation' : '/booking/payment')
+  }
 
   return (
     <div className="passengers-page">
@@ -37,7 +48,7 @@ export default function PassengersPage() {
       ))}
 
       <footer className="passengers-page__footer">
-        <button type="button" className="next-page-btn" onClick={submitPassengers}>
+        <button type="button" className="next-page-btn" onClick={handleNext}>
           Далее
         </button>
       </footer>
