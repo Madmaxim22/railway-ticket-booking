@@ -8,7 +8,6 @@ import { useCreateOrderMutation } from '@/store/api/orderApi'
 import { useAppSelector } from '@/store/hooks'
 import { buildOrderRequest } from '@/store/lib/buildOrderRequest'
 import { selectOrderReviewViewModel } from '@/store/selectors/orderReviewSelectors'
-import { buildSeatSelectionNavigationStateFromBooking } from '@/features/seat-selection/lib/seatSelectionNavigation'
 import { buildBookingSuccessNavigationState } from '@/features/booking-success/lib/bookingSuccessNavigation'
 import { selectBooking } from '@/store/slices/bookingSlice'
 import TrainCard from '@/features/train-selection/components/TrainCard'
@@ -33,9 +32,8 @@ export default function OrderReviewPage() {
   const editNavigationState = { fromConfirmation: true as const }
 
   const goToSeats = () => {
-    const seatNavigation = buildSeatSelectionNavigationStateFromBooking(booking)
-    if (seatNavigation) {
-      navigate('/booking/seats', { state: { ...seatNavigation, ...editNavigationState } })
+    if (booking.departure?.routeId && booking.departure.segment) {
+      navigate('/booking/seats', { state: editNavigationState })
       return
     }
     navigate('/booking/trains')

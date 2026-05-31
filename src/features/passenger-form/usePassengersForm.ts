@@ -78,14 +78,7 @@ export function usePassengersForm() {
 
       return next
     })
-  }, [
-    setDraft,
-    setErrors,
-    ticketCounts.adults,
-    ticketCounts.children,
-    ticketCounts.childrenWithoutSeat,
-    onPassengerRemoved,
-  ])
+  }, [setDraft, setErrors, ticketCounts, onPassengerRemoved])
 
   useEffect(() => {
     if (didAutoOpenFirstPassengerRef.current || passengers.length === 0) return

@@ -70,5 +70,5 @@ export function useBookingSearchUrlSync() {
 
     const nextParams = new URLSearchParams(normalizedNext.replace(/^\?/, ''))
     setSearchParams(nextParams, { replace: true })
-  }, [location.pathname, location.search, params, search.from_city_name, search.to_city_name, setSearchParams])
+  }, [location.pathname, location.search, params, search, searchParams, setSearchParams])
 }

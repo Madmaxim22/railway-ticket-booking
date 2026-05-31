@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import DatePickerPopover, { type DatePickerPopoverHandle } from '@/components/DatePickerPopover'
 import { formatApiDate } from '@/shared/lib/formatApiDate'
 import { parseFilterDate } from '@/shared/lib/parseFilterDate'
@@ -11,11 +11,7 @@ import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import { useGetLastRoutesQuery } from '@/store/api/routesApi'
 import { useAppSelector } from '@/store/hooks'
 import { useRoutesSearchModel } from '@/features/route-search/model/useRoutesSearchModel'
-import {
-  mergeSliderSearchFromFilters,
-  sliderSearchFromFilters,
-  type SliderSearchState,
-} from '@/features/route-search/model/sliderSearchState'
+import { sliderSearchFromFilters } from '@/features/route-search/model/sliderSearchState'
 import { selectFilters, type FiltersState } from '@/store/slices/filtersSlice'
 import { selectSearch } from '@/store/slices/searchSlice'
 import CarriageFilterItem from './carriage/CarriageFilterItem'
@@ -60,28 +56,10 @@ export default function SearchFilters() {
   const arrivalDate = useMemo(() => parseFilterDate(search.date_end), [search.date_end])
   const [isDepartureTimeOpen, setIsDepartureTimeOpen] = useState(false)
   const [isArrivalTimeOpen, setIsArrivalTimeOpen] = useState(false)
-  const [sliderSearch, setSliderSearch] = useState<SliderSearchState>(() =>
-    sliderSearchFromFilters(reduxFilters),
-  )
-
-  useEffect(() => {
-    setSliderSearch((prev) => mergeSliderSearchFromFilters(prev, reduxFilters))
-  }, [
-    reduxFilters.price_from,
-    reduxFilters.price_to,
-    reduxFilters.start_departure_hour_from,
-    reduxFilters.start_departure_hour_to,
-    reduxFilters.start_arrival_hour_from,
-    reduxFilters.start_arrival_hour_to,
-    reduxFilters.end_departure_hour_from,
-    reduxFilters.end_departure_hour_to,
-    reduxFilters.end_arrival_hour_from,
-    reduxFilters.end_arrival_hour_to,
-  ])
+  const sliderSearch = useMemo(() => sliderSearchFromFilters(reduxFilters), [reduxFilters])
 
   const handlePriceAfterChange = useCallback(
     ([from, to]: [number, number]) => {
-      setSliderSearch((prev) => ({ ...prev, price_from: from, price_to: to }))
       void sendServer({ price_from: from, price_to: to })
     },
     [sendServer],
@@ -89,48 +67,40 @@ export default function SearchFilters() {
 
   const handleStartDepartureAfterChange = useCallback(
     ([from, to]: [number, number]) => {
-      const patch = {
+      void sendServer({
         start_departure_hour_from: from,
         start_departure_hour_to: to,
-      }
-      setSliderSearch((prev) => ({ ...prev, ...patch }))
-      void sendServer(patch)
+      })
     },
     [sendServer],
   )
 
   const handleStartArrivalAfterChange = useCallback(
     ([from, to]: [number, number]) => {
-      const patch = {
+      void sendServer({
         start_arrival_hour_from: from,
         start_arrival_hour_to: to,
-      }
-      setSliderSearch((prev) => ({ ...prev, ...patch }))
-      void sendServer(patch)
+      })
     },
     [sendServer],
   )
 
   const handleEndDepartureAfterChange = useCallback(
     ([from, to]: [number, number]) => {
-      const patch = {
+      void sendServer({
         end_departure_hour_from: from,
         end_departure_hour_to: to,
-      }
-      setSliderSearch((prev) => ({ ...prev, ...patch }))
-      void sendServer(patch)
+      })
     },
     [sendServer],
   )
 
   const handleEndArrivalAfterChange = useCallback(
     ([from, to]: [number, number]) => {
-      const patch = {
+      void sendServer({
         end_arrival_hour_from: from,
         end_arrival_hour_to: to,
-      }
-      setSliderSearch((prev) => ({ ...prev, ...patch }))
-      void sendServer(patch)
+      })
     },
     [sendServer],
   )

@@ -62,13 +62,17 @@ VITE_API_BASE_URL=https://students.netoservices.ru/fe-diplom
 | `npm run test` | Vitest в watch-режиме |
 | `npm run test:run` | Однократный прогон тестов (как в CI) |
 
-## CI
+## CI и деплой
 
-На каждый push и pull request в `main` / `master` запускается [GitHub Actions](.github/workflows/ci.yml):
+На каждый push и pull request в `main` / `master` запускается [CI](.github/workflows/ci.yml):
 
 - `npm run lint`
 - `npm run test:run`
 - `npm run build` (с `VITE_API_BASE_URL` из `.env.example`)
+
+После успешной проверки при push в `main` / `master` workflow [Deploy GitHub Pages](.github/workflows/pages.yml) публикует `dist/` на GitHub Pages.
+
+**Один раз в настройках репозитория:** Settings → Pages → Build and deployment → Source: **GitHub Actions**.
 
 ## Стек
 

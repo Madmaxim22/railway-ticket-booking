@@ -7,7 +7,6 @@ import PaginationArrowLeftIcon from '@/shared/ui/icons/pagination/PaginationArro
 import PaginationArrowRightIcon from '@/shared/ui/icons/pagination/PaginationArrowRightIcon'
 import PaginationDotsIcon from '@/shared/ui/icons/pagination/PaginationDotsIcon'
 import { useNavigate } from 'react-router-dom'
-import type { SeatSelectionNavigationState } from '@/features/seat-selection/lib/seatSelectionNavigation'
 import { useAppDispatch } from '@/store/hooks'
 import { setSelectedRoutes } from '@/store/slices/bookingSlice'
 import { formatRtkQueryError } from '@/shared/lib/formatRtkQueryError'
@@ -135,27 +134,23 @@ export default function TrainSelectionPage() {
             key={item.departure._id}
             item={item}
             onActionClick={() => {
-              const state: SeatSelectionNavigationState = {
-                departure: {
-                  routeId: item.departure._id,
-                  segment: item.departure,
-                },
-                ...(item.arrival
-                  ? {
-                      returnTrip: {
-                        routeId: item.arrival._id,
-                        segment: item.arrival,
-                      },
-                    }
-                  : {}),
-              }
               dispatch(
                 setSelectedRoutes({
-                  departure: state.departure,
-                  ...(state.returnTrip ? { returnTrip: state.returnTrip } : {}),
+                  departure: {
+                    routeId: item.departure._id,
+                    segment: item.departure,
+                  },
+                  ...(item.arrival
+                    ? {
+                        returnTrip: {
+                          routeId: item.arrival._id,
+                          segment: item.arrival,
+                        },
+                      }
+                    : {}),
                 }),
               )
-              navigate('/booking/seats', { state })
+              navigate('/booking/seats')
             }}
           />
         ))}

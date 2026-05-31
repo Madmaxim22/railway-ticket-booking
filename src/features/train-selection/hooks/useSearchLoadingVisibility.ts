@@ -17,19 +17,27 @@ export function useSearchLoadingVisibility(
   }, [])
 
   useEffect(() => {
-    if (isFetching && !hasResults && !isError) {
+    if (!(isFetching && !hasResults && !isError)) return
+
+    const timeoutId = window.setTimeout(() => {
       setVisible(true)
       setGifReady(false)
       startedAtRef.current = Date.now()
-    }
+    }, 0)
+
+    return () => window.clearTimeout(timeoutId)
   }, [isFetching, hasResults, isError])
 
   useEffect(() => {
-    if (isError) {
+    if (!isError) return
+
+    const timeoutId = window.setTimeout(() => {
       setVisible(false)
       startedAtRef.current = null
       setGifReady(false)
-    }
+    }, 0)
+
+    return () => window.clearTimeout(timeoutId)
   }, [isError])
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { readFromConfirmationFlag } from '@/features/booking-flow/lib/bookingEditNavigation'
@@ -10,12 +10,14 @@ import {
   selectBooking,
   setBookingPricing,
   setSeatSelections,
-  type BookingSeatSelection,
 } from '@/store/slices/bookingSlice'
 
 import { getTotalPassengerCount } from './constants'
 import { SeatSelectionTrainCard } from './components/SeatSelectionTrainCard'
-import { createDefaultTrainSeatSelection } from './lib/createDefaultTrainSeatSelection'
+import {
+  buildSelectionByTrainId,
+  type TrainSelectionState,
+} from './lib/buildSelectionByTrainId'
 import {
   calculateBookingPassengerPrices,
   type TrainSeatSelection,
@@ -25,27 +27,11 @@ import type { CarriageType } from './types'
 import { useSeatSelectionTrains } from './hooks/useSeatSelectionTrains'
 import { useTicketCounts } from './hooks/useTicketCounts'
 
-type TrainSelectionState = TrainSeatSelection & {
-  activeType: CarriageType
-}
-
 function getActiveTypeForCarriage(
   train: { carriages: Array<{ id: string; type: CarriageType }> },
   carriageId: string,
 ): CarriageType {
   return train.carriages.find((carriage) => carriage.id === carriageId)?.type ?? 'coupe'
-}
-
-function getSavedSeatSelectionForTrain(
-  trainId: string,
-  departureSegmentId: string | undefined,
-  returnSegmentId: string | undefined,
-  departureSeats: BookingSeatSelection | null,
-  returnTripSeats: BookingSeatSelection | null,
-): BookingSeatSelection | null {
-  if (trainId === departureSegmentId && departureSeats) return departureSeats
-  if (trainId === returnSegmentId && returnTripSeats) return returnTripSeats
-  return null
 }
 
 export function SeatSelectionPageContainer() {
@@ -69,65 +55,34 @@ export function SeatSelectionPageContainer() {
   )
   const [seatSelectionHint, setSeatSelectionHint] = useState<string | null>(null)
 
-  useEffect(() => {
-    setSelectionByTrainId((prev) => {
-      const next: Record<string, TrainSelectionState> = {}
-      let changed = false
+  const departureSegmentId = booking.departure?.segment._id
+  const returnSegmentId = booking.returnTrip?.segment._id
 
-      const departureSegmentId = booking.departure?.segment._id
-      const returnSegmentId = booking.returnTrip?.segment._id
+  const selectionSeedSignature = [
+    trains.map((train) => train.id).join(','),
+    departureSegmentId ?? '',
+    returnSegmentId ?? '',
+    booking.departureSeats?.carriageId ?? '',
+    booking.departureSeats?.seats.join(',') ?? '',
+    booking.returnTripSeats?.carriageId ?? '',
+    booking.returnTripSeats?.seats.join(',') ?? '',
+  ].join('|')
 
-      for (const train of trains) {
-        const existing = prev[train.id]
-        if (existing) {
-          next[train.id] = existing
-          continue
-        }
+  const [lastSelectionSeedSignature, setLastSelectionSeedSignature] = useState('')
 
-        const saved = getSavedSeatSelectionForTrain(
-          train.id,
-          departureSegmentId,
-          returnSegmentId,
-          booking.departureSeats,
-          booking.returnTripSeats,
-        )
-
-        if (saved) {
-          const carriage = train.carriages.find((item) => item.id === saved.carriageId)
-          const activeType = carriage?.type ?? train.carriages[0]?.type ?? 'coupe'
-
-          changed = true
-          next[train.id] = {
-            carriageId: saved.carriageId,
-            seats: [...saved.seats],
-            activeType,
-          }
-          continue
-        }
-
-        const defaults = createDefaultTrainSeatSelection(train)
-        if (!defaults) continue
-
-        changed = true
-        next[train.id] = {
-          ...defaults,
-          activeType: train.carriages[0]?.type ?? 'coupe',
-        }
-      }
-
-      if (!changed && Object.keys(next).length === Object.keys(prev).length) {
-        return prev
-      }
-
-      return next
-    })
-  }, [
-    trains,
-    booking.departure?.segment._id,
-    booking.returnTrip?.segment._id,
-    booking.departureSeats,
-    booking.returnTripSeats,
-  ])
+  if (trains.length > 0 && selectionSeedSignature !== lastSelectionSeedSignature) {
+    setLastSelectionSeedSignature(selectionSeedSignature)
+    setSelectionByTrainId((prev) =>
+      buildSelectionByTrainId({
+        trains,
+        departureSegmentId,
+        returnSegmentId,
+        departureSeats: booking.departureSeats,
+        returnTripSeats: booking.returnTripSeats,
+        previous: prev,
+      }),
+    )
+  }
 
   const selectedSeatsByTrainId = useMemo(
     () =>

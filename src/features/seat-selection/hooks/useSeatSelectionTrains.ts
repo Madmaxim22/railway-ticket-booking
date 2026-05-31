@@ -1,26 +1,17 @@
 import { useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
 import { useGetRouteSeatsQuery } from '@/store/api/routesApi'
 import { buildRouteSeatsQueryString } from '@/store/api/routesSeatsQuerySerialize'
 import { selectRouteSeatsQueryParams } from '@/store/selectors/routeSeatsQuerySelectors'
 import { useAppSelector } from '@/store/hooks'
 import { mapRouteSeatsToTrainOption } from '../lib/mapRouteSeatsToTrainOption'
-import {
-  buildSeatSelectionNavigationStateFromBooking,
-  readSeatSelectionNavigationState,
-} from '../lib/seatSelectionNavigation'
 import { selectBooking } from '@/store/slices/bookingSlice'
 import type { TrainOption } from '../types'
 import { formatRtkQueryError } from '@/shared/lib/formatRtkQueryError'
 
 export function useSeatSelectionTrains() {
-  const location = useLocation()
   const booking = useAppSelector(selectBooking)
-  const navigation = useMemo(
-    () =>
-      readSeatSelectionNavigationState(location.state) ??
-      buildSeatSelectionNavigationStateFromBooking(booking),
-    [location.state, booking],
+  const hasSelectedRoutes = Boolean(
+    booking.departure?.routeId && booking.departure.segment,
   )
   const seatsFilters = useAppSelector(selectRouteSeatsQueryParams)
   const queryString = useMemo(
@@ -29,42 +20,42 @@ export function useSeatSelectionTrains() {
   )
 
   const departureQuery = useGetRouteSeatsQuery(
-    { routeId: navigation?.departure.routeId ?? '', queryString },
-    { skip: !navigation?.departure.routeId },
+    { routeId: booking.departure?.routeId ?? '', queryString },
+    { skip: !booking.departure?.routeId },
   )
 
   const returnQuery = useGetRouteSeatsQuery(
-    { routeId: navigation?.returnTrip?.routeId ?? '', queryString },
-    { skip: !navigation?.returnTrip?.routeId },
+    { routeId: booking.returnTrip?.routeId ?? '', queryString },
+    { skip: !booking.returnTrip?.routeId },
   )
 
   const trains = useMemo((): TrainOption[] => {
-    if (!navigation) return []
+    if (!hasSelectedRoutes || !booking.departure) return []
     const result: TrainOption[] = []
 
     if (departureQuery.data) {
       result.push(
-        mapRouteSeatsToTrainOption(navigation.departure.segment, departureQuery.data),
+        mapRouteSeatsToTrainOption(booking.departure.segment, departureQuery.data),
       )
     }
 
-    if (navigation.returnTrip && returnQuery.data) {
+    if (booking.returnTrip && returnQuery.data) {
       result.push(
-        mapRouteSeatsToTrainOption(navigation.returnTrip.segment, returnQuery.data),
+        mapRouteSeatsToTrainOption(booking.returnTrip.segment, returnQuery.data),
       )
     }
 
     return result
-  }, [navigation, departureQuery.data, returnQuery.data])
+  }, [hasSelectedRoutes, booking.departure, booking.returnTrip, departureQuery.data, returnQuery.data])
 
   const isLoading =
     departureQuery.isLoading || departureQuery.isFetching ||
-    (navigation?.returnTrip != null && (returnQuery.isLoading || returnQuery.isFetching))
+    (booking.returnTrip != null && (returnQuery.isLoading || returnQuery.isFetching))
 
   const isError = departureQuery.isError || returnQuery.isError
   const error = departureQuery.error ?? returnQuery.error
 
-  const isMissingNavigation = navigation == null
+  const isMissingNavigation = !hasSelectedRoutes
 
   return {
     trains,

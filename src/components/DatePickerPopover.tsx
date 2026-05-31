@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useId,
   useImperativeHandle,
@@ -102,14 +103,14 @@ const DatePickerPopover = forwardRef<DatePickerPopoverHandle, DatePickerPopoverP
 
     const isDayDisabled = (date: Date) => isCalendarDayBefore(date, todayStart)
 
-    const openCalendar = () => {
+    const openCalendar = useCallback(() => {
       const anchor = value ?? new Date()
       setViewYear(anchor.getFullYear())
       setViewMonth(anchor.getMonth())
       setOpen(true)
-    }
+    }, [value])
 
-    useImperativeHandle(ref, () => ({ openCalendar }), [value])
+    useImperativeHandle(ref, () => ({ openCalendar }), [openCalendar])
 
     const commitInput = () => {
       const trimmed = inputText.trim()

@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useState,
   type FormEvent,
   type MutableRefObject,
@@ -27,10 +28,34 @@ export function useHeaderSearchSubmit(
   const routesParams = useAppSelector(selectRoutesQueryParams)
   const navigate = useNavigate()
   const [formError, setFormError] = useState<string | null>(null)
-  const [departureDate, setDepartureDateState] = useState<Date | null>(() =>
-    parseFilterDate(search.date_start),
+  const [departureDateOverride, setDepartureDateOverride] = useState<Date | null | undefined>(
+    undefined,
   )
-  const [arrivalDate, setArrivalDateState] = useState<Date | null>(() => parseFilterDate(search.date_end))
+  const [arrivalDateOverride, setArrivalDateOverride] = useState<Date | null | undefined>(
+    undefined,
+  )
+  const [prevDateStart, setPrevDateStart] = useState(search.date_start)
+  const [prevDateEnd, setPrevDateEnd] = useState(search.date_end)
+
+  if (search.date_start !== prevDateStart) {
+    setPrevDateStart(search.date_start)
+    setDepartureDateOverride(undefined)
+  }
+
+  if (search.date_end !== prevDateEnd) {
+    setPrevDateEnd(search.date_end)
+    setArrivalDateOverride(undefined)
+  }
+
+  const departureDateFromSearch = useMemo(
+    () => parseFilterDate(search.date_start),
+    [search.date_start],
+  )
+  const arrivalDateFromSearch = useMemo(() => parseFilterDate(search.date_end), [search.date_end])
+
+  const departureDate =
+    departureDateOverride !== undefined ? departureDateOverride : departureDateFromSearch
+  const arrivalDate = arrivalDateOverride !== undefined ? arrivalDateOverride : arrivalDateFromSearch
 
   const clearFormError = useCallback(() => {
     setFormError(null)
@@ -46,7 +71,7 @@ export function useHeaderSearchSubmit(
   const setDepartureDate = useCallback(
     (date: Date | null) => {
       clearFormError()
-      setDepartureDateState(date)
+      setDepartureDateOverride(date)
     },
     [clearFormError],
   )
@@ -54,7 +79,7 @@ export function useHeaderSearchSubmit(
   const setArrivalDate = useCallback(
     (date: Date | null) => {
       clearFormError()
-      setArrivalDateState(date)
+      setArrivalDateOverride(date)
     },
     [clearFormError],
   )
@@ -76,14 +101,6 @@ export function useHeaderSearchSubmit(
     setDepartureDate,
     setArrivalDate,
   })
-
-  useEffect(() => {
-    setDepartureDateState(parseFilterDate(search.date_start))
-  }, [search.date_start])
-
-  useEffect(() => {
-    setArrivalDateState(parseFilterDate(search.date_end))
-  }, [search.date_end])
 
   useEffect(() => {
     const fromId = search.from_city_id?.trim()
