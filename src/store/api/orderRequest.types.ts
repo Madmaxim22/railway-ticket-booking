@@ -39,4 +39,6 @@ export type CreateOrderRequest = {
 
 export type CreateOrderResponse = {
   status: boolean
+  order_id?: string
+  total?: number
 }

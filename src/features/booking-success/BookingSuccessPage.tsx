@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { useAppDispatch } from '@/store/hooks'
 import { resetBooking } from '@/store/slices/bookingSlice'
-import { readBookingSuccessNavigationState } from './lib/bookingSuccessNavigation'
+import { useBookingSuccessGuard } from './hooks/useBookingSuccessGuard'
 import SuccessFeatureConductorIcon from './icons/SuccessFeatureConductorIcon'
 import SuccessFeatureEmailIcon from './icons/SuccessFeatureEmailIcon'
 import SuccessFeaturePrintIcon from './icons/SuccessFeaturePrintIcon'
@@ -15,13 +15,18 @@ const RATING_STARS_COUNT = 5
 
 export default function BookingSuccessPage() {
   const dispatch = useAppDispatch()
-  const location = useLocation()
-  const successState = readBookingSuccessNavigationState(location.state)
-  const payerGreeting = successState?.payerGreeting ?? 'Уважаемый клиент!'
+  const { successState } = useBookingSuccessGuard()
 
   useEffect(() => {
+    if (!successState) return
     dispatch(resetBooking())
-  }, [dispatch])
+  }, [dispatch, successState])
+
+  if (!successState) {
+    return null
+  }
+
+  const { payerGreeting, orderNumber, totalPrice } = successState
 
   return (
     <section className="booking-success-page">
@@ -31,10 +36,12 @@ export default function BookingSuccessPage() {
 
           <article className="booking-success-card">
             <header className="booking-success-card__header">
-              <p className="booking-success-card__order-number">№Заказа 285АА</p>
+              <p className="booking-success-card__order-number">№Заказа {orderNumber}</p>
               <p className="booking-success-card__sum">
                 <span className="booking-success-card__sum-label">сумма</span>
-                <span className="booking-success-card__sum-value">7 760</span>
+                <span className="booking-success-card__sum-value">
+                  {totalPrice.toLocaleString('ru-RU')}
+                </span>
                 <span className="booking-success-card__sum-currency">
                   <FarePriceIcon className="booking-success-card__sum-currency-icon" />
                 </span>
