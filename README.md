@@ -64,13 +64,14 @@ VITE_API_BASE_URL=https://students.netoservices.ru/fe-diplom
 
 ## CI и деплой
 
-На каждый push и pull request в `main` / `master` запускается [CI](.github/workflows/ci.yml):
+Один workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
 
-- `npm run lint`
-- `npm run test:run`
-- `npm run build` (с `VITE_API_BASE_URL` из `.env.example`)
+| Событие | Действия |
+|---------|----------|
+| Pull request в `main` / `master` | lint → test → build |
+| Push в `main` / `master` | то же + публикация `dist/` на GitHub Pages |
 
-После успешной проверки при push в `main` / `master` workflow [Deploy GitHub Pages](.github/workflows/pages.yml) публикует `dist/` на GitHub Pages.
+Сборка использует `VITE_API_BASE_URL` из `.env.example`.
 
 **Один раз в настройках репозитория:** Settings → Pages → Build and deployment → Source: **GitHub Actions**.
 
