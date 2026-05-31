@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import PassengersIcon from '@/shared/ui/icons/PassengersIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
+import { useSubmitMutation } from '@/shared/hooks/useSubmitMutation'
 import { useCreateOrderMutation } from '@/store/api/orderApi'
 import { useAppSelector } from '@/store/hooks'
 import { buildOrderRequest } from '@/store/lib/buildOrderRequest'
@@ -13,7 +14,6 @@ import { selectBooking } from '@/store/slices/bookingSlice'
 import TrainCard from '@/features/train-selection/components/TrainCard'
 
 import './OrderReviewPage.css'
-import { formatRtkQueryError } from '@/shared/lib/formatRtkQueryError'
 
 const ORDER_ERROR_FALLBACK = 'Не удалось оформить заказ. Попробуйте ещё раз.'
 
@@ -23,6 +23,11 @@ export default function OrderReviewPage() {
   const { trainCardItem, showReturnTrip, passengers, totalPrice, paymentMethodLabel } =
     useAppSelector(selectOrderReviewViewModel)
   const [createOrder, { isLoading }] = useCreateOrderMutation()
+  const { submit: submitOrder } = useSubmitMutation({
+    fallback: ORDER_ERROR_FALLBACK,
+    statusErrorPrefix: 'Ошибка оформления заказа',
+    rejectedMessage: 'Сервер отклонил заказ. Проверьте данные и попробуйте снова.',
+  })
   const [submitError, setSubmitError] = useState<string | null>(null)
 
   const editNavigationState = { fromConfirmation: true as const }
@@ -53,29 +58,20 @@ export default function OrderReviewPage() {
       return
     }
 
-    try {
-      const result = await createOrder(orderBody).unwrap()
+    const outcome = await submitOrder(() => createOrder(orderBody).unwrap())
 
-      if (!result.status) {
-        setSubmitError('Сервер отклонил заказ. Проверьте данные и попробуйте снова.')
-        return
-      }
-
-      const successNavigationState = buildBookingSuccessNavigationState(
-        result,
-        totalPrice,
-        booking.contactInfo,
-      )
-
-      navigate('/booking/success', { replace: true, state: successNavigationState })
-    } catch (error) {
-      setSubmitError(
-        formatRtkQueryError(error, {
-          fallback: ORDER_ERROR_FALLBACK,
-          statusErrorPrefix: 'Ошибка оформления заказа',
-        }),
-      )
+    if (!outcome.ok) {
+      setSubmitError(outcome.message)
+      return
     }
+
+    const successNavigationState = buildBookingSuccessNavigationState(
+      outcome.data,
+      totalPrice,
+      booking.contactInfo,
+    )
+
+    navigate('/booking/success', { replace: true, state: successNavigationState })
   }
 
   return (

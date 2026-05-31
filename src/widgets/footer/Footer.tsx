@@ -1,10 +1,10 @@
 import { useState, type FormEvent, type MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
 
+import { useSubmitMutation } from '@/shared/hooks/useSubmitMutation'
 import { useSubscribeMutation } from '@/store/api/subscribeApi'
 
 import './Footer.css'
-import { formatRtkQueryError } from '@/shared/lib/formatRtkQueryError'
 
 const SUBSCRIBE_ERROR_FALLBACK = 'Не удалось оформить подписку. Попробуйте ещё раз.'
 
@@ -14,6 +14,11 @@ export default function Footer() {
     null,
   )
   const [subscribe, { isLoading }] = useSubscribeMutation()
+  const { submit: submitSubscribe } = useSubmitMutation({
+    fallback: SUBSCRIBE_ERROR_FALLBACK,
+    statusErrorPrefix: 'Ошибка подписки',
+    rejectedMessage: 'Сервер отклонил подписку. Попробуйте снова.',
+  })
 
   const preventFocusShift = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -29,25 +34,15 @@ export default function Footer() {
       return
     }
 
-    try {
-      const result = await subscribe({ email: trimmedEmail }).unwrap()
+    const outcome = await submitSubscribe(() => subscribe({ email: trimmedEmail }).unwrap())
 
-      if (!result.status) {
-        setFeedback({ type: 'error', message: 'Сервер отклонил подписку. Попробуйте снова.' })
-        return
-      }
-
+    if (outcome.ok) {
       setEmail('')
       setFeedback({ type: 'success', message: 'Подписка оформлена. Спасибо!' })
-    } catch (error) {
-      setFeedback({
-        type: 'error',
-        message: formatRtkQueryError(error, {
-          fallback: SUBSCRIBE_ERROR_FALLBACK,
-          statusErrorPrefix: 'Ошибка подписки',
-        }),
-      })
+      return
     }
+
+    setFeedback({ type: 'error', message: outcome.message })
   }
 
   return (
