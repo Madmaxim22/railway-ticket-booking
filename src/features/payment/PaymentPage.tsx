@@ -11,6 +11,11 @@ import {
   type PaymentMethod,
 } from '@/store/slices/bookingSlice'
 
+import {
+  validateContactInfo,
+  type ContactValidationErrors,
+} from './lib/validateContactInfo'
+
 import './PaymentPage.css'
 
 const EMPTY_CONTACT: BookingContactInfo = {
@@ -19,6 +24,45 @@ const EMPTY_CONTACT: BookingContactInfo = {
   patronymic: '',
   phone: '',
   email: '',
+}
+
+type ContactFieldProps = {
+  label: string
+  value: string
+  error?: string
+  type?: 'text' | 'tel' | 'email'
+  placeholder?: string
+  fieldClassName?: string
+  onChange: (value: string) => void
+}
+
+function ContactField({
+  label,
+  value,
+  error,
+  type = 'text',
+  placeholder,
+  fieldClassName,
+  onChange,
+}: ContactFieldProps) {
+  return (
+    <label
+      className={['payment-page__field', fieldClassName].filter(Boolean).join(' ')}
+    >
+      <span className="payment-page__label">{label}</span>
+      <input
+        className={['payment-page__input', error ? 'payment-page__input--error' : '']
+          .filter(Boolean)
+          .join(' ')}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        aria-invalid={Boolean(error)}
+      />
+      {error ? <span className="payment-page__error-text">{error}</span> : null}
+    </label>
+  )
 }
 
 export default function PaymentPage() {
@@ -32,12 +76,28 @@ export default function PaymentPage() {
   const [contactInfo, setContactInfoState] = useState<BookingContactInfo>(
     savedContactInfo ?? EMPTY_CONTACT,
   )
+  const [errors, setErrors] = useState<ContactValidationErrors>({})
 
-  const updateContact = <K extends keyof BookingContactInfo>(key: K, value: BookingContactInfo[K]) => {
+  const updateContact = <K extends keyof BookingContactInfo>(
+    key: K,
+    value: BookingContactInfo[K],
+  ) => {
     setContactInfoState((prev) => ({ ...prev, [key]: value }))
+    setErrors((prev) => {
+      if (!prev[key]) return prev
+      const next = { ...prev }
+      delete next[key]
+      return next
+    })
   }
 
   const handleBuyTickets = () => {
+    const validation = validateContactInfo(contactInfo)
+    if (!validation.isValid) {
+      setErrors(validation.errors)
+      return
+    }
+
     dispatch(setContactInfo(contactInfo))
     dispatch(setPaymentMethod(paymentMethod))
     navigate('/booking/confirmation')
@@ -52,61 +112,48 @@ export default function PaymentPage() {
 
           <div className="payment-page__content">
             <div className="payment-page__row payment-page__row--three-cols">
-              <label className="payment-page__field">
-                <span className="payment-page__label">Фамилия</span>
-                <input
-                  className="payment-page__input"
-                  type="text"
-                  value={contactInfo.lastName}
-                  onChange={(event) => updateContact('lastName', event.target.value)}
-                />
-              </label>
-
-              <label className="payment-page__field">
-                <span className="payment-page__label">Имя</span>
-                <input
-                  className="payment-page__input"
-                  type="text"
-                  value={contactInfo.firstName}
-                  onChange={(event) => updateContact('firstName', event.target.value)}
-                />
-              </label>
-
-              <label className="payment-page__field">
-                <span className="payment-page__label">Отчество</span>
-                <input
-                  className="payment-page__input"
-                  type="text"
-                  value={contactInfo.patronymic}
-                  onChange={(event) => updateContact('patronymic', event.target.value)}
-                />
-              </label>
+              <ContactField
+                label="Фамилия"
+                value={contactInfo.lastName}
+                error={errors.lastName}
+                onChange={(value) => updateContact('lastName', value)}
+              />
+              <ContactField
+                label="Имя"
+                value={contactInfo.firstName}
+                error={errors.firstName}
+                onChange={(value) => updateContact('firstName', value)}
+              />
+              <ContactField
+                label="Отчество"
+                value={contactInfo.patronymic}
+                error={errors.patronymic}
+                onChange={(value) => updateContact('patronymic', value)}
+              />
             </div>
 
             <div className="payment-page__row payment-page__row--single">
-              <label className="payment-page__field payment-page__field--short">
-                <span className="payment-page__label">Контактный телефон</span>
-                <input
-                  className="payment-page__input"
-                  type="tel"
-                  placeholder="+7 ___ ___ __ __"
-                  value={contactInfo.phone}
-                  onChange={(event) => updateContact('phone', event.target.value)}
-                />
-              </label>
+              <ContactField
+                label="Контактный телефон"
+                type="tel"
+                placeholder="+7 ___ ___ __ __"
+                fieldClassName="payment-page__field--short"
+                value={contactInfo.phone}
+                error={errors.phone}
+                onChange={(value) => updateContact('phone', value)}
+              />
             </div>
 
             <div className="payment-page__row payment-page__row--single">
-              <label className="payment-page__field payment-page__field--short">
-                <span className="payment-page__label">E-mail</span>
-                <input
-                  className="payment-page__input"
-                  type="email"
-                  placeholder="inbox@gmail.ru"
-                  value={contactInfo.email}
-                  onChange={(event) => updateContact('email', event.target.value)}
-                />
-              </label>
+              <ContactField
+                label="E-mail"
+                type="email"
+                placeholder="inbox@gmail.ru"
+                fieldClassName="payment-page__field--short"
+                value={contactInfo.email}
+                error={errors.email}
+                onChange={(value) => updateContact('email', value)}
+              />
             </div>
           </div>
         </section>

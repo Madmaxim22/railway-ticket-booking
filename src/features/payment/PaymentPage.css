@@ -76,6 +76,21 @@
   color: var(--color-border);
 }
 
+.payment-page__input--error {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.payment-page__input--error::placeholder {
+  color: var(--color-error);
+}
+
+.payment-page__error-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-error);
+}
+
 .payment-page__section--payment-method {
   border-top: 1px dashed var(--color-text-muted);
 }

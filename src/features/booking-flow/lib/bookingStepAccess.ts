@@ -1,3 +1,4 @@
+import { isValidContactInfo } from '@/features/payment/lib/validateContactInfo'
 import type { BookingState } from '@/store/slices/bookingSlice'
 
 export type BookingStep = 'trains' | 'seats' | 'passengers' | 'payment' | 'confirmation'
@@ -26,7 +27,7 @@ function hasPassengers(booking: BookingState): boolean {
 }
 
 function hasPaymentDetails(booking: BookingState): boolean {
-  return booking.contactInfo != null && booking.paymentMethod != null
+  return isValidContactInfo(booking.contactInfo) && booking.paymentMethod != null
 }
 
 /** Путь для редиректа или `null`, если шаг доступен при текущем состоянии бронирования. */

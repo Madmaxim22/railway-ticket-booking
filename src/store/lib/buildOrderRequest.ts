@@ -6,6 +6,7 @@ import type {
   OrderPersonInfoPayload,
   OrderSeatPayload,
 } from '@/store/api/orderRequest.types'
+import { isValidContactInfo } from '@/features/payment/lib/validateContactInfo'
 import type {
   BookingContactInfo,
   BookingSeatSelection,
@@ -86,7 +87,13 @@ function buildDirectionPayload(
 export function buildOrderRequest(booking: BookingState): CreateOrderRequest | null {
   const { departure, departureSeats, passengers, ticketCounts, contactInfo, paymentMethod } = booking
 
-  if (!departure || !departureSeats || !contactInfo || !paymentMethod || passengers.length === 0) {
+  if (
+    !departure ||
+    !departureSeats ||
+    !isValidContactInfo(contactInfo) ||
+    !paymentMethod ||
+    passengers.length === 0
+  ) {
     return null
   }
 
