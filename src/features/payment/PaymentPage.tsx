@@ -1,52 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 
+import { TextField } from '@/components/FormField/FormField'
 import { formatRussianPhoneDisplay } from '@/shared/lib/formatRussianPhone'
 
 import { usePaymentForm } from './usePaymentForm'
 
 import './PaymentPage.css'
 
-type ContactFieldProps = {
-  label: string
-  value: string
-  error?: string
-  type?: 'text' | 'tel' | 'email'
-  placeholder?: string
-  fieldClassName?: string
-  maxLength?: number
-  onChange: (value: string) => void
-}
-
-function ContactField({
-  label,
-  value,
-  error,
-  type = 'text',
-  placeholder,
-  fieldClassName,
-  maxLength,
-  onChange,
-}: ContactFieldProps) {
-  return (
-    <label
-      className={['payment-page__field', fieldClassName].filter(Boolean).join(' ')}
-    >
-      <span className="payment-page__label">{label}</span>
-      <input
-        className={['payment-page__input', error ? 'payment-page__input--error' : '']
-          .filter(Boolean)
-          .join(' ')}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        maxLength={maxLength}
-        onChange={(event) => onChange(event.target.value)}
-        aria-invalid={Boolean(error)}
-      />
-      {error ? <span className="payment-page__error-text">{error}</span> : null}
-    </label>
-  )
-}
+const PAYMENT_INPUT_CLASS = 'field-label__field'
 
 export default function PaymentPage() {
   const navigate = useNavigate()
@@ -67,48 +28,63 @@ export default function PaymentPage() {
 
           <div className="payment-page__content">
             <div className="payment-page__row payment-page__row--three-cols">
-              <ContactField
+              <TextField
                 label="Фамилия"
+                className="payment-page__field"
+                inputClassName={PAYMENT_INPUT_CLASS}
                 value={contactInfo.lastName}
-                error={errors.lastName}
-                onChange={(value) => updateContact('lastName', value)}
+                invalid={Boolean(errors.lastName)}
+                errorText={errors.lastName}
+                onChange={(event) => updateContact('lastName', event.target.value)}
               />
-              <ContactField
+              <TextField
                 label="Имя"
+                className="payment-page__field"
+                inputClassName={PAYMENT_INPUT_CLASS}
                 value={contactInfo.firstName}
-                error={errors.firstName}
-                onChange={(value) => updateContact('firstName', value)}
+                invalid={Boolean(errors.firstName)}
+                errorText={errors.firstName}
+                onChange={(event) => updateContact('firstName', event.target.value)}
               />
-              <ContactField
+              <TextField
                 label="Отчество"
+                className="payment-page__field"
+                inputClassName={PAYMENT_INPUT_CLASS}
                 value={contactInfo.patronymic}
-                error={errors.patronymic}
-                onChange={(value) => updateContact('patronymic', value)}
+                invalid={Boolean(errors.patronymic)}
+                errorText={errors.patronymic}
+                onChange={(event) => updateContact('patronymic', event.target.value)}
               />
             </div>
 
             <div className="payment-page__row payment-page__row--single">
-              <ContactField
+              <TextField
                 label="Контактный телефон"
                 type="tel"
                 placeholder="+7 ___ ___ __ __"
-                fieldClassName="payment-page__field--short"
+                className="payment-page__field payment-page__field--short"
+                inputClassName={PAYMENT_INPUT_CLASS}
                 maxLength={18}
                 value={contactInfo.phone}
-                error={errors.phone}
-                onChange={(value) => updateContact('phone', formatRussianPhoneDisplay(value))}
+                invalid={Boolean(errors.phone)}
+                errorText={errors.phone}
+                onChange={(event) =>
+                  updateContact('phone', formatRussianPhoneDisplay(event.target.value))
+                }
               />
             </div>
 
             <div className="payment-page__row payment-page__row--single">
-              <ContactField
+              <TextField
                 label="E-mail"
                 type="email"
                 placeholder="inbox@gmail.ru"
-                fieldClassName="payment-page__field--short"
+                className="payment-page__field payment-page__field--short"
+                inputClassName={PAYMENT_INPUT_CLASS}
                 value={contactInfo.email}
-                error={errors.email}
-                onChange={(value) => updateContact('email', value)}
+                invalid={Boolean(errors.email)}
+                errorText={errors.email}
+                onChange={(event) => updateContact('email', event.target.value)}
               />
             </div>
           </div>

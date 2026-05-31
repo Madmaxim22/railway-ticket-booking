@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import DatePickerPopover from '@/components/DatePickerPopover'
 import { formatApiDate } from '@/shared/lib/formatApiDate'
 import { parseFilterDate } from '@/shared/lib/parseFilterDate'
@@ -10,6 +10,11 @@ import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import { useGetLastRoutesQuery } from '@/store/api/routesApi'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import {
+  mergeSliderSearchFromFilters,
+  sliderSearchFromFilters,
+  type SliderSearchState,
+} from '@/features/route-search/model/sliderSearchState'
 import { mergeFilters, selectFilters, type FiltersState } from '@/store/slices/filtersSlice'
 import { mergeSearch, selectSearch } from '@/store/slices/searchSlice'
 import CarriageFilterItem from './carriage/CarriageFilterItem'
@@ -17,24 +22,6 @@ import { carriageFilterConfigs } from './carriage/carriageFilterConfigs'
 import PriceRangeSlider from './slider/PriceRangeSlider'
 import TimeRangeMenu from './time/TimeRangeMenu'
 import './SearchFilters.css'
-
-/** Соответствие слайдеров полям поиска (API). `arrivalDate` = date_end — при его отсутствии слайдер end_arrival_* отключён. */
-const SLIDER_SEARCH_INITIAL = {
-  price_from: 0,
-  price_to: 7000,
-  start_departure_hour_from: 0,
-  start_departure_hour_to: 24,
-  start_arrival_hour_from: 0,
-  start_arrival_hour_to: 24,
-  end_departure_hour_from: 0,
-  end_departure_hour_to: 24,
-  end_arrival_hour_from: 0,
-  end_arrival_hour_to: 24,
-} as const
-
-type SliderSearchState = {
-  [K in keyof typeof SLIDER_SEARCH_INITIAL]: number
-}
 
 function stationWithVokzal(name: string): string {
   const trimmed = String(name).trim()
@@ -74,7 +61,24 @@ export default function SearchFilters() {
   )
   const [isDepartureTimeOpen, setIsDepartureTimeOpen] = useState(false)
   const [isArrivalTimeOpen, setIsArrivalTimeOpen] = useState(false)
-  const [sliderSearch, setSliderSearch] = useState<SliderSearchState>(SLIDER_SEARCH_INITIAL)
+  const [sliderSearch, setSliderSearch] = useState<SliderSearchState>(() =>
+    sliderSearchFromFilters(reduxFilters),
+  )
+
+  useEffect(() => {
+    setSliderSearch((prev) => mergeSliderSearchFromFilters(prev, reduxFilters))
+  }, [
+    reduxFilters.price_from,
+    reduxFilters.price_to,
+    reduxFilters.start_departure_hour_from,
+    reduxFilters.start_departure_hour_to,
+    reduxFilters.start_arrival_hour_from,
+    reduxFilters.start_arrival_hour_to,
+    reduxFilters.end_departure_hour_from,
+    reduxFilters.end_departure_hour_to,
+    reduxFilters.end_arrival_hour_from,
+    reduxFilters.end_arrival_hour_to,
+  ])
 
   const handlePriceAfterChange = useCallback(
     ([from, to]: [number, number]) => {
@@ -209,7 +213,11 @@ export default function SearchFilters() {
       >
         <div className="search-filters__group">
           <p className="search-filters__title">Стоимость</p>
-          <PriceRangeSlider onAfterChange={handlePriceAfterChange} />
+          <PriceRangeSlider
+            valueMin={sliderSearch.price_from}
+            valueMax={sliderSearch.price_to}
+            onAfterChange={handlePriceAfterChange}
+          />
         </div>
       </div>
       <div className="search-filters__back-section">
@@ -217,6 +225,10 @@ export default function SearchFilters() {
           title="Туда"
           isOpen={isDepartureTimeOpen}
           onToggle={() => setIsDepartureTimeOpen((prev) => !prev)}
+          departureHourFrom={sliderSearch.start_departure_hour_from}
+          departureHourTo={sliderSearch.start_departure_hour_to}
+          arrivalHourFrom={sliderSearch.start_arrival_hour_from}
+          arrivalHourTo={sliderSearch.start_arrival_hour_to}
           onDepartureTimeAfterChange={handleStartDepartureAfterChange}
           onArrivalTimeAfterChange={handleStartArrivalAfterChange}
         />
@@ -226,6 +238,10 @@ export default function SearchFilters() {
           title="Обратно"
           isOpen={arrivalTimeMenuOpen}
           onToggle={() => setIsArrivalTimeOpen((prev) => !prev)}
+          departureHourFrom={sliderSearch.end_departure_hour_from}
+          departureHourTo={sliderSearch.end_departure_hour_to}
+          arrivalHourFrom={sliderSearch.end_arrival_hour_from}
+          arrivalHourTo={sliderSearch.end_arrival_hour_to}
           onDepartureTimeAfterChange={handleEndDepartureAfterChange}
           onArrivalTimeAfterChange={handleEndArrivalAfterChange}
           disableArrivalTimeSlider={!hasDateEnd}

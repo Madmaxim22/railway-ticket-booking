@@ -44,51 +44,28 @@
   width: calc((100% - 50px) / 3);
 }
 
-.payment-page__field {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
 .payment-page__field--short {
   width: 360px;
 }
 
-.payment-page__label {
-  font-size: 16px;
-  font-weight: 400;
+.payment-page .field-label__label {
   color: var(--color-text);
 }
 
-.payment-page__input {
-  height: 50px;
-  padding: 0 15px;
-  border: 1px solid var(--color-text-muted);
-  border-radius: 5px;
+.payment-page .field-label__field {
   outline: none;
   font-family: inherit;
   font-size: 24px;
   font-weight: 400;
-  color: var(--color-text);
 }
 
-.payment-page__input::placeholder {
+.payment-page .field-label__field::placeholder {
   color: var(--color-border);
 }
 
-.payment-page__input--error {
-  border-color: var(--color-error);
+.payment-page .field-label__field--error::placeholder {
   color: var(--color-error);
-}
-
-.payment-page__input--error::placeholder {
-  color: var(--color-error);
-}
-
-.payment-page__error-text {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--color-error);
+  text-transform: none;
 }
 
 .payment-page__section--payment-method {

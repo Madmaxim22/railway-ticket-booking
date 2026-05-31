@@ -5,7 +5,10 @@ function formatHour(value: number): string {
 }
 
 type TimeRangeSliderProps = Partial<
-  Pick<RangeSliderProps, 'onChange' | 'onAfterChange' | 'disabled' | 'minLimit' | 'maxLimit' | 'step'>
+  Pick<
+    RangeSliderProps,
+    'onChange' | 'onAfterChange' | 'disabled' | 'minLimit' | 'maxLimit' | 'valueMin' | 'valueMax' | 'step'
+  >
 >
 
 export default function TimeRangeSlider({
@@ -14,6 +17,8 @@ export default function TimeRangeSlider({
   disabled = false,
   minLimit = 0,
   maxLimit = 24,
+  valueMin,
+  valueMax,
   step = 1,
 }: TimeRangeSliderProps) {
   return (
@@ -22,6 +27,8 @@ export default function TimeRangeSlider({
         disabled={disabled}
         minLimit={minLimit}
         maxLimit={maxLimit}
+        valueMin={valueMin}
+        valueMax={valueMax}
         step={step}
         minGap={1}
         onChange={onChange}

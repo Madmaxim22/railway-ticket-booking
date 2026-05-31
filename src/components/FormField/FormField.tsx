@@ -47,7 +47,10 @@ export type TextFieldProps = {
   value: string
   onChange: ChangeEventHandler<HTMLInputElement>
   placeholder?: string
+  className?: string
   inputClassName?: string
+  type?: React.HTMLInputTypeAttribute
+  maxLength?: number
   invalid?: boolean
   errorText?: string
 }
@@ -57,18 +60,25 @@ export function TextField({
   value,
   onChange,
   placeholder,
+  className,
   inputClassName = 'field',
+  type = 'text',
+  maxLength,
   invalid = false,
   errorText,
 }: TextFieldProps) {
   return (
-    <label className="field-label field-label--text">
+    <label
+      className={['field-label field-label--text', className].filter(Boolean).join(' ')}
+    >
       <span className="field-label__label">{label}</span>
       <input
         className={[inputClassName, invalid ? 'field-label__field--error' : ''].join(' ').trim()}
+        type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        maxLength={maxLength}
         aria-invalid={invalid}
       />
       {errorText ? <span className="field-label__error-text">{errorText}</span> : null}

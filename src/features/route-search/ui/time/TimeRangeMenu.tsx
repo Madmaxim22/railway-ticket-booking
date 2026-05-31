@@ -9,6 +9,10 @@ type TimeRangeMenuProps = {
   title: string
   isOpen: boolean
   onToggle: () => void
+  departureHourFrom?: number
+  departureHourTo?: number
+  arrivalHourFrom?: number
+  arrivalHourTo?: number
   onDepartureTimeAfterChange: (range: [number, number]) => void
   onArrivalTimeAfterChange: (range: [number, number]) => void
   disableArrivalTimeSlider?: boolean
@@ -20,6 +24,10 @@ export default function TimeRangeMenu({
   title,
   isOpen,
   onToggle,
+  departureHourFrom,
+  departureHourTo,
+  arrivalHourFrom,
+  arrivalHourTo,
   onDepartureTimeAfterChange,
   onArrivalTimeAfterChange,
   disableArrivalTimeSlider = false,
@@ -59,11 +67,17 @@ export default function TimeRangeMenu({
       <div className="search-filters__time-sliders" hidden={!isOpen}>
         <div className="search-filters__time-slider-container">
           <p className="search-filters__time-slider-title">Время отбытия</p>
-          <TimeRangeSlider onAfterChange={onDepartureTimeAfterChange} />
+          <TimeRangeSlider
+            valueMin={departureHourFrom}
+            valueMax={departureHourTo}
+            onAfterChange={onDepartureTimeAfterChange}
+          />
         </div>
         <div className="search-filters__time-slider-container">
           <p className="search-filters__time-slider-title">Время прибытия</p>
           <TimeRangeSlider
+            valueMin={arrivalHourFrom}
+            valueMax={arrivalHourTo}
             onAfterChange={onArrivalTimeAfterChange}
             disabled={disableArrivalTimeSlider}
           />

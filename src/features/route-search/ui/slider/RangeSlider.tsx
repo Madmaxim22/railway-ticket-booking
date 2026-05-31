@@ -21,6 +21,8 @@ type ActiveThumb = 'min' | 'max' | null
 export type RangeSliderProps = {
   minLimit: number
   maxLimit: number
+  valueMin?: number
+  valueMax?: number
   step?: number
   minGap?: number
   disabled?: boolean
@@ -34,6 +36,8 @@ export type RangeSliderProps = {
 export default function RangeSlider({
   minLimit,
   maxLimit,
+  valueMin,
+  valueMax,
   step = 1,
   minGap = 0,
   disabled = false,
@@ -45,22 +49,22 @@ export default function RangeSlider({
 }: RangeSliderProps) {
   const limitsSpan = Math.max(0, maxLimit - minLimit)
   const [currentMin, setCurrentMin] = useState(() =>
-    clamp(minLimit, minLimit, maxLimit - minGap),
+    clamp(valueMin ?? minLimit, minLimit, maxLimit - minGap),
   )
   const [currentMax, setCurrentMax] = useState(() =>
-    clamp(maxLimit, minLimit + minGap, maxLimit),
+    clamp(valueMax ?? maxLimit, minLimit + minGap, maxLimit),
   )
   const [activeThumb, setActiveThumb] = useState<ActiveThumb>(null)
   const rangeRef = useRef<[number, number]>([currentMin, currentMax])
 
   useEffect(() => {
-    const nextMin = clamp(minLimit, minLimit, maxLimit - minGap)
-    const nextMax = clamp(maxLimit, minLimit + minGap, maxLimit)
+    const nextMin = clamp(valueMin ?? minLimit, minLimit, maxLimit - minGap)
+    const nextMax = clamp(valueMax ?? maxLimit, minLimit + minGap, maxLimit)
     // eslint-disable-next-line react-hooks/set-state-in-effect -- сброс локального диапазона при обновлении props
     setCurrentMin(nextMin)
     setCurrentMax(nextMax)
     rangeRef.current = [nextMin, nextMax]
-  }, [minLimit, maxLimit, minGap])
+  }, [minLimit, maxLimit, minGap, valueMin, valueMax])
 
   const minPercent = limitsSpan > 0 ? ((currentMin - minLimit) / limitsSpan) * 100 : 0
   const maxPercent = limitsSpan > 0 ? ((currentMax - minLimit) / limitsSpan) * 100 : 0

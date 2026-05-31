@@ -1,12 +1,17 @@
 import RangeSlider, { type RangeSliderProps } from './RangeSlider'
 
 type PriceRangeSliderProps = Partial<
-  Pick<RangeSliderProps, 'minLimit' | 'maxLimit' | 'step' | 'onChange' | 'onAfterChange'>
+  Pick<
+    RangeSliderProps,
+    'minLimit' | 'maxLimit' | 'valueMin' | 'valueMax' | 'step' | 'onChange' | 'onAfterChange'
+  >
 >
 
 export default function PriceRangeSlider({
   minLimit = 0,
   maxLimit = 7000,
+  valueMin,
+  valueMax,
   step = 10,
   onChange,
   onAfterChange,
@@ -20,6 +25,8 @@ export default function PriceRangeSlider({
       <RangeSlider
         minLimit={minLimit}
         maxLimit={maxLimit}
+        valueMin={valueMin}
+        valueMax={valueMax}
         step={step}
         minGap={100}
         minAriaLabel="Минимальная цена"
