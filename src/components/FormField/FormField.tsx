@@ -1,6 +1,6 @@
 import './FormField.css'
 
-import type { ChangeEventHandler } from 'react'
+import { useId, type ChangeEventHandler } from 'react'
 
 export type GenderFieldProps = {
   label?: string
@@ -9,20 +9,34 @@ export type GenderFieldProps = {
 }
 
 export function GenderField({ label = 'Пол', value, onChange}: GenderFieldProps) {
+  const labelId = useId()
+
   return (
     <div className="field-label field-label--gender">
-      <span className="field-label__label">{label}</span>
-      <div className="gender-toggle">
-        <button 
-          type="button" 
-          className={value === 'male' ? 'active' : ''} 
+      <span id={labelId} className="field-label__label">
+        {label}
+      </span>
+      <div className="gender-toggle" role="radiogroup" aria-labelledby={labelId}>
+        <button
+          type="button"
+          role="radio"
+          className={value === 'male' ? 'active' : ''}
+          aria-checked={value === 'male'}
+          aria-label="Мужской"
           onClick={() => onChange('male')}
-        >М</button>
-        <button 
-          type="button" 
-          className={value === 'female' ? 'active' : ''} 
+        >
+          М
+        </button>
+        <button
+          type="button"
+          role="radio"
+          className={value === 'female' ? 'active' : ''}
+          aria-checked={value === 'female'}
+          aria-label="Женский"
           onClick={() => onChange('female')}
-        >Ж</button>
+        >
+          Ж
+        </button>
       </div>
     </div>
   )

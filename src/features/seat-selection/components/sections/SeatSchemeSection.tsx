@@ -1,9 +1,11 @@
-import type { MouseEvent } from 'react'
-import SeatLayoutCoupeSvg from '@/features/seat-selection/icons/SeatLayoutCoupeSvg'
-import SeatLayoutLuxSvg from '@/features/seat-selection/icons/SeatLayoutLuxSvg'
-import SeatLayoutPlatzkartSvg from '@/features/seat-selection/icons/SeatLayoutPlatzkartSvg'
-import SeatLayoutSittingSvg from '@/features/seat-selection/icons/SeatLayoutSittingSvg'
+import { lazy, Suspense, type MouseEvent } from 'react'
+
 import type { Carriage } from '@/features/seat-selection/types'
+
+const SeatLayoutCoupeSvg = lazy(() => import('@/features/seat-selection/icons/SeatLayoutCoupeSvg'))
+const SeatLayoutPlatzkartSvg = lazy(() => import('@/features/seat-selection/icons/SeatLayoutPlatzkartSvg'))
+const SeatLayoutSittingSvg = lazy(() => import('@/features/seat-selection/icons/SeatLayoutSittingSvg'))
+const SeatLayoutLuxSvg = lazy(() => import('@/features/seat-selection/icons/SeatLayoutLuxSvg'))
 
 type SeatSchemeSectionProps = {
   selectedCarriage: Carriage | null
@@ -13,6 +15,10 @@ type SeatSchemeSectionProps = {
 
 function formatWagonNumber(number: number) {
   return String(number).padStart(2, '0')
+}
+
+function SeatSchemeFallback() {
+  return <p className="seat-selection-page__loading">Загрузка схемы вагона…</p>
 }
 
 export function SeatSchemeSection({
@@ -45,38 +51,40 @@ export function SeatSchemeSection({
 
   return (
     <div className="seat-selection-page__wagon-scheme">
-      {selectedCarriage.type === 'coupe' && (
-        <SeatLayoutCoupeSvg
-          wagonNumber={wagonNumber}
-          selectedSeats={selectedSeats}
-          unavailableSeats={selectedCarriage.unavailableSeats}
-          onSeatClick={handleSeatClick}
-        />
-      )}
-      {selectedCarriage.type === 'platkart' && (
-        <SeatLayoutPlatzkartSvg
-          wagonNumber={wagonNumber}
-          selectedSeats={selectedSeats}
-          unavailableSeats={selectedCarriage.unavailableSeats}
-          onSeatClick={handleSeatClick}
-        />
-      )}
-      {selectedCarriage.type === 'seated' && (
-        <SeatLayoutSittingSvg
-          wagonNumber={wagonNumber}
-          selectedSeats={selectedSeats}
-          unavailableSeats={selectedCarriage.unavailableSeats}
-          onSeatClick={handleSeatClick}
-        />
-      )}
-      {selectedCarriage.type === 'lux' && (
-        <SeatLayoutLuxSvg
-          wagonNumber={wagonNumber}
-          selectedSeats={selectedSeats}
-          unavailableSeats={selectedCarriage.unavailableSeats}
-          onSeatClick={handleSeatClick}
-        />
-      )}
+      <Suspense fallback={<SeatSchemeFallback />}>
+        {selectedCarriage.type === 'coupe' && (
+          <SeatLayoutCoupeSvg
+            wagonNumber={wagonNumber}
+            selectedSeats={selectedSeats}
+            unavailableSeats={selectedCarriage.unavailableSeats}
+            onSeatClick={handleSeatClick}
+          />
+        )}
+        {selectedCarriage.type === 'platkart' && (
+          <SeatLayoutPlatzkartSvg
+            wagonNumber={wagonNumber}
+            selectedSeats={selectedSeats}
+            unavailableSeats={selectedCarriage.unavailableSeats}
+            onSeatClick={handleSeatClick}
+          />
+        )}
+        {selectedCarriage.type === 'seated' && (
+          <SeatLayoutSittingSvg
+            wagonNumber={wagonNumber}
+            selectedSeats={selectedSeats}
+            unavailableSeats={selectedCarriage.unavailableSeats}
+            onSeatClick={handleSeatClick}
+          />
+        )}
+        {selectedCarriage.type === 'lux' && (
+          <SeatLayoutLuxSvg
+            wagonNumber={wagonNumber}
+            selectedSeats={selectedSeats}
+            unavailableSeats={selectedCarriage.unavailableSeats}
+            onSeatClick={handleSeatClick}
+          />
+        )}
+      </Suspense>
     </div>
   )
 }
