@@ -67,12 +67,52 @@ export const MONTH_NAMES_RU = [
   'Декабрь',
 ] as const
 
+export const DATE_RU_FORMAT_RE = /^\d{2}\.\d{2}\.\d{4}$/
+
 export function formatDateRu(date: Date | null | undefined): string {
   if (!date) return ''
   const d = String(date.getDate()).padStart(2, '0')
   const m = String(date.getMonth() + 1).padStart(2, '0')
   const y = date.getFullYear()
   return `${d}.${m}.${y}`
+}
+
+/** Маска ввода дд.мм.гггг при наборе с клавиатуры. */
+export function formatDateRuInput(raw: string): string {
+  const digits = raw.replace(/\D/g, '').slice(0, 8)
+
+  if (digits.length <= 2) {
+    return digits
+  }
+
+  if (digits.length <= 4) {
+    return `${digits.slice(0, 2)}.${digits.slice(2)}`
+  }
+
+  return `${digits.slice(0, 2)}.${digits.slice(2, 4)}.${digits.slice(4)}`
+}
+
+/** Разбор даты дд.мм.гггг; minDate — не раньше этой календарной даты. */
+export function parseDateRu(text: string, options?: { minDate?: Date }): Date | null {
+  const trimmed = text.trim()
+  if (!trimmed) return null
+  if (!DATE_RU_FORMAT_RE.test(trimmed)) return null
+
+  const [dayRaw, monthRaw, yearRaw] = trimmed.split('.')
+  const day = Number(dayRaw)
+  const month = Number(monthRaw)
+  const year = Number(yearRaw)
+
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null
+
+  const parsed = new Date(year, month - 1, day)
+  const isInvalidCalendarDate =
+    parsed.getFullYear() !== year || parsed.getMonth() !== month - 1 || parsed.getDate() !== day
+
+  if (isInvalidCalendarDate) return null
+  if (options?.minDate && isCalendarDayBefore(parsed, options.minDate)) return null
+
+  return parsed
 }
 
 export function isSameCalendarDay(a: Date, b: Date): boolean {

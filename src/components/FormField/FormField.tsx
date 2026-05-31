@@ -1,6 +1,7 @@
 import './FormField.css'
 
 import { useId, type ChangeEventHandler } from 'react'
+import { formatDateRuInput } from '@/utils/calendarMonth'
 
 export type GenderFieldProps = {
   label?: string
@@ -96,20 +97,6 @@ export type DateFieldProps = {
   errorText?: string
 }
 
-function formatDateValue(raw: string) {
-  const digits = raw.replace(/\D/g, '').slice(0, 8)
-
-  if (digits.length <= 2) {
-    return digits
-  }
-
-  if (digits.length <= 4) {
-    return `${digits.slice(0, 2)}.${digits.slice(2)}`
-  }
-
-  return `${digits.slice(0, 2)}.${digits.slice(2, 4)}.${digits.slice(4)}`
-}
-
 export function DateField({
   label,
   value,
@@ -125,7 +112,7 @@ export function DateField({
       <input
         className={[inputClassName, invalid ? 'field-label__field--error' : ''].join(' ').trim()}
         value={value}
-        onChange={e => onChange(formatDateValue(e.target.value))}
+        onChange={e => onChange(formatDateRuInput(e.target.value))}
         placeholder={placeholder}
         aria-invalid={invalid}
         inputMode="numeric"

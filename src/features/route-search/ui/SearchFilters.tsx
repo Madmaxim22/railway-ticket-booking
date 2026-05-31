@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import DatePickerPopover from '@/components/DatePickerPopover'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import DatePickerPopover, { type DatePickerPopoverHandle } from '@/components/DatePickerPopover'
 import { formatApiDate } from '@/shared/lib/formatApiDate'
 import { parseFilterDate } from '@/shared/lib/parseFilterDate'
 import { formatTitleCaseWords } from '@/shared/lib/formatTitleCaseWords'
@@ -55,6 +55,8 @@ export default function SearchFilters() {
       }
     })
   }, [lastRoutesData])
+  const departureDatePickerRef = useRef<DatePickerPopoverHandle>(null)
+  const arrivalDatePickerRef = useRef<DatePickerPopoverHandle>(null)
   const [departureDate, setDepartureDate] = useState<Date | null>(() =>
     parseFilterDate(search.date_start),
   )
@@ -147,17 +149,17 @@ export default function SearchFilters() {
   )
 
   const handleDepartureDateChange = useCallback(
-    (date: Date) => {
+    (date: Date | null) => {
       setDepartureDate(date)
-      dispatch(mergeSearch({ date_start: formatApiDate(date) }))
+      dispatch(mergeSearch({ date_start: date ? formatApiDate(date) : undefined }))
     },
     [dispatch],
   )
 
   const handleArrivalDateChange = useCallback(
-    (date: Date) => {
+    (date: Date | null) => {
       setArrivalDate(date)
-      dispatch(mergeSearch({ date_end: formatApiDate(date) }))
+      dispatch(mergeSearch({ date_end: date ? formatApiDate(date) : undefined }))
     },
     [dispatch],
   )
@@ -171,24 +173,40 @@ export default function SearchFilters() {
           <p className="search-filters__title">Дата поездки</p>
           <div className="search-filters__field">
             <DatePickerPopover
+              ref={departureDatePickerRef}
               value={departureDate}
               onChange={handleDepartureDateChange}
               placeholder="30.08.2018"
               inputClassName="search-filters__input"
             />
-            <CalendarIcon className="search-filters__icon" width={20} height={22.35} />
+            <button
+              type="button"
+              className="search-filters__icon-button"
+              onClick={() => departureDatePickerRef.current?.openCalendar()}
+              aria-label="Открыть календарь отправления"
+            >
+              <CalendarIcon className="search-filters__icon" width={20} height={22.35} />
+            </button>
           </div>
         </div>
         <div className="search-filters__group">
           <p className="search-filters__title">Дата возвращения</p>
           <div className="search-filters__field">
             <DatePickerPopover
+              ref={arrivalDatePickerRef}
               value={arrivalDate}
               onChange={handleArrivalDateChange}
               placeholder="30.08.2018"
               inputClassName="search-filters__input"
             />
-            <CalendarIcon className="search-filters__icon" width={20} height={22.35} />
+            <button
+              type="button"
+              className="search-filters__icon-button"
+              onClick={() => arrivalDatePickerRef.current?.openCalendar()}
+              aria-label="Открыть календарь возвращения"
+            >
+              <CalendarIcon className="search-filters__icon" width={20} height={22.35} />
+            </button>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
-import DatePickerPopover from '@/components/DatePickerPopover'
+import { useRef } from 'react'
+import DatePickerPopover, { type DatePickerPopoverHandle } from '@/components/DatePickerPopover'
 import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import SearchSwapIcon from '@/shared/ui/icons/SearchSwapIcon'
 import type { HeaderViewProps } from '../hooks/useHeader'
@@ -38,6 +39,9 @@ export function HeaderSearchForm({
   formError,
   searchFormPanelClassName,
 }: HeaderSearchFormProps) {
+  const departureDatePickerRef = useRef<DatePickerPopoverHandle>(null)
+  const arrivalDatePickerRef = useRef<DatePickerPopoverHandle>(null)
+
   return (
     <div className={searchFormPanelClassName}>
       <form className="header__search-form" onSubmit={handleSubmit}>
@@ -77,23 +81,39 @@ export function HeaderSearchForm({
             <div className="header__search-form-fields">
               <div className="header__search-form-field">
                 <DatePickerPopover
+                  ref={departureDatePickerRef}
                   id="departure-date"
                   value={departureDate}
                   onChange={setDepartureDate}
                   placeholder="Дата отправления"
                   inputClassName="header__search-form-input"
                 />
-                <CalendarIcon className="header__search-form-icon" />
+                <button
+                  type="button"
+                  className="header__search-form-icon"
+                  onClick={() => departureDatePickerRef.current?.openCalendar()}
+                  aria-label="Открыть календарь отправления"
+                >
+                  <CalendarIcon width={30} height={34} />
+                </button>
               </div>
               <div className="header__search-form-field">
                 <DatePickerPopover
+                  ref={arrivalDatePickerRef}
                   id="arrival-date"
                   value={arrivalDate}
                   onChange={setArrivalDate}
                   placeholder="Дата прибытия"
                   inputClassName="header__search-form-input"
                 />
-                <CalendarIcon className="header__search-form-icon" />
+                <button
+                  type="button"
+                  className="header__search-form-icon"
+                  onClick={() => arrivalDatePickerRef.current?.openCalendar()}
+                  aria-label="Открыть календарь прибытия"
+                >
+                  <CalendarIcon width={30} height={34} />
+                </button>
               </div>
             </div>
           </div>

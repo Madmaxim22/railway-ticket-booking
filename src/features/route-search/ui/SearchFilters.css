@@ -57,15 +57,25 @@
   color: var(--color-text-dim);
 }
 
-.search-filters__icon {
+.search-filters__icon-button {
   position: absolute;
   right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.search-filters__icon {
   width: 20px;
   height: 22.35px;
   color: var(--color-border-light);
   pointer-events: none;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 
