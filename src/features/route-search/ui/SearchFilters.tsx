@@ -9,15 +9,15 @@ import AmenitiesIconWiFi from '@/shared/ui/icons/amenities/AmenitiesIconWiFi'
 import CalendarIcon from '@/shared/ui/icons/CalendarIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import { useGetLastRoutesQuery } from '@/store/api/routesApi'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { useAppSelector } from '@/store/hooks'
 import { useRoutesSearchModel } from '@/features/route-search/model/useRoutesSearchModel'
 import {
   mergeSliderSearchFromFilters,
   sliderSearchFromFilters,
   type SliderSearchState,
 } from '@/features/route-search/model/sliderSearchState'
-import { mergeFilters, selectFilters, type FiltersState } from '@/store/slices/filtersSlice'
-import { mergeSearch, selectSearch } from '@/store/slices/searchSlice'
+import { selectFilters, type FiltersState } from '@/store/slices/filtersSlice'
+import { selectSearch } from '@/store/slices/searchSlice'
 import CarriageFilterItem from './carriage/CarriageFilterItem'
 import { carriageFilterConfigs } from './carriage/carriageFilterConfigs'
 import PriceRangeSlider from './slider/PriceRangeSlider'
@@ -31,7 +31,6 @@ function stationWithVokzal(name: string): string {
 }
 
 export default function SearchFilters() {
-  const dispatch = useAppDispatch()
   const { sendServer } = useRoutesSearchModel()
   const search = useAppSelector(selectSearch)
   const reduxFilters = useAppSelector(selectFilters)
@@ -99,9 +98,9 @@ export default function SearchFilters() {
         start_departure_hour_to: to,
       }
       setSliderSearch((prev) => ({ ...prev, ...patch }))
-      dispatch(mergeFilters(patch))
+      void sendServer(patch)
     },
-    [dispatch],
+    [sendServer],
   )
 
   const handleStartArrivalAfterChange = useCallback(
@@ -111,9 +110,9 @@ export default function SearchFilters() {
         start_arrival_hour_to: to,
       }
       setSliderSearch((prev) => ({ ...prev, ...patch }))
-      dispatch(mergeFilters(patch))
+      void sendServer(patch)
     },
-    [dispatch],
+    [sendServer],
   )
 
   const handleEndDepartureAfterChange = useCallback(
@@ -123,9 +122,9 @@ export default function SearchFilters() {
         end_departure_hour_to: to,
       }
       setSliderSearch((prev) => ({ ...prev, ...patch }))
-      dispatch(mergeFilters(patch))
+      void sendServer(patch)
     },
-    [dispatch],
+    [sendServer],
   )
 
   const handleEndArrivalAfterChange = useCallback(
@@ -135,33 +134,33 @@ export default function SearchFilters() {
         end_arrival_hour_to: to,
       }
       setSliderSearch((prev) => ({ ...prev, ...patch }))
-      dispatch(mergeFilters(patch))
+      void sendServer(patch)
     },
-    [dispatch],
+    [sendServer],
   )
 
   const toggleFilter = useCallback(
     (apiKey: keyof FiltersState) => {
       const isCurrentlyActive = Boolean(reduxFilters[apiKey])
-      dispatch(mergeFilters({ [apiKey]: isCurrentlyActive ? undefined : true }))
+      void sendServer({ [apiKey]: isCurrentlyActive ? undefined : true })
     },
-    [dispatch, reduxFilters],
+    [sendServer, reduxFilters],
   )
 
   const handleDepartureDateChange = useCallback(
     (date: Date | null) => {
       setDepartureDate(date)
-      dispatch(mergeSearch({ date_start: date ? formatApiDate(date) : undefined }))
+      void sendServer({ date_start: date ? formatApiDate(date) : undefined })
     },
-    [dispatch],
+    [sendServer],
   )
 
   const handleArrivalDateChange = useCallback(
     (date: Date | null) => {
       setArrivalDate(date)
-      dispatch(mergeSearch({ date_end: date ? formatApiDate(date) : undefined }))
+      void sendServer({ date_end: date ? formatApiDate(date) : undefined })
     },
-    [dispatch],
+    [sendServer],
   )
 
   const arrivalTimeMenuOpen = hasDateEnd && isArrivalTimeOpen
