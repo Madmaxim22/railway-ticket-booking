@@ -11,6 +11,8 @@ import {
   type PaymentMethod,
 } from '@/store/slices/bookingSlice'
 
+import { formatRussianPhoneDisplay } from '@/shared/lib/formatRussianPhone'
+
 import {
   validateContactInfo,
   type ContactValidationErrors,
@@ -33,6 +35,7 @@ type ContactFieldProps = {
   type?: 'text' | 'tel' | 'email'
   placeholder?: string
   fieldClassName?: string
+  maxLength?: number
   onChange: (value: string) => void
 }
 
@@ -43,6 +46,7 @@ function ContactField({
   type = 'text',
   placeholder,
   fieldClassName,
+  maxLength,
   onChange,
 }: ContactFieldProps) {
   return (
@@ -57,6 +61,7 @@ function ContactField({
         type={type}
         placeholder={placeholder}
         value={value}
+        maxLength={maxLength}
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={Boolean(error)}
       />
@@ -138,9 +143,10 @@ export default function PaymentPage() {
                 type="tel"
                 placeholder="+7 ___ ___ __ __"
                 fieldClassName="payment-page__field--short"
+                maxLength={18}
                 value={contactInfo.phone}
                 error={errors.phone}
-                onChange={(value) => updateContact('phone', value)}
+                onChange={(value) => updateContact('phone', formatRussianPhoneDisplay(value))}
               />
             </div>
 

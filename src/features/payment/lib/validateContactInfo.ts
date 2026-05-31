@@ -1,3 +1,4 @@
+import { isValidRussianPhone } from '@/shared/lib/formatRussianPhone'
 import type { BookingContactInfo } from '@/store/slices/bookingSlice'
 
 const CYRILLIC_RE = /^[А-ЯЁ]+$/i
@@ -31,6 +32,8 @@ function validateCyrillicName(
   }
 }
 
+const PHONE_FORMAT_HINT = 'Укажите номер в формате +7 XXX XXX XX XX'
+
 function validatePhone(phone: string, errors: ContactValidationErrors) {
   const trimmed = phone.trim()
 
@@ -39,9 +42,8 @@ function validatePhone(phone: string, errors: ContactValidationErrors) {
     return
   }
 
-  const digits = trimmed.replace(/\D/g, '')
-  if (digits.length < 10) {
-    errors.phone = 'Укажите номер телефона полностью'
+  if (!isValidRussianPhone(trimmed)) {
+    errors.phone = PHONE_FORMAT_HINT
   }
 }
 
