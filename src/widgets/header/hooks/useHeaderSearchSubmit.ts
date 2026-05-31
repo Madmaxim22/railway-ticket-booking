@@ -59,11 +59,18 @@ export function useHeaderSearchSubmit(
     [clearFormError],
   )
 
-  const { fromCity, toCity, fromField, toField, setFromCity, setToCity } = citySearch
+  const {
+    fromCity,
+    toCity,
+    fromField: { setInputValue: setFromInputValue },
+    toField: { setInputValue: setToInputValue },
+    setFromCity,
+    setToCity,
+  } = citySearch
 
   useHeaderSearchUrlHydration({
-    fromField,
-    toField,
+    fromField: citySearch.fromField,
+    toField: citySearch.toField,
     setFromCity,
     setToCity,
     setDepartureDate,
@@ -77,6 +84,26 @@ export function useHeaderSearchSubmit(
   useEffect(() => {
     setArrivalDateState(parseFilterDate(search.date_end))
   }, [search.date_end])
+
+  useEffect(() => {
+    const fromId = search.from_city_id?.trim()
+    const fromName = search.from_city_name?.trim()
+    if (!fromId || !fromName) return
+    if (fromCity?._id === fromId && fromCity.name === fromName) return
+
+    setFromInputValue(fromName)
+    setFromCity({ _id: fromId, name: fromName })
+  }, [fromCity, search.from_city_id, search.from_city_name, setFromCity, setFromInputValue])
+
+  useEffect(() => {
+    const toId = search.to_city_id?.trim()
+    const toName = search.to_city_name?.trim()
+    if (!toId || !toName) return
+    if (toCity?._id === toId && toCity.name === toName) return
+
+    setToInputValue(toName)
+    setToCity({ _id: toId, name: toName })
+  }, [search.to_city_id, search.to_city_name, setToCity, setToInputValue, toCity])
 
   useEffect(() => {
     if (fromCity && toCity) {
@@ -101,6 +128,8 @@ export function useHeaderSearchSubmit(
     const searchPatch = {
       from_city_id: fromCity._id,
       to_city_id: toCity._id,
+      from_city_name: fromCity.name,
+      to_city_name: toCity.name,
       date_start: departureDate ? formatApiDate(departureDate) : undefined,
       date_end: arrivalDate ? formatApiDate(arrivalDate) : undefined,
     }

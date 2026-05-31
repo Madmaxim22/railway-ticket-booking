@@ -8,6 +8,7 @@ import {
   hasBookingSearchInUrl,
   parseBookingSearchUrl,
 } from '@/store/url/bookingSearchUrlParams'
+import { mergeCityLabelsIntoSearchPatch } from '@/store/url/searchCityLabels'
 
 export type PreloadedAppSlices = {
   search?: SearchState
@@ -23,8 +24,9 @@ export function getPreloadedSlicesFromBrowser(): PreloadedAppSlices | undefined 
   const searchParams = new URLSearchParams(window.location.search)
 
   if (hasBookingSearchInUrl(searchParams)) {
-    const { search, filters, trains } = parseBookingSearchUrl(searchParams)
-    const patch = { ...search, ...filters, ...trains }
+    const { search, filters, trains, cityLabels } = parseBookingSearchUrl(searchParams)
+    const searchWithLabels = mergeCityLabelsIntoSearchPatch(search, cityLabels)
+    const patch = { ...searchWithLabels, ...filters, ...trains }
     const split = splitRoutesQueryPatch(patch)
 
     if (Object.keys(split.search).length > 0) {
