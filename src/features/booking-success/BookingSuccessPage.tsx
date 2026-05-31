@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useAppDispatch } from '@/store/hooks'
-import { resetBooking } from '@/store/slices/bookingSlice'
+import { resetLocalBookingState } from '@/store/lib/resetLocalBookingState'
 import { useBookingSuccessGuard } from './hooks/useBookingSuccessGuard'
 import SuccessFeatureConductorIcon from './icons/SuccessFeatureConductorIcon'
 import SuccessFeatureEmailIcon from './icons/SuccessFeatureEmailIcon'
@@ -17,9 +17,9 @@ export default function BookingSuccessPage() {
   const dispatch = useAppDispatch()
   const { successState } = useBookingSuccessGuard()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!successState) return
-    dispatch(resetBooking())
+    resetLocalBookingState(dispatch)
   }, [dispatch, successState])
 
   if (!successState) {

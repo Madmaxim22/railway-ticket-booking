@@ -5,8 +5,9 @@ import PassengersIcon from '@/shared/ui/icons/PassengersIcon'
 import FarePriceIcon from '@/shared/ui/icons/FarePriceIcon'
 import { useSubmitMutation } from '@/shared/hooks/useSubmitMutation'
 import { useCreateOrderMutation } from '@/store/api/orderApi'
-import { useAppSelector } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { buildOrderRequest } from '@/store/lib/buildOrderRequest'
+import { resetLocalBookingState } from '@/store/lib/resetLocalBookingState'
 import { selectOrderReviewViewModel } from '@/store/selectors/orderReviewSelectors'
 import { buildSeatSelectionNavigationStateFromBooking } from '@/features/seat-selection/lib/seatSelectionNavigation'
 import { buildBookingSuccessNavigationState } from '@/features/booking-success/lib/bookingSuccessNavigation'
@@ -18,6 +19,7 @@ import './OrderReviewPage.css'
 const ORDER_ERROR_FALLBACK = 'Не удалось оформить заказ. Попробуйте ещё раз.'
 
 export default function OrderReviewPage() {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const booking = useAppSelector(selectBooking)
   const { trainCardItem, showReturnTrip, passengers, totalPrice, paymentMethodLabel } =
@@ -71,6 +73,7 @@ export default function OrderReviewPage() {
       booking.contactInfo,
     )
 
+    resetLocalBookingState(dispatch)
     navigate('/booking/success', { replace: true, state: successNavigationState })
   }
 
