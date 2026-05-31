@@ -1,32 +1,10 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import {
-  selectBookingContactInfo,
-  selectBookingPaymentMethod,
-  setContactInfo,
-  setPaymentMethod,
-  type BookingContactInfo,
-  type PaymentMethod,
-} from '@/store/slices/bookingSlice'
 
 import { formatRussianPhoneDisplay } from '@/shared/lib/formatRussianPhone'
 
-import {
-  validateContactInfo,
-  type ContactValidationErrors,
-} from './lib/validateContactInfo'
+import { usePaymentForm } from './usePaymentForm'
 
 import './PaymentPage.css'
-
-const EMPTY_CONTACT: BookingContactInfo = {
-  firstName: '',
-  lastName: '',
-  patronymic: '',
-  phone: '',
-  email: '',
-}
 
 type ContactFieldProps = {
   label: string
@@ -72,39 +50,11 @@ function ContactField({
 
 export default function PaymentPage() {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const savedPaymentMethod = useAppSelector(selectBookingPaymentMethod)
-  const savedContactInfo = useAppSelector(selectBookingContactInfo)
-  const [paymentMethod, setPaymentMethodState] = useState<PaymentMethod>(
-    savedPaymentMethod ?? 'online',
-  )
-  const [contactInfo, setContactInfoState] = useState<BookingContactInfo>(
-    savedContactInfo ?? EMPTY_CONTACT,
-  )
-  const [errors, setErrors] = useState<ContactValidationErrors>({})
-
-  const updateContact = <K extends keyof BookingContactInfo>(
-    key: K,
-    value: BookingContactInfo[K],
-  ) => {
-    setContactInfoState((prev) => ({ ...prev, [key]: value }))
-    setErrors((prev) => {
-      if (!prev[key]) return prev
-      const next = { ...prev }
-      delete next[key]
-      return next
-    })
-  }
+  const { contactInfo, paymentMethod, errors, updateContact, setPaymentMethod, submit } =
+    usePaymentForm()
 
   const handleBuyTickets = () => {
-    const validation = validateContactInfo(contactInfo)
-    if (!validation.isValid) {
-      setErrors(validation.errors)
-      return
-    }
-
-    dispatch(setContactInfo(contactInfo))
-    dispatch(setPaymentMethod(paymentMethod))
+    if (!submit()) return
     navigate('/booking/confirmation')
   }
 
@@ -173,7 +123,7 @@ export default function PaymentPage() {
                 className="payment-page__checkbox"
                 type="checkbox"
                 checked={paymentMethod === 'online'}
-                onChange={() => setPaymentMethodState('online')}
+                onChange={() => setPaymentMethod('online')}
               />
               <span className="payment-page__checkbox-label">Онлайн</span>
             </label>
@@ -193,7 +143,7 @@ export default function PaymentPage() {
                 className="payment-page__checkbox"
                 type="checkbox"
                 checked={paymentMethod === 'cash'}
-                onChange={() => setPaymentMethodState('cash')}
+                onChange={() => setPaymentMethod('cash')}
               />
               <span className="payment-page__checkbox-label">Наличными</span>
             </label>

@@ -1,4 +1,5 @@
 import { isValidRussianPhone } from '@/shared/lib/formatRussianPhone'
+import type { FormValidationResult } from '@/shared/hooks/useFormStep'
 import type { BookingContactInfo } from '@/store/slices/bookingSlice'
 
 const CYRILLIC_RE = /^[А-ЯЁ]+$/i
@@ -7,10 +8,7 @@ const REQUIRED_FIELD_MESSAGE = 'Поле обязательно для запо�
 
 export type ContactValidationErrors = Partial<Record<keyof BookingContactInfo, string>>
 
-export type ContactValidationResult = {
-  isValid: boolean
-  errors: ContactValidationErrors
-}
+export type ContactValidationResult = FormValidationResult<ContactValidationErrors>
 
 function validateCyrillicName(
   value: string,

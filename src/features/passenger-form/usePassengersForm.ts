@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { readFromConfirmationFlag } from '@/features/booking-flow/lib/bookingEditNavigation'
-
+import { useFormStep } from '@/shared/hooks/useFormStep'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   selectBookingPassengers,
@@ -11,6 +11,7 @@ import {
 } from '@/store/slices/bookingSlice'
 
 import { buildPassengersFromTicketCounts, syncPassengersWithTicketCounts } from './lib/syncPassengersWithTicketCounts'
+import { validateAllPassengers } from './lib/validateAllPassengers'
 import {
   type Passenger,
   type PassengerFooterState,
@@ -26,14 +27,28 @@ export function usePassengersForm() {
   const dispatch = useAppDispatch()
   const ticketCounts = useAppSelector(selectBookingTicketCounts)
   const savedPassengers = useAppSelector(selectBookingPassengers)
-  const [passengers, setPassengersState] = useState<Passenger[]>(() =>
-    savedPassengers.length > 0
-      ? savedPassengers
-      : buildPassengersFromTicketCounts(ticketCounts),
-  )
-  const [errorsByPassengerId, setErrorsByPassengerId] = useState<Record<number, PassengerValidationErrors>>({})
-  const [footerStateByPassengerId, setFooterStateByPassengerId] = useState<Record<number, PassengerFooterState>>({})
   const { validatePassenger } = usePassengerValidation()
+
+  const validatePassengers = useCallback(
+    (passengers: Passenger[]) => {
+      const result = validateAllPassengers(passengers, validatePassenger)
+      return { isValid: result.isValid, errors: result.errors }
+    },
+    [validatePassenger],
+  )
+
+  const { draft: passengers, setDraft, setErrors, errors: errorsByPassengerId } = useFormStep<
+    Passenger[],
+    Record<number, PassengerValidationErrors>
+  >({
+    initial: () =>
+      savedPassengers.length > 0
+        ? savedPassengers
+        : buildPassengersFromTicketCounts(ticketCounts),
+    validate: validatePassengers,
+  })
+
+  const [footerStateByPassengerId, setFooterStateByPassengerId] = useState<Record<number, PassengerFooterState>>({})
   const {
     isPassengerOpen,
     openPassenger,
@@ -44,26 +59,33 @@ export function usePassengersForm() {
   const didAutoOpenFirstPassengerRef = useRef(false)
 
   useEffect(() => {
-    setPassengersState(prev => {
+    setDraft((prev) => {
       const next = syncPassengersWithTicketCounts(prev, ticketCounts)
       if (next.length === prev.length && next.every((p, i) => p === prev[i])) {
         return prev
       }
 
-      const allowedIds = new Set(next.map(p => p.id))
-      setErrorsByPassengerId(errors =>
+      const allowedIds = new Set(next.map((p) => p.id))
+      setErrors((errors) =>
         Object.fromEntries(Object.entries(errors).filter(([id]) => allowedIds.has(Number(id)))),
       )
-      setFooterStateByPassengerId(states =>
+      setFooterStateByPassengerId((states) =>
         Object.fromEntries(Object.entries(states).filter(([id]) => allowedIds.has(Number(id)))),
       )
 
-      const removedIds = prev.filter(p => !allowedIds.has(p.id)).map(p => p.id)
-      removedIds.forEach(id => onPassengerRemoved(id))
+      const removedIds = prev.filter((p) => !allowedIds.has(p.id)).map((p) => p.id)
+      removedIds.forEach((id) => onPassengerRemoved(id))
 
       return next
     })
-  }, [ticketCounts.adults, ticketCounts.children, ticketCounts.childrenWithoutSeat, onPassengerRemoved])
+  }, [
+    setDraft,
+    setErrors,
+    ticketCounts.adults,
+    ticketCounts.children,
+    ticketCounts.childrenWithoutSeat,
+    onPassengerRemoved,
+  ])
 
   useEffect(() => {
     if (didAutoOpenFirstPassengerRef.current || passengers.length === 0) return
@@ -73,43 +95,46 @@ export function usePassengersForm() {
 
   const validatePassengerById = useCallback(
     (passengerId: number, source = passengers) => {
-      const passenger = source.find(item => item.id === passengerId)
+      const passenger = source.find((item) => item.id === passengerId)
       if (!passenger) return false
 
       const result = validatePassenger(passenger)
-      setErrorsByPassengerId(prev => ({ ...prev, [passengerId]: result.errors }))
-      setFooterStateByPassengerId(prev => ({
+      setErrors((prev) => ({ ...prev, [passengerId]: result.errors }))
+      setFooterStateByPassengerId((prev) => ({
         ...prev,
         [passengerId]: result.isValid ? 'success' : 'error',
       }))
 
       return result.isValid
     },
-    [passengers, validatePassenger],
+    [passengers, setErrors, validatePassenger],
   )
 
-  const updatePassenger = useCallback(<K extends keyof Passenger>(id: number, key: K, value: Passenger[K]) => {
-    setPassengersState(prev => {
-      const nextPassengers = prev.map(p => (p.id === id ? { ...p, [key]: value } : p))
-      const nextPassenger = nextPassengers.find(p => p.id === id)
-      if (!nextPassenger) return nextPassengers
+  const updatePassenger = useCallback(
+    <K extends keyof Passenger>(id: number, key: K, value: Passenger[K]) => {
+      setDraft((prev) => {
+        const nextPassengers = prev.map((p) => (p.id === id ? { ...p, [key]: value } : p))
+        const nextPassenger = nextPassengers.find((p) => p.id === id)
+        if (!nextPassenger) return nextPassengers
 
-      const result = validatePassenger(nextPassenger)
-      setErrorsByPassengerId(next => ({ ...next, [id]: result.errors }))
-      setFooterStateByPassengerId(next => ({ ...next, [id]: result.isValid ? 'success' : 'default' }))
+        const result = validatePassenger(nextPassenger)
+        setErrors((next) => ({ ...next, [id]: result.errors }))
+        setFooterStateByPassengerId((next) => ({ ...next, [id]: result.isValid ? 'success' : 'default' }))
 
-      return nextPassengers
-    })
-  }, [validatePassenger])
+        return nextPassengers
+      })
+    },
+    [setDraft, setErrors, validatePassenger],
+  )
 
   const goToNextPassenger = useCallback(
     (id: number) => {
       if (!validatePassengerById(id)) return
 
-      setFooterStateByPassengerId(prev => ({ ...prev, [id]: 'success' }))
+      setFooterStateByPassengerId((prev) => ({ ...prev, [id]: 'success' }))
       closePassenger(id)
 
-      const currentIndex = passengers.findIndex(p => p.id === id)
+      const currentIndex = passengers.findIndex((p) => p.id === id)
       const nextPassenger = passengers[currentIndex + 1]
 
       if (nextPassenger) {
@@ -125,31 +150,36 @@ export function usePassengersForm() {
   )
 
   const submitPassengers = useCallback(() => {
-    let firstInvalidId: number | null = null
-    const nextErrors: Record<number, PassengerValidationErrors> = {}
-    const nextFooterStates: Record<number, PassengerFooterState> = {}
+    const result = validateAllPassengers(passengers, validatePassenger)
 
-    for (const passenger of passengers) {
-      const result = validatePassenger(passenger)
-      nextErrors[passenger.id] = result.errors
-      nextFooterStates[passenger.id] = result.isValid ? 'success' : 'error'
+    setErrors(result.errors)
+    setFooterStateByPassengerId(
+      Object.fromEntries(
+        passengers.map((passenger) => {
+          const passengerResult = validatePassenger(passenger)
+          return [passenger.id, passengerResult.isValid ? 'success' : 'error'] as const
+        }),
+      ),
+    )
 
-      if (!result.isValid && firstInvalidId === null) {
-        firstInvalidId = passenger.id
+    if (!result.isValid) {
+      if (result.firstInvalidId !== null) {
+        openPassenger(result.firstInvalidId)
       }
-    }
-
-    setErrorsByPassengerId(prev => ({ ...prev, ...nextErrors }))
-    setFooterStateByPassengerId(prev => ({ ...prev, ...nextFooterStates }))
-
-    if (firstInvalidId !== null) {
-      openPassenger(firstInvalidId)
       return
     }
 
     dispatch(setPassengers(passengers))
     navigate(fromConfirmation ? '/booking/confirmation' : '/booking/payment')
-  }, [dispatch, fromConfirmation, navigate, openPassenger, passengers, validatePassenger])
+  }, [
+    dispatch,
+    setErrors,
+    fromConfirmation,
+    navigate,
+    openPassenger,
+    passengers,
+    validatePassenger,
+  ])
 
   return {
     passengers,
