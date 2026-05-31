@@ -9,10 +9,13 @@ import {
 import { prefetchTrainSearchAnimation } from '@/shared/lib/prefetchTrainSearchAnimation'
 import { useNavigate } from 'react-router-dom'
 import type { HeaderCitySearchFields } from './useHeaderCitySearchFields'
+import { useHeaderSearchUrlHydration } from './useHeaderSearchUrlHydration'
 import { formatApiDate } from '@/shared/lib/formatApiDate'
 import { parseFilterDate } from '@/shared/lib/parseFilterDate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { selectRoutesQueryParams } from '@/store/selectors/routesQuerySelectors'
 import { mergeSearch } from '@/store/slices/searchSlice'
+import { buildBookingSearchUrl } from '@/store/url/bookingSearchUrlParams'
 import type { RootState } from '@/store/store'
 
 export function useHeaderSearchSubmit(
@@ -21,6 +24,7 @@ export function useHeaderSearchSubmit(
 ) {
   const dispatch = useAppDispatch()
   const search = useAppSelector((s: RootState) => s.search)
+  const routesParams = useAppSelector(selectRoutesQueryParams)
   const navigate = useNavigate()
   const [formError, setFormError] = useState<string | null>(null)
   const [departureDate, setDepartureDateState] = useState<Date | null>(() =>
@@ -55,7 +59,16 @@ export function useHeaderSearchSubmit(
     [clearFormError],
   )
 
-  const { fromCity, toCity } = citySearch
+  const { fromCity, toCity, fromField, toField, setFromCity, setToCity } = citySearch
+
+  useHeaderSearchUrlHydration({
+    fromField,
+    toField,
+    setFromCity,
+    setToCity,
+    setDepartureDate,
+    setArrivalDate,
+  })
 
   useEffect(() => {
     if (fromCity && toCity) {
@@ -77,17 +90,27 @@ export function useHeaderSearchSubmit(
       return
     }
 
-    dispatch(
-      mergeSearch({
-        from_city_id: fromCity._id,
-        to_city_id: toCity._id,
-        date_start: departureDate ? formatApiDate(departureDate) : undefined,
-        date_end: arrivalDate ? formatApiDate(arrivalDate) : undefined,
-      }),
-    )
+    const searchPatch = {
+      from_city_id: fromCity._id,
+      to_city_id: toCity._id,
+      date_start: departureDate ? formatApiDate(departureDate) : undefined,
+      date_end: arrivalDate ? formatApiDate(arrivalDate) : undefined,
+    }
+
+    dispatch(mergeSearch(searchPatch))
 
     void prefetchTrainSearchAnimation()
-    navigate('/booking/trains')
+
+    const nextParams = {
+      ...routesParams,
+      ...searchPatch,
+    }
+    const searchUrl = buildBookingSearchUrl(nextParams, {
+      fromName: fromCity.name,
+      toName: toCity.name,
+    })
+
+    navigate({ pathname: '/booking/trains', search: searchUrl.replace(/^\?/, '') })
   }
 
   return {

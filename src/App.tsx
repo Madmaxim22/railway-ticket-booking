@@ -2,6 +2,7 @@ import Header from '@/widgets/header/Header'
 import HomePage from '@/pages/home/HomePage'
 import Footer from '@/widgets/footer/Footer'
 import './App.css'
+import { useBookingSearchUrlSync } from '@/features/route-search/model/useBookingSearchUrlSync'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import BookingLayout from '@/features/booking-flow/ui/BookingLayout'
 import BookingSuccessPage from '@/features/booking-success/BookingSuccessPage'
@@ -12,6 +13,8 @@ import { SeatSelectionPageContainer as SeatSelectionPage } from '@/features/seat
 import TrainSelectionPage from '@/features/train-selection/TrainSelectionPage'
 
 function App() {
+  useBookingSearchUrlSync()
+
   return (
     <>
     <div className="app">
