@@ -1,7 +1,3 @@
-.booking-layout__body {
-  padding-bottom: 122px;
-}
-
 .seat-selection-page {
   width: 960px;
   display: flex;
@@ -20,19 +16,19 @@
 .seat-selection-page__error {
   margin: 0 0 24px;
   font-size: 18px;
-  color: #c62828;
+  color: var(--color-error);
 }
 
 .seat-selection-page__hint {
   margin: 24px 0 0;
   font-size: 18px;
-  color: #c62828;
+  color: var(--color-error);
 }
 
 .seat-selection-page__loading {
   margin: 0 0 24px;
   font-size: 18px;
-  color: var(--color-text-muted, #666);
+  color: var(--color-text-muted);
 }
 
 .seat-selection-page__next-button {

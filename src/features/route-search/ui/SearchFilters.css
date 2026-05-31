@@ -50,6 +50,11 @@
   color: var(--color-text);
 }
 
+.search-filters__input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
 .search-filters__input::placeholder {
   font-size: 18px;
   font-weight: 400;
@@ -268,7 +273,7 @@
 .search-filters__latest-ticket-amenity-icon {
   width: 20px;
   height: 20px;
-  color: #e5e5e5;
+  color: var(--color-border-light);
   flex-shrink: 0;
 }
 

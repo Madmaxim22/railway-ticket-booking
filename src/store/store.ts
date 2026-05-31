@@ -48,7 +48,7 @@ function buildPreloadedState(): Partial<RootState> | undefined {
   return preloaded
 }
 
-const bookingPersistMiddleware: Middleware<{}, RootState> =
+const bookingPersistMiddleware: Middleware<object, RootState> =
   (storeApi) => (next) => (action) => {
     const result = next(action)
     handleBookingPersistAction(action, storeApi.getState)

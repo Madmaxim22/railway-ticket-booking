@@ -42,7 +42,7 @@
   width: 100%;
   margin: 0 0 16px;
   font-size: 16px;
-  color: var(--color-error, #c62828);
+  color: var(--color-error);
 }
 
 .train-selection-page__dropdown {
@@ -100,7 +100,7 @@
 }
 
 .train-selection-page__dropdown-item:hover {
-  background-color: #f3f3f3;
+  background-color: var(--color-bg-wagon-tab);
 }
 
 .train-selection-page__header-item-button {

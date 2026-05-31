@@ -12,7 +12,10 @@ const SEARCH_SHORT_TO_API: Record<string, keyof SearchState> = {
   return: 'date_end',
 }
 
-const SEARCH_API_TO_SHORT: Record<keyof SearchState, string> = {
+/** Поля поиска, которые попадают в query API и в URL (без UI-подписей городов). */
+type SearchUrlApiKey = 'from_city_id' | 'to_city_id' | 'date_start' | 'date_end'
+
+const SEARCH_API_TO_SHORT: Record<SearchUrlApiKey, string> = {
   from_city_id: 'from',
   to_city_id: 'to',
   date_start: 'date',
@@ -155,7 +158,7 @@ export function buildBookingSearchUrl(
 ): string {
   const urlParams = new URLSearchParams()
 
-  for (const apiKey of Object.keys(SEARCH_API_TO_SHORT) as (keyof SearchState)[]) {
+  for (const apiKey of Object.keys(SEARCH_API_TO_SHORT) as SearchUrlApiKey[]) {
     const shortKey = SEARCH_API_TO_SHORT[apiKey]
     const value = params[apiKey]
     if (typeof value === 'string' && value.trim()) {

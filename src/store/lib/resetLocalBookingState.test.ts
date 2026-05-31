@@ -1,4 +1,5 @@
-import { configureStore, type Store } from '@reduxjs/toolkit'
+import { configureStore, type Middleware, type Store } from '@reduxjs/toolkit'
+import type { RootState } from '@/store/store'
 import { describe, expect, it, beforeEach } from 'vitest'
 
 import { DEFAULT_TICKET_COUNTS } from '@/entities/booking/model/ticketCounts'
@@ -62,15 +63,18 @@ const sampleBooking: BookingState = {
   paymentMethod: 'online',
 }
 
+const testBookingPersistMiddleware: Middleware<object, TestState> =
+  (storeApi) => (next) => (action) => {
+    const result = next(action)
+    handleBookingPersistAction(action, () => storeApi.getState() as RootState)
+    return result
+  }
+
 function createTestStore(): Store<TestState> {
   const store = configureStore({
     reducer: { booking: bookingReducer },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(() => (next) => (action) => {
-        const result = next(action)
-        handleBookingPersistAction(action, () => store.getState())
-        return result
-      }),
+      getDefaultMiddleware().concat(testBookingPersistMiddleware),
   })
 
   return store

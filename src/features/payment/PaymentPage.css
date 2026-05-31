@@ -59,6 +59,11 @@
   font-weight: 400;
 }
 
+.payment-page .field-label__field:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
 .payment-page .field-label__field::placeholder {
   color: var(--color-border);
 }

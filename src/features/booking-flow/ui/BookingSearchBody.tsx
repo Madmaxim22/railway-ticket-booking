@@ -7,6 +7,7 @@ import { SearchLoadingScreen } from '@/shared/ui/SearchLoadingScreen/SearchLoadi
 
 export function BookingSearchBody() {
   const isTrainsStep = useMatch('/booking/trains')
+  const isSeatsStep = useMatch('/booking/seats')
   const { isFetching, isError, data } = useRoutesSearchModel()
   const items = data?.items ?? []
 
@@ -18,10 +19,16 @@ export function BookingSearchBody() {
 
   const isLoading = Boolean(isTrainsStep && showLoading)
 
+  const bodyClassName = [
+    'booking-layout__body',
+    isLoading && 'booking-layout__body--loading',
+    isSeatsStep && 'booking-layout__body--seats',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div
-      className={`booking-layout__body${isLoading ? ' booking-layout__body--loading' : ''}`}
-    >
+    <div className={bodyClassName}>
       {isLoading && (
         <SearchLoadingScreen
           className="search-loading-screen--overlay"

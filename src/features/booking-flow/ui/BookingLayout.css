@@ -32,6 +32,10 @@
   padding-bottom: 0;
 }
 
+.booking-layout__body--seats {
+  padding-bottom: 122px;
+}
+
 .booking-layout__body > aside {
   width: 364px;
   height: 100%;

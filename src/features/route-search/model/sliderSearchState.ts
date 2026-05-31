@@ -1,6 +1,19 @@
 import type { FiltersState } from '@/store/slices/filtersSlice'
 
-export const SLIDER_SEARCH_INITIAL = {
+export type SliderSearchState = {
+  price_from: number
+  price_to: number
+  start_departure_hour_from: number
+  start_departure_hour_to: number
+  start_arrival_hour_from: number
+  start_arrival_hour_to: number
+  end_departure_hour_from: number
+  end_departure_hour_to: number
+  end_arrival_hour_from: number
+  end_arrival_hour_to: number
+}
+
+export const SLIDER_SEARCH_INITIAL: SliderSearchState = {
   price_from: 0,
   price_to: 7000,
   start_departure_hour_from: 0,
@@ -11,10 +24,6 @@ export const SLIDER_SEARCH_INITIAL = {
   end_departure_hour_to: 24,
   end_arrival_hour_from: 0,
   end_arrival_hour_to: 24,
-} as const
-
-export type SliderSearchState = {
-  [K in keyof typeof SLIDER_SEARCH_INITIAL]: number
 }
 
 export const SLIDER_SEARCH_KEYS = Object.keys(
@@ -22,7 +31,7 @@ export const SLIDER_SEARCH_KEYS = Object.keys(
 ) as (keyof SliderSearchState)[]
 
 export function sliderSearchFromFilters(filters: FiltersState): SliderSearchState {
-  const next = { ...SLIDER_SEARCH_INITIAL }
+  const next: SliderSearchState = { ...SLIDER_SEARCH_INITIAL }
   for (const key of SLIDER_SEARCH_KEYS) {
     const value = filters[key]
     if (typeof value === 'number' && !Number.isNaN(value)) {

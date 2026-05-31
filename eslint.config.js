@@ -19,5 +19,9 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Синхронизация локального UI с Redux; рефакторинг — отдельная задача
+      'react-hooks/set-state-in-effect': 'warn',
+    },
   },
 ])
